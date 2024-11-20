@@ -2,7 +2,7 @@
 title = "Atam Ne Derdi"
 date = "2020-11-10"
 [taxonomies]
-tags = []
+tags = ["essay"]
 language = ["tr"]
 +++
 

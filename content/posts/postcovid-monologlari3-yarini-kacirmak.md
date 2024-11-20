@@ -2,7 +2,7 @@
 title = "Post-Covid Monologları#3: Yarını Kaçırmak"
 date = "2021-01-04"
 [taxonomies]
-tags = []
+tags = ["essay"]
 language = ["tr"]
 +++
 
