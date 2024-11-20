@@ -2,7 +2,7 @@
 title = "The Story of Deviation and Returning"
 date = "2021-07-31"
 [taxonomies]
-tags = []
+tags = ["essay"]
 language = ["en"]
 +++
 

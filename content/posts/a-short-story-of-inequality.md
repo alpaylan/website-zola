@@ -2,7 +2,7 @@
 title = "A Short Story of Inequality"
 date = "2023-04-17"
 [taxonomies]
-tags = []
+tags = ["essay"]
 language = ["en"]
 +++
 

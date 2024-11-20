@@ -2,7 +2,7 @@
 title = "Proje Günlükleri: CVDL(CV Description Language)#1"
 date = "2022-01-10"
 [taxonomies]
-tags = []
+tags = ["language design"]
 language = ["tr"]
 +++
 
