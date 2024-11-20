@@ -7,8 +7,8 @@ title = "Alperen Keles"
 [extra]
 theme = "light"
 socials = [
-  { name = "twitter", url = "https://twitter.com/not_matthias", icon = "twitter" },
-  { name = "github", url = "https://github.com/not-matthias/", icon = "github" },
+  { name = "twitter", url = "https://twitter.com/keleesssss", icon = "twitter" },
+  { name = "github", url = "https://github.com/alpaylan", icon = "github" },
   { name = "linkedin", url = "https://linkedin.com/in/alpkeles", icon = "linkedin" },
   { name = "mail", url = "mailto:akeles@umd.edu", icon = "email" },
 ]
