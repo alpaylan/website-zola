@@ -2,7 +2,7 @@
 theme = "apollo"
 taxonomies = [{ name = "tags" }, { name = "language"}]
 
-base_url = "https://alperenkeles.com"
+base_url = "https://d2ba3d0c.website-zola-5ze.pages.dev"
 title = "Alperen Keles"
 [extra]
 theme = "light"
