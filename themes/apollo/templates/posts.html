@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+    {% if section.extra.section_path -%}
+        {% set section = get_section(path=section.extra.section_path) %}
+    {% endif -%}
+
+    {% block title %}
+        {{ post_macros::page_header(title=section.title) }}
+    {% endblock title %}
+    <!-- Search bar -->
+    <div class="search-bar">
+        <input class="search" type="text" name="q" placeholder="Search..." value="" />
+        <script>
+            document.querySelector('.search-bar input').addEventListener('input', function(e) {
+                var query = e.target.value;
+                var posts = document.querySelectorAll('.list-item');
+                posts.forEach(function(post) {
+                    var title = post.querySelector('.title').textContent;
+                    if (title.toLowerCase().includes(query.toLowerCase())) {
+                        post.style.display = 'block';
+                    } else {
+                        post.style.display = 'none';
+                    }
+                });
+            });
+        </script>
+    </div>
+    <!-- Language -->
+    <div class="language">
+        <button class="language-button en" id="lb-en" onclick="toggleLanguage('en')" id="en">EN</button>
+        <button class="language-button tr" id="lb-tr" onclick="toggleLanguage('tr')" id="tr">TR</button>
+
+        <script>
+            function toggleLanguage(lang) {
+                var posts = document.querySelectorAll(`.list-item.${lang}`);
+                posts.forEach(function(post) {
+                    if (post.style.display === 'none') {
+                        post.style.display = 'block';
+                        document.getElementById(`lb-${lang}`).classList.remove('inactive');
+                    } else {
+                        post.style.display = 'none';
+                        document.getElementById(`lb-${lang}`).classList.add('inactive');
+                    }
+                });
+            }
+        </script>
+    </div>
+
+
+    {% block post_list %}
+        <main class="list">
+            {%- if paginator %}
+                {%- set show_pages = paginator.pages -%}
+            {% else %}
+                {%- set show_pages = section.pages -%}
+            {% endif -%}
+
+            {{ post_macros::list_posts(pages=show_pages) }}
+        </main>
+    {% endblock post_list %}
+
+    {% if paginator %}
+        <ul class="pagination">
+            {% if paginator.previous %}
+                <span class="page-item page-prev">
+                    <a href={{ paginator.previous }} class="page-link" aria-label="Previous"><span aria-hidden="true">← Prev</span></a>
+                </span>
+            {% endif %}
+
+            {% if paginator.next %}
+                <span class="page-item page-next">
+                    <a href={{ paginator.next }} class="page-link" aria-label="Next"><span aria-hidden="true">Next →</span></a>
+                </span>
+            {% endif %}
+        </ul>
+    {% endif %}
+{% endblock main_content %}

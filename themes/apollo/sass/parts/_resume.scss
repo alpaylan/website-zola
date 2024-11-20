@@ -1,0 +1,67 @@
+/* Resume */
+
+article.resume {
+
+    h1::before,
+    h2::before,
+    h3::before,
+    h4::before,
+    h5::before,
+    h6::before {
+        display: none;
+    }
+
+    .experiences {
+        border: 2px solid #eaeaea;
+        padding: 2em;
+        padding-top: 0;
+
+        .education {
+            .title {
+                text-align: center;
+                font-size: 1.4em;
+            }
+
+            .degree-container {
+                h4 {
+                    font-weight: bold;
+                }
+
+                .line {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    width: 100%;
+                }
+                .degree {
+                    margin-bottom: .1em;
+                    font-size: 1em;
+                }
+
+                .date {
+                    font-weight: normal;
+                    margin-bottom: .1em;
+                    font-size: 1em;
+                }
+
+                .school {
+                    margin-top: .1em;
+                    margin-bottom: .1em;
+                }
+
+                .keywords {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 0.5em;
+
+                    .keyword {
+                        background-color: #f0f0f0;
+                        padding: 0.2em 0.5em;
+                        border-radius: 0.2em;
+                        font-size: 0.8em;
+                    }
+                }
+            }
+        }
+    }
+}

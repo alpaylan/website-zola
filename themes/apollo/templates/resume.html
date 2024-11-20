@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+<article class="resume" id="resume">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+            <div class="link-container">
+                <p><a href="documents/resume.pdf" download="alperen_keles.pdf">
+                    <i class="fas fa-file-arrow-down"></i>  Download as PDF
+                </a></p>
+            </div>
+
+    <div class='experiences'>
+        <div class="education">
+            <div class="title">
+                <h3>Education</h3>
+            </div>
+
+            {% for data in page.extra.degrees %}
+            <article class="degree-container">
+                <div class="line">
+                    <h4 class="degree">{{data.degree}}</h4>
+                    <h4 class="date"> {{data.year}}</h4>
+                </div>
+                <p class="school"><a href={{data.link}}>{{data.school}}</a></p>
+            </article>
+            {% endfor %}
+        </div>
+
+        <div class="education">
+            <div class="title">
+                <h3>Work Experience</h3>
+            </div>
+            {% for data in page.extra.positions%}
+            <article class="degree-container">
+                <div class="line">
+                    <h4 class="degree">{{data.company}}</h4>
+                    <h4 class="date"> {{data.date}}</h4>
+                </div>
+                <div class="line">
+                    <p class="school">{{data.position}}</p>
+                    <p class="school">{{data.location}} </p>
+                </div>
+                {% if data.keywords %}
+                <div class="keywords">
+                    {% for keyword in data.keywords %}
+                    <p class='keyword'>
+                        {{keyword}}
+                    </p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </article>
+            {% endfor %}
+        </div>
+
+        {# {% for position in page.positions %}
+        <Experience data={positions} />
+        {% endfor %} #}
+    </div>
+</article>
+{% endblock main_content %}

@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<html class="dark light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+
+    
+    
+    
+    <title>
+         Solving Algorithmic Problems: Painting a Grid
+        
+    </title>
+
+        
+            <meta property="og:title" content="Solving Algorithmic Problems: Painting a Grid" />
+        
+     
+
+     
+         
+     
+
+     
+         
+    
+
+    
+    
+
+    
+    
+        <link href=https://alperenkeles.com/fonts.css rel="stylesheet" />
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+
+    
+    <link rel="alternate" type="application/atom+xml" title="Alperen Keles" href="https://alperenkeles.com/atom.xml">
+
+
+    
+    
+        <link rel="stylesheet" type="text/css" href=https://alperenkeles.com/theme/light.css />
+    
+
+    <!-- Set the correct theme in the script -->
+    <script src=https://alperenkeles.com/js/themetoggle.js></script>
+    
+        <script>setTheme("light");</script>
+    
+
+    <link rel="stylesheet" type="text/css" media="screen" href=https://alperenkeles.com/main.css />
+
+    
+</head>
+
+
+<body>
+    <div class="content">
+        <header>
+    <div class="main">
+        <a href=https:&#x2F;&#x2F;alperenkeles.com>Alperen Keles</a>
+
+        <div class="socials">
+            
+            <a rel="me" href="https:&#x2F;&#x2F;twitter.com&#x2F;not_matthias" class="social">
+                <img alt=twitter src=https://alperenkeles.com/social_icons/twitter.svg>
+            </a>
+            
+            <a rel="me" href="https:&#x2F;&#x2F;github.com&#x2F;not-matthias&#x2F;" class="social">
+                <img alt=github src=https://alperenkeles.com/social_icons/github.svg>
+            </a>
+            
+            <a rel="me" href="https:&#x2F;&#x2F;linkedin.com&#x2F;in&#x2F;alpkeles" class="social">
+                <img alt=linkedin src=https://alperenkeles.com/social_icons/linkedin.svg>
+            </a>
+            
+            <a rel="me" href="mailto:akeles@umd.edu" class="social">
+                <img alt=mail src=https://alperenkeles.com/social_icons/email.svg>
+            </a>
+            
+        </div>
+    </div>
+
+    <nav>
+        
+        <a href=https://alperenkeles.com/posts style="margin-left: 0.5em">posts</a>
+        
+        <a href=https://alperenkeles.com/resume style="margin-left: 0.5em">resume</a>
+        
+        <a href=https://alperenkeles.com/research style="margin-left: 0.5em">research</a>
+        
+        <a href=https://alperenkeles.com/projects style="margin-left: 0.5em">projects</a>
+        
+        <a href=https://alperenkeles.com/talks style="margin-left: 0.5em">talks</a>
+        
+        <a href=https://alperenkeles.com/misc style="margin-left: 0.5em">misc</a>
+        
+
+        
+    </nav>
+</header>
+
+
+        
+        
+    
+<main>
+    <article>
+        <div class="title">
+            
+            
+    <div class="page-header">
+        Solving Algorithmic Problems: Painting a Grid<span class="primary-color" style="font-size: 1.6em">.</span>
+    </div>
+
+
+                <div class="meta">
+                    
+                        Posted on <time>2024-06-01</time>
+                    
+
+                    
+
+                    
+
+                    
+                    
+                            <span class="tags-label"> :: Tags:</span>
+                            <span class="tags">
+                                    <a href="https://alperenkeles.com/tags/puzzle/" class="post-tag">puzzle</a>, 
+                                
+                                    <a href="https://alperenkeles.com/tags/algorithms/" class="post-tag">algorithms</a>
+                                
+                            </span>
+                    
+
+                    
+                    
+
+                    
+
+                </div>
+        </div>
+
+        
+
+        
+        
+
+        <section class="body">
+            <p>
+ Earlier today, I saw a
+ <a href="https://www.reddit.com/r/puzzles/comments/1c4pj67/use_the_brushes_in_the_right_order_to_reproduce/">
+  cute
+            little puzzle on Reddit
+ </a>
+ . The puzzle is pretty simple, we have a 3x3
+        grid where each square is either pink or turquoise. We are also given a
+        target grid with a different configuration of colors. Finally, we can
+        use 3 horizontal brushes(A, B, and C) that is pink, or 3 vertical
+        brushes(D, E, and F) that is turquoise. The goal is to find the minimum
+        number of brush strokes required to paint the target grid.
+</p>
+<figure>
+<img alt="Puzzle Image" src="reddit-image.png" style="width: 50%;"/>
+</figure>
+<p>
+ It took me a couple of minutes to come up with the solution, I’m
+        leaving the answer below in a spoiler box. If you want to try it
+        yourself, please do so before reading the answer.
+</p>
+<details>
+ <summary>
+  <b>
+   Click to see the answer
+  </b>
+ </summary>
+ <p>
+  The solution is
+  <code>
+   A F B D
+  </code>
+ </p>
+</details>
+<p>
+ The next thought I had was,
+ <strong>
+  how hard would it be to write a
+            program that solves this problem for any given grid?
+ </strong>
+ . I thought
+        it would be a fun little exercise to write a program that solves this
+        problem. Although I don’t think my solution is perfect(my intuition is
+        that there are cases where it takes the wrong step which is possible to
+        detect in the future and revert, but I didn’t implement it), I’m happy
+        with the simplicity of the result.
+</p>
+<p>
+ The first question that requires answering when solving such a
+        question is, what does the solution space look like? If the solution
+        space is very small, we can just enumerate all of them(hint: it’s not
+        that large). For a 3x3 grid, we only have 6 brushes, and using a brush
+        twice does not provide any additional benefit. This is an important
+        insight into pushing the solution space down, so let’s think about why
+        that is for a second.
+</p>
+<p>
+ The reason why, is that there is only one way to paint a square. If
+        we want to paint a square pink, we have to use the horizontal brush on
+        that level, if we want to paint a square turquoise, we have to use the
+        vertical brush on that level. Let’s say that we have a sequence of brush
+        strokes
+ <code>
+  x_1, x_2, x_3...
+ </code>
+ . The question we need to ask is,
+        why do we even care about the order of strokes to begin with? The reason
+        is that
+ <code>
+  column
+ </code>
+ and
+ <code>
+  row
+ </code>
+ strokes don’t
+ <strong>
+  commute
+ </strong>
+ . Applying
+ <code>
+  r_i
+ </code>
+ where
+ <code>
+  r_i
+ </code>
+ is the row stroke for the i’th row, and
+ <code>
+  c_i
+ </code>
+ where
+ <code>
+  c_i
+ </code>
+ is the column stroke for the
+        i’th column, is not the same as applying
+ <code>
+  c_i
+ </code>
+ and then
+ <code>
+  r_i
+ </code>
+ .
+ <code>
+  r_i c_j
+ </code>
+ means that
+ <code>
+  cell[i, j]
+ </code>
+ is painted
+ <code>
+  turqoise
+ </code>
+ , and
+ <code>
+  c_j r_i
+ </code>
+ means that
+ <code>
+  cell[i, j]
+ </code>
+ is painted
+ <code>
+  pink
+ </code>
+ . This gives us two piece of information:
+</p>
+<ol type="1">
+ <li>
+  Order of strokes matter.
+ </li>
+ <li>
+  By changing the order of two strokes, we can change the color of a
+            cell in the way we want.
+ </li>
+</ol>
+<p>
+ As we can change the color of a cell by changing the order of
+        strokes, running
+ <code>
+  c_i ... r_j ... c_i
+ </code>
+ is the same as running
+ <code>
+  r_j ... c_i
+ </code>
+ . That is it is sufficient to use each stroke
+        once. Although working, this solution did not really satisfy my
+        curiosity, it was just too inelegant.
+</p>
+<p>
+ The next step we can take is to invert our thinking process for the
+        previous solution. Previously, we decided that we can always change the
+        order of two strokes when we want to change the color of something.
+        Thinking backwards, this also means that we can just place the strokes
+        in the order we want to paint the cells. If we want to paint cell
+ <code>
+  i, j
+ </code>
+ pink, now we know that our solution must be in the
+        form
+ <code>
+  ... c_i ... r_j ...
+ </code>
+ . For this solution, we will first
+        calculate the difference of the current grid and the target grid, then
+        we will find a set of moves required to paint the grid in the way we
+        want. We will order the strokes with respect to the painting order, and
+        apply the first stroke in the list. After the application, we recompute
+        the difference, and continue this process until the paintings are the
+        same.
+</p>
+<p>
+ This solution scales much better, as it’s local. We use a greedy
+        approach to solve the problem, so we don’t have to generate the whole
+        permutation space of strokes. The solution is also very simple to
+        implement, the solver logic relies on the two functions provided in
+        Typescript below. The order managed the order of strokes to solve
+        commutation issues, and the solve function applies the strokes in the
+        order provided by the order function.
+</p>
+<input id="paintbrush.ts" type="hidden" value='const order = (d1: Directive, d2: Directive, c: Canvas): number =&gt; {
+    if (d1.orient === d2.orient) {
+        return 0;
+    }
+<pre style="background-color:#eff1f5;color:#4f5b66;"><code><span>let dr = d1.orient === &quot;row&quot; ? d1 : d2;
+</span><span>let dc = d1.orient === &quot;column&quot; ? d1 : d2;
+</span><span>
+</span><span>let t = c[dr.index][dc.index];
+</span><span>
+</span><span>if (d1.orient === &quot;row&quot; &amp;amp;&amp;amp; t === &quot;pink&quot;) {
+</span><span>    return -1;
+</span><span>} else if (d1.orient === &quot;column&quot; &amp;amp;&amp;amp; t === &quot;blue&quot;) {
+</span><span>    return -1;
+</span><span>} else {
+</span><span>    return 1;
+</span><span>}
+</span></code></pre>
+<p>}</p>
+<p>const solve = (c1: Canvas, c2: Canvas): Directive[] =&gt; {
+let path : Directive[] = [];</p>
+<pre style="background-color:#eff1f5;color:#4f5b66;"><code><span>while (different(c1, c2)) {
+</span><span>    let d = diff(c1, c2);
+</span><span>    let dirs = getDirectives(d);
+</span><span>    let sortedDirs = dirs.sort((d1, d2) =&amp;gt; order(d1, d2, c2));
+</span><span>    let dir = sortedDirs.pop() as Directive;
+</span><span>    c1 = applyDirective(c1, dir);
+</span><span>    path.push(dir);
+</span><span>}
+</span><span>
+</span><span>return path;
+</span></code></pre>
+<p>}'/&gt;</p>
+<pre data-linenos data-lang="typescript" style="background-color:#eff1f5;color:#4f5b66;" class="language-typescript "><code class="language-typescript" data-lang="typescript"><table><tbody><tr><td>1</td><td><span style="color:#b48ead;">const </span><span style="color:#8fa1b3;">order </span><span>= (</span><span style="color:#bf616a;">d1</span><span>: Directive, </span><span style="color:#bf616a;">d2</span><span>: Directive, </span><span style="color:#bf616a;">c</span><span>: Canvas): number =&amp;gt; {
+</span></td></tr><tr><td>2</td><td><span>    </span><span style="color:#8fa1b3;">if </span><span>(d1.orient === d2.orient) {
+</span></td></tr><tr><td>3</td><td><span>        </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">0</span><span>;
+</span></td></tr><tr><td>4</td><td><span>    }
+</span></td></tr><tr><td>5</td><td><span>
+</span></td></tr><tr><td>6</td><td><span>    let </span><span style="color:#bf616a;">dr </span><span>= </span><span style="color:#bf616a;">d1</span><span>.</span><span style="color:#bf616a;">orient </span><span>=== &quot;</span><span style="color:#a3be8c;">row</span><span>&quot; ? </span><span style="color:#bf616a;">d1 </span><span>: </span><span style="color:#bf616a;">d2</span><span>;
+</span></td></tr><tr><td>7</td><td><span>    let </span><span style="color:#bf616a;">dc </span><span>= </span><span style="color:#bf616a;">d1</span><span>.</span><span style="color:#bf616a;">orient </span><span>=== &quot;</span><span style="color:#a3be8c;">column</span><span>&quot; ? </span><span style="color:#bf616a;">d1 </span><span>: </span><span style="color:#bf616a;">d2</span><span>;
+</span></td></tr><tr><td>8</td><td><span>
+</span></td></tr><tr><td>9</td><td><span>    let </span><span style="color:#bf616a;">t </span><span>= </span><span style="color:#bf616a;">c</span><span>[</span><span style="color:#bf616a;">dr</span><span>.index][</span><span style="color:#bf616a;">dc</span><span>.index];
+</span></td></tr><tr><td>10</td><td><span>
+</span></td></tr><tr><td>11</td><td><span>    </span><span style="color:#8fa1b3;">if </span><span>(d1.orient === &quot;</span><span style="color:#a3be8c;">row</span><span>&quot; &amp;</span><span style="color:#bf616a;">amp</span><span>;&amp;</span><span style="color:#bf616a;">amp</span><span>; </span><span style="color:#bf616a;">t</span><span> === &quot;</span><span style="color:#a3be8c;">pink</span><span>&quot;) {
+</span></td></tr><tr><td>12</td><td><span>        </span><span style="color:#b48ead;">return </span><span>-</span><span style="color:#d08770;">1</span><span>;
+</span></td></tr><tr><td>13</td><td><span>    } else </span><span style="color:#8fa1b3;">if </span><span>(d1.orient === &quot;</span><span style="color:#a3be8c;">column</span><span>&quot; &amp;</span><span style="color:#bf616a;">amp</span><span>;&amp;</span><span style="color:#bf616a;">amp</span><span>; </span><span style="color:#bf616a;">t</span><span> === &quot;</span><span style="color:#a3be8c;">blue</span><span>&quot;) {
+</span></td></tr><tr><td>14</td><td><span>        </span><span style="color:#b48ead;">return </span><span>-</span><span style="color:#d08770;">1</span><span>;
+</span></td></tr><tr><td>15</td><td><span>    } else {
+</span></td></tr><tr><td>16</td><td><span>        return </span><span style="color:#d08770;">1</span><span>;
+</span></td></tr><tr><td>17</td><td><span>    }
+</span></td></tr><tr><td>18</td><td><span>}
+</span></td></tr><tr><td>19</td><td><span>
+</span></td></tr><tr><td>20</td><td><span style="color:#b48ead;">const </span><span style="color:#8fa1b3;">solve </span><span>= (</span><span style="color:#bf616a;">c1</span><span>: Canvas, </span><span style="color:#bf616a;">c2</span><span>: Canvas): Directive[] =&amp;gt; {
+</span></td></tr><tr><td>21</td><td><span>    let path : </span><span style="color:#bf616a;">Directive</span><span>[] = [];
+</span></td></tr><tr><td>22</td><td><span>
+</span></td></tr><tr><td>23</td><td><span>    </span><span style="color:#8fa1b3;">while </span><span>(</span><span style="color:#8fa1b3;">different</span><span>(</span><span style="color:#bf616a;">c1</span><span>, </span><span style="color:#bf616a;">c2</span><span>)) {
+</span></td></tr><tr><td>24</td><td><span>        let </span><span style="color:#bf616a;">d </span><span>= </span><span style="color:#8fa1b3;">diff</span><span>(</span><span style="color:#bf616a;">c1</span><span>, </span><span style="color:#bf616a;">c2</span><span>);
+</span></td></tr><tr><td>25</td><td><span>        let </span><span style="color:#bf616a;">dirs </span><span>= </span><span style="color:#8fa1b3;">getDirectives</span><span>(</span><span style="color:#bf616a;">d</span><span>);
+</span></td></tr><tr><td>26</td><td><span>        let </span><span style="color:#bf616a;">sortedDirs </span><span>= </span><span style="color:#bf616a;">dirs</span><span>.</span><span style="color:#96b5b4;">sort</span><span>((</span><span style="color:#bf616a;">d1</span><span>, </span><span style="color:#bf616a;">d2</span><span>) =&amp;</span><span style="color:#bf616a;">gt</span><span>; </span><span style="color:#8fa1b3;">order</span><span>(</span><span style="color:#bf616a;">d1</span><span>, </span><span style="color:#bf616a;">d2</span><span>, </span><span style="color:#bf616a;">c2</span><span>));
+</span></td></tr><tr><td>27</td><td><span>        let </span><span style="color:#bf616a;">dir </span><span>= </span><span style="color:#bf616a;">sortedDirs</span><span>.</span><span style="color:#96b5b4;">pop</span><span>() </span><span style="color:#b48ead;">as </span><span>Directive;
+</span></td></tr><tr><td>28</td><td><span>        </span><span style="color:#bf616a;">c1 </span><span>= </span><span style="color:#8fa1b3;">applyDirective</span><span>(</span><span style="color:#bf616a;">c1</span><span>, </span><span style="color:#bf616a;">dir</span><span>);
+</span></td></tr><tr><td>29</td><td><span>        path.push(dir);
+</span></td></tr><tr><td>30</td><td><span>    }
+</span></td></tr><tr><td>31</td><td><span>
+</span></td></tr><tr><td>32</td><td><span>    </span><span style="color:#bf616a;">return path</span><span>;
+</span></td></tr><tr><td>33</td><td><span>}
+</span></td></tr></tbody></table></code></pre>
+</div>
+<p>
+ If I’m not mistaken, this method should be able to solve NxNxN…xN
+        grids in K dimensional spaces. The solution is not perfect, as it can
+        actually lead to double strokes in some cases, but this would be
+        immediately solved by keeping only the last stroke in the list. I
+        published the code on
+ <a href="https://gist.github.com/alpaylan/ce3321f41bfa367997847b2ef79ea10f">
+  Github
+ </a>
+ ,
+        and below is a playground where you can actually generate grids and see
+        the results.
+</p>
+<p>
+ An important point that I should also not that the problem does not
+        really have a general solution, since there are grid pairs where it’s
+        impossible to paint the target grid with the given brushes. I’m not sure
+        how to prove this, if we had a proof that the state space is
+        finite(which we believe, as we already said that using each brush only
+        once is enough), then we could just provide a counterexample showing
+        that it’s impossible to paint the target grid from that starting
+        configuration, but that reasoning does not hold if we don’t actually
+        prove that the state space is finite. We could also show cyclicity,
+        which I think should be easy to do, but I didn’t try it.
+</p>
+<table style="all:unset; display: body; float: left; margin-right: 20px;">
+ <tbody>
+  <tr>
+   <td id="c1-0-0">
+   </td>
+   <td id="c1-0-1">
+   </td>
+   <td id="c1-0-2">
+   </td>
+  </tr>
+  <tr>
+   <td id="c1-1-0">
+   </td>
+   <td id="c1-1-1">
+   </td>
+   <td id="c1-1-2">
+   </td>
+  </tr>
+  <tr>
+   <td id="c1-2-0">
+   </td>
+   <td id="c1-2-1">
+   </td>
+   <td id="c1-2-2">
+   </td>
+  </tr>
+ </tbody>
+</table>
+<table style="all:unset; display: body; float: left; margin-right: 20px;">
+ <tbody>
+  <tr>
+   <td id="c2-0-0">
+   </td>
+   <td id="c2-0-1">
+   </td>
+   <td id="c2-0-2">
+   </td>
+  </tr>
+  <tr>
+   <td id="c2-1-0">
+   </td>
+   <td id="c2-1-1">
+   </td>
+   <td id="c2-1-2">
+   </td>
+  </tr>
+  <tr>
+   <td id="c2-2-0">
+   </td>
+   <td id="c2-2-1">
+   </td>
+   <td id="c2-2-2">
+   </td>
+  </tr>
+ </tbody>
+</table>
+<button id="show-solution">
+ Show Solution
+</button>
+<button id="reset">
+ Reset
+</button>
+<input id="speed-slider" max="100" min="0" type="range" value="30"/>
+Adjust Speed
+<input id="speed" type="hidden" value="1000"/>
+<h4>
+ Moves
+</h4>
+<ul id="moves">
+</ul>
+<script>
+ var generateCanvas = function () {
+            // A Canvas is a 3x3 grid of colors
+            var genColor = function () {
+                return Math.random() > 0.5 ? "blue" : "pink";
+            };
+            var canvas = [];
+            for (var i = 0; i < 3; i++) {
+                canvas.push([]);
+                for (var j = 0; j < 3; j++) {
+                    canvas[i].push(genColor());
+                }
+            }
+            return canvas;
+        };
+        var copyCanvas = function (canvas) {
+            var newCanvas = [];
+            for (var i = 0; i < 3; i++) {
+                newCanvas.push([]);
+                for (var j = 0; j < 3; j++) {
+                    newCanvas[i].push(canvas[i][j]);
+                }
+            }
+            return newCanvas;
+        };
+        var paintRow = function (canvas, row) {
+            var newCanvas = copyCanvas(canvas);
+            for (var i = 0; i < 3; i++) {
+                newCanvas[row][i] = "pink";
+            }
+            return newCanvas;
+        };
+        var paintColumn = function (canvas, column) {
+            var newCanvas = copyCanvas(canvas);
+            for (var i = 0; i < 3; i++) {
+                newCanvas[i][column] = "blue";
+            }
+            return newCanvas;
+        };
+        var diff = function (canvas1, canvas2) {
+            var diffCanvas = [];
+            for (var i = 0; i < 3; i++) {
+                diffCanvas.push([]);
+                for (var j = 0; j < 3; j++) {
+                    if (canvas1[i][j] === canvas2[i][j]) {
+                        diffCanvas[i].push("same");
+                    }
+                    else {
+                        diffCanvas[i].push(canvas2[i][j]);
+                    }
+                }
+            }
+            return diffCanvas;
+        };
+        var getPinkedRows = function (canvas) {
+            var hasPink = function (row) {
+                return row.some(function (color) { return color === "pink"; });
+            };
+            var pinkedRows = [];
+            for (var i = 0; i < 3; i++) {
+                if (hasPink(canvas[i])) {
+                    pinkedRows.push(i);
+                }
+            }
+            return pinkedRows;
+        };
+        var getBluedColumns = function (canvas) {
+            var hasBlue = function (column) {
+                return column.some(function (color) { return color === "blue"; });
+            };
+            var bluedColumns = [];
+            for (var i = 0; i < 3; i++) {
+                if (hasBlue([canvas[0][i], canvas[1][i], canvas[2][i]])) {
+                    bluedColumns.push(i);
+                }
+            }
+            return bluedColumns;
+        };
+        var different = function (canvas1, canvas2) {
+            return diff(canvas1, canvas2).some(function (row) { return row.some(function (color) { return color !== "same"; }); });
+        };
+        var getDirectives = function (diffCanvas) {
+            var pr = getPinkedRows(diffCanvas);
+            var bc = getBluedColumns(diffCanvas);
+            var directives = [];
+            pr.forEach(function (row) {
+                directives.push({ orient: "row", index: row });
+            });
+            bc.forEach(function (column) {
+                directives.push({ orient: "column", index: column });
+            });
+            return directives;
+        };
+        var printCanvas = function (canvas) {
+            var printCell = function (color) {
+                return color === "blue" ? "O" : "X";
+            };
+            canvas.forEach(function (row) {
+                console.log(row.map(printCell).join(""));
+            });
+        };
+        var applyDirective = function (canvas, directive) {
+            return directive.orient === "row" ? paintRow(canvas, directive.index) : paintColumn(canvas, directive.index);
+        };
+        var order = function (d1, d2, c) {
+            if (d1.orient === d2.orient) {
+                return 0;
+            }
+            var dr = d1.orient === "row" ? d1 : d2;
+            var dc = d1.orient === "column" ? d1 : d2;
+            var t = c[dr.index][dc.index];
+            if (d1.orient === "row" && t === "pink") {
+                return -1;
+            }
+            else if (d1.orient === "column" && t === "blue") {
+                return -1;
+            }
+            else {
+                return 1;
+            }
+        };
+        var solve = function (c1, c2) {
+            var path = [];
+            while (different(c1, c2)) {
+                var d = diff(c1, c2);
+                var dirs = getDirectives(d);
+                var sortedDirs = dirs.sort(function (d1, d2) { return order(d1, d2, c2); });
+                var dir = sortedDirs.pop();
+                console.log("Applying directive: ", dir);
+                c1 = applyDirective(c1, dir);
+                path.push(dir);
+            }
+            return path;
+        };
+        // let c1 = generateCanvas();
+        // let c2 = copyCanvas(c1);
+        var genDirective = function () {
+            return { orient: Math.random() > 0.5 ? "row" : "column", index: Math.floor(Math.random() * 3) };
+        };
+        var genTarget = function (c1) {
+            var c2 = copyCanvas(c1);
+            for (var i = 0; i < 100; i++) {
+                var d = genDirective();
+                c2 = applyDirective(c2, d);
+            }
+            return c2;
+        };
+</script>
+<script>
+ let c1 = generateCanvas();
+        let c2 = genTarget(c1);
+<pre style="background-color:#eff1f5;color:#4f5b66;"><code><span>    let cs = {
+</span><span>        &quot;c1&quot;: c1,
+</span><span>        &quot;c2&quot;: c2
+</span><span>    };
+</span><span>
+</span><span>    const toRgb = (color) =&gt; {
+</span><span>        return color === &quot;blue&quot; ? &quot;#41C9E2&quot; : &quot;#D862BC&quot;;
+</span><span>    }
+</span><span>    const paintCanvas = (cid) =&gt; {
+</span><span>        console.log(cs[cid]);
+</span><span>        for (let i = 0; i &lt; 3; i++) {
+</span><span>            for (let j = 0; j &lt; 3; j++) {
+</span><span>                document.getElementById(cid + &quot;-&quot; + i + &quot;-&quot; + j).style.width = &quot;20px&quot;;
+</span><span>                document.getElementById(cid + &quot;-&quot; + i + &quot;-&quot; + j).style.height = &quot;20px&quot;;
+</span><span>                document.getElementById(cid + &quot;-&quot; + i + &quot;-&quot; + j).style.backgroundColor = toRgb(cs[cid][i][j]);
+</span><span>            }
+</span><span>        }
+</span><span>    }
+</span><span>
+</span><span>    paintCanvas(&quot;c1&quot;);
+</span><span>    paintCanvas(&quot;c2&quot;);
+</span><span>
+</span><span>    let path = solve(c1, c2);
+</span><span>    // Add li to the moves list
+</span><span>    document.getElementById(&quot;moves&quot;).innerHTML = path.map((p, i) =&gt; `&lt;li id=&quot;move-${i}&quot;&quot;&gt;${p.orient + p.index}&lt;/li&gt;`).join(&quot; &quot;);
+</span><span>
+</span><span>    console.log(path);
+</span><span>
+</span><span>    document.getElementById(&quot;show-solution&quot;).addEventListener(&quot;click&quot;, function () {
+</span><span>        let i = 0;
+</span><span>        let interval = setInterval(function () {
+</span><span>            if (i &lt; path.length) {
+</span><span>                cs[&quot;c1&quot;] = applyDirective(cs[&quot;c1&quot;], path[i]);
+</span><span>                console.log(cs[&quot;c1&quot;]);
+</span><span>                document.getElementById(&quot;move-&quot; + i).style.textDecoration = &quot;line-through&quot;;
+</span><span>                paintCanvas(&quot;c1&quot;);
+</span><span>                i++;
+</span><span>            } else {
+</span><span>                clearInterval(interval);
+</span><span>            }
+</span><span>        }, parseInt(document.getElementById(&quot;speed&quot;).value));
+</span><span>    });
+</span><span>
+</span><span>    document.getElementById(&quot;reset&quot;).addEventListener(&quot;click&quot;, function () {
+</span><span>        c1 = generateCanvas();
+</span><span>        c2 = genTarget(c1);
+</span><span>        cs = {
+</span><span>            &quot;c1&quot;: c1,
+</span><span>            &quot;c2&quot;: c2
+</span><span>        };
+</span><span>        paintCanvas(&quot;c1&quot;);
+</span><span>        paintCanvas(&quot;c2&quot;);
+</span><span>        path = solve(c1, c2);
+</span><span>        document.getElementById(&quot;moves&quot;).innerHTML = path.map((p, i) =&gt; `&lt;li id=&quot;move-${i}&quot;&quot;&gt;${p.orient + p.index}&lt;/li&gt;`).join(&quot; &quot;);
+</span><span>    });
+</span><span>
+</span><span>    document.getElementById(&quot;speed-slider&quot;).addEventListener(&quot;input&quot;, function () {
+</span><span>        document.getElementById(&quot;speed&quot;).value = 30000 / (parseInt(document.getElementById(&quot;speed-slider&quot;).value) + 10);
+</span><span>        console.log(document.getElementById(&quot;speed&quot;).value);
+</span><span>    });
+</span></code></pre>
+</script>
+
+        </section>
+    </article>
+</main>
+
+
+
+        
+            
+        
+
+        
+    </div>
+</body>
+
+</html>
