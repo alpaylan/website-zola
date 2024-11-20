@@ -2,7 +2,7 @@
 title = "Extracting Signals: Playing The Inverse Waldo Game"
 date = "2023-07-11"
 [taxonomies]
-tags = []
+tags = ["signal"]
 language = ["en"]
 +++
 

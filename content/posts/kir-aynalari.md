@@ -2,7 +2,7 @@
 title = "Kır Aynaları"
 date = "2019-07-27"
 [taxonomies]
-tags = []
+tags = ["essay"]
 language = ["tr"]
 +++
 

@@ -2,7 +2,7 @@
 title = "Ödediğimiz Bedeller Mi, Ödeyeceklerimiz Mi?"
 date = "2021-01-22"
 [taxonomies]
-tags = []
+tags = ["essay"]
 language = ["tr"]
 +++
 

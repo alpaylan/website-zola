@@ -2,7 +2,7 @@
 title = "Sinyalleri Ayrıştırmak"
 date = "2023-07-09"
 [taxonomies]
-tags = []
+tags = ["signal"]
 language = ["tr"]
 +++
 

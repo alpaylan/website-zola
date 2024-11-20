@@ -2,7 +2,7 @@
 title = "Visa-Exclusion as A Form of Inequality"
 date = "2023-06-14"
 [taxonomies]
-tags = []
+tags = ["visa"]
 language = ["en"]
 +++
 

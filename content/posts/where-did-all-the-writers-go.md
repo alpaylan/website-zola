@@ -2,7 +2,7 @@
 title = "Where did all the writers go?"
 date = "2023-03-18"
 [taxonomies]
-tags = []
+tags = ["articial intelligence", "writing"]
 language = ["en"]
 +++
 

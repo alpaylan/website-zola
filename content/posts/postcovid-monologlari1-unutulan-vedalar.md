@@ -2,7 +2,7 @@
 title = "Post-Covid Monologları#1: Unutulan Vedalar"
 date = "2020-12-12"
 [taxonomies]
-tags = []
+tags = ["essay"]
 language = ["tr"]
 +++
 

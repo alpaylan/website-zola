@@ -2,7 +2,7 @@
 title = "Seçimler v2"
 date = "2022-10-24"
 [taxonomies]
-tags = []
+tags = ["essay"]
 language = ["tr"]
 +++
 

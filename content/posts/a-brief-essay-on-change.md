@@ -2,7 +2,7 @@
 title = "A Brief Essay on Change"
 date = "2022-10-29"
 [taxonomies]
-tags = []
+tags = ["essay"]
 language = ["en"]
 +++
 

@@ -2,7 +2,7 @@
 title = "Kaos ve Düzen"
 date = "2019-07-17"
 [taxonomies]
-tags = []
+tags = ["essay"]
 language = ["tr"]
 +++
 

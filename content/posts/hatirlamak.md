@@ -2,7 +2,7 @@
 title = "Hatırlamak"
 date = "2022-01-25"
 [taxonomies]
-tags = []
+tags = ["essay"]
 language = ["tr"]
 +++
 

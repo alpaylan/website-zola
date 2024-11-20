@@ -2,7 +2,7 @@
 title = "Roadmap of Concepts in Functional Programming"
 date = "2023-01-20"
 [taxonomies]
-tags = []
+tags = ["functional programming"]
 language = ["en"]
 +++
 
