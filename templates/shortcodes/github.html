@@ -1,0 +1,73 @@
+{# This is a HTML component for github link cards #}
+{% set repo = repo %}
+
+<style>
+    .github-card {
+        width: 300px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .github-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .github-card a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .github-card-header {
+        display: flex;
+        align-items: center;
+        padding: 16px;
+        background-color: #f6f8fa;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .github-card-header img {
+        width: 40px;
+        height: 40px;
+        margin-right: 12px;
+        border-radius: 50%;
+    }
+
+    .github-card-header h3 {
+        font-size: 1.2em;
+        margin: 0;
+        color: #333;
+    }
+
+    .github-card-header h3::before {
+        content: "📦";
+        margin-right: 8px;
+    }
+
+
+
+    .github-card-body {
+        padding: 16px;
+        font-size: 0.9em;
+        color: #555;
+    }
+
+    .github-card-body p {
+        margin: 0;
+    }
+</style>
+<div class="github-card">
+    <a href="https://github.com/{{repo}}" target="_blank">
+        <div class="github-card-header">
+            <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub logo">
+            <h3>{{repo}}</h3>
+        </div>
+        <div class="github-card-body">
+            <p>Click to view this repository on GitHub.</p>
+        </div>
+    </a>
+</div>
