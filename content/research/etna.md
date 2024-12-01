@@ -14,6 +14,7 @@ replicated in different languages, **(3)** experimentation primitives for
 running tests and collecting results, and **(4)** visualization tools for
 comparing the results of different tools.
 
+
 <style>
     .row {
         display: flex;
@@ -24,10 +25,26 @@ comparing the results of different tools.
 
     .column {
         flex: 1;
-        min-width: 150px;
+        /* min-width: 150px; */
         padding: 8px;
     }
+    
+    .noted {
+    position: relative;
+    display: flex;
+    gap: 16px;
+    
+    }
+
+    .main {
+    position: relative;
+    max-width: 70%;
+    }
+    .note {
+    max-width: 30%;
+}
 </style>
+
 
 <div class="row">
     <div class="column">
@@ -38,14 +55,3 @@ comparing the results of different tools.
     </div>
 </div>
 
-
-
-
-
-
-
-
-<!-- 
-[https://github.com/jwshii/etna](https://github.com/jwshii/etna)
-
-[https://github.com/alpaylan/etna-cli](https://github.com/jwshii/etna) -->
