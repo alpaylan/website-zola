@@ -112,7 +112,7 @@ Bu kuralı aşağıdan yukarıya doğru okursak, `(1 + 2) + 3`ün tipinin tamsay
 ```txt
 Γ, e1 : integer        Γ, e2 : integer  
 ---------------------------------------(-)  
-          Γ, e1 - e2 : bool
+         Γ, e1 - e2 : integer
 
 
 Γ, e1 : integer        Γ, e2 : integer  
