@@ -256,7 +256,13 @@ for elem in l:
     print(“Element tipini bilmiyoruz”)  
 ```
 
-Aynı programı, Rust gibi bir programlama dilinde yazmamız mümkün değil, çünkü Rust listenin tipinin heterojen olmasına izin vermiyor. E peki statik tipli bir programlama dili implementasyonunda farklı tipten değerleri içeren bir liste oluşturamaz mıyız? Bu sorunun cevabını vermek için gelin çok-tiplilikten(polymorphism) bahsedelim.
+~~Aynı programı, Rust gibi bir programlama dilinde yazmamız mümkün değil, çünkü Rust listenin tipinin heterojen olmasına izin vermiyor.~~ E peki statik tipli bir programlama dili implementasyonunda farklı tipten değerleri içeren bir liste oluşturamaz mıyız? Bu sorunun cevabını vermek için gelin çok-tiplilikten(polymorphism) bahsedelim.
+
+{% note(title="Düzeltme") %}
+Statik programlama dillerinde heterojen listeler üretilemeyeceğine dair yorumum hatalı. Rust programlama dilinde `std::any::Any` tipini kullanarak
+heterojen listeler oluşturabiliyor, bu listelerdeki elemanların tiplerine dair çalışma zamanında bilgi edinebiliyor, karar alabiliyoruz. Buna
+**Yansıma**(Reflection) deniyor, benzer konseptleri Çalışma Zamanı Tip Bilgisi(Runtime Type Information, RTTI) olarak da duyabiliyoruz başka dillerde.
+{% end %}
 
 ## Jenerik, Çok Tipli Programlar
 
