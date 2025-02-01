@@ -1,11 +1,11 @@
-
 <style>
     .note {
         padding: 8px;
-        background-color: #f4f4f4;
+        background-color: #ffffff;
         border: 1px solid #ddd;
         border-radius: 4px;
     }
+
     .note-title {
         font-weight: bold;
         color: #AB4459;
@@ -13,5 +13,7 @@
 </style>
 <div class="note">
     <div class="note-title">{{ title }}</div>
-    {{ body }}
+    <p>
+        {{ body | markdown(inline=true) }}
+    </p>
 </div>
