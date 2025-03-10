@@ -6,8 +6,6 @@ tags = ['software engineering', 'ai']
 language = ["en"]
 +++
 
-# **Verifiability is the Limit**
-
 LLMs have created an enormous turmoil within the software engineering community within the past 5 years, much of it revolving around one central question, **what is the future of our profession?**
 
 A set of competing paradigms with various degrees of human intervention and control has emerged, on the one side agents with little to no humans in the loop, recently popularized “vibe coding” that discourages manually modifying code and instead interacting with the codebase over LLMs, the chatbots implementing standalone modules or functionalities, sometimes even running code using code interpretation feature, and on the other side coding assistants that predict what the user would like to implement, acting as “autocompletes on steroids”.
