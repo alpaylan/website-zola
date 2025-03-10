@@ -1,0 +1,56 @@
++++
+title = "Verifiability is the Limit"
+date = "2025-03-09"
+[taxonomies]
+tags = ['software engineering', 'ai']
+language = ["en"]
++++
+
+# **Verifiability is the Limit**
+
+LLMs have created an enormous turmoil within the software engineering community within the past 5 years, much of it revolving around one central question, **what is the future of our profession?**
+
+A set of competing paradigms with various degrees of human intervention and control has emerged, on the one side agents with little to no humans in the loop, recently popularized “vibe coding” that discourages manually modifying code and instead interacting with the codebase over LLMs, the chatbots implementing standalone modules or functionalities, sometimes even running code using code interpretation feature, and on the other side coding assistants that predict what the user would like to implement, acting as “autocompletes on steroids”.
+
+There are many beliefs in terms of the limits, usefulness, and potentials of these models. Some believe the models will ascend into human level capabilities with unprecedented levels of time and resources and will be able to automate the construction of production grade software systems, while skeptics belittle the models, claiming their code will be mediocre and trivial, unable to scale up to any kind of production.
+
+I am not here to argue about the limits or capabilities of the models themselves, there are much better experts out there with deep theoretical knowledge and practical experience than I do. I, however, will argue the following.
+
+***Every piece of software in the world has to be “correct” with respect to some notion of correctness. Before LLMs, our time was split between writing, reading and verifying code. With LLMs, we are able to offload code generation(writing) phase to LLMs, but the verification process cannot be offloaded, only pushed up to a different layer.***
+
+Out there, you will see people arguing correctness is only a thing in a small set of domains, such as rockets or cryptography. Make no mistake, the degree to which correctness requires rigor changes, but the requirement for correctness does not. Software is *always* created with a purpose, whether it is to consume and transform some data, or provide some information to a user, or allow a user to interact and create some new data. Correctness is the notion that the created software conforms to the intent of the creator, and the creator *has to* verify such conformance.
+
+In less critical applications and domains, correctness is a matter of **trial**. If I’m making a website to present some information regarding a party I’m throwing, I will check that the website shows all the relevant information I wanted it to. If the party's just with some friends, that is probably fine to have. If the party is for work, I will try it on my phone in addition to my computer, perhaps even ask a few friends with different devices to check it out and make sure everything looks good.
+
+Even in the example above, the importance of correctness is contextual. With changing domains and scale, the mechanisms we verify correctness also changes. When we are creating software as a business application, experts on “**trying**” (QAs) are hired to test many paths in the program to discover unexpected behavior, a.k.a. **bugs**. A typical company spends a great deal of time  
+on **testing** their code in addition to trying it, where the rigor of testing changes with respect to the scale of the number of users, money at stake, criticality of the application domain at hand. A small SaaS company might only write some integration tests checking out some scenarios or implement unit tests for some of their components, whereas AWS will mathematically prove the correctness of the S3 implementation that serves petabytes of data every day.
+
+So, basing our argument on the discussion so far, it should be possible for an LLM to generate a codebase that does not require rigorous correctness. Perhaps it even could generate tests, or perhaps even write proofs on the code it writes, right? Maybe LLMs could really remove humans from the process and work on their own as a set of agents working together; if not now, perhaps when they’re better. I’ve heard this argument multiple times during discussions. The problem is, we have not taken into account **verifiability of the code**. We have talked about rigor and scale, but rigor is not enough as a parameter on the LLM-ability of a domain, we need to talk about how the code LLM generates is verified, and that includes testing code too.
+
+Let’s take a step back and take UI programming (mostly connotated with frontend development) into consideration. Anecdotal evidence from many practitioners state that LLMs are able to generate entire frontend applications in one prompt, or even drawings on a napkin. We see specialized tools such as V0 that focuses solely on UI generation. Yet, they are not that successful, or at least popularized in other domains. A popular folk sentiment regarding this phenomenon is that LLMs are trained over public domain repositories, and UI programming makes up a great portion of such code. Yet, that does not explain why LLMs are not that popular in web server applications(mostly connotated with backend development), which are perhaps almost as prevalent as UI programming, and has even less diversity and more structure in its code.
+
+Although there is some psychological explanations regarding this discrepancy between frontend and backend popularity, mainly that creating UIs that are shiny and impressive is easier than creating backends that could attract the same level of attention, hence anecdotal evidence regarding the popularity or usability of backend/frontend comparison should not be given much credit, **I hypothesize that UIs are much easier to verify than any other domain we write code for**.
+
+Verification of UI is almost literally “looking”. When we look at a web page, we almost instantly recognize how the generated code diverges from our intent and can provide instant feedback back to the LLM. Verification of a web server requires setting up a set of test inputs, sending them to the server, perhaps creating some ephemeral state, and checking that the outputs conform to our expectations. This is, in fact, so much easier to write tests for than trying, whereas writing UI tests is a 30 year old long pain point that has not yet been solved.
+
+The rise of “vibe coding games” last week seems to stem from the same root. The generated games are nonetheless impressive, but their verification is possible via trial. Typically implemented over a single server with no persistent state, the games look over complex networking or performance problems by degrading user experience or removing features that cause those problems rather than solving the problems themselves. This is not to say this is not a valid choice, but the reason for this choice is not that those things do not matter, it is that they are harder to verify correctness for, require custom testing infrastructures or domain knowledge for verification.
+
+Going back to the title, **verifiability is the limit.**
+
+**It is the limit that tells us what we cannot implement via LLMs, and it cannot be solved with agentic approaches.** A security agent might in theory add security checks to an application, but such a check is worthless without verifying it as the person who intends to produce the code. A testing agent might add tests to a program, but the tests themselves are meaningless until we check to see they correspond to our intent.
+
+So far, I theorized about the LLMs and the way we produced software to make my point. **Now, I shall preach about what I think we should do.**
+
+If verifiability is the limit, if it’s the bottleneck of using LLMs for programming, the natural question is **how do we raise the limit, how do we make it easier to verify?**
+
+I believe the first step we need to take is to concede defeat on the infinitely powerful and scalable software agents ideology. If verifiability is really the limit, no amount of agents is going to solve the problem. The way I see it, we need better tools and interfaces for verification. For example, instead of the programmer reading the tests LLM generates, it could be possible to summarize the generated tests into a human readable format, while of course the summarization also poses a threat of information loss. We should rely much more on declarative random testing methods such as property-based testing, where the programmer defines a predicate that should hold over all possible inputs, and this predicate is tested by generating random inputs and passing them to the program. Such methods have been used to enhance the reliability of programs in many domains, but they haven’t caught up with the software engineering community. The advantage of such methods is that having one general predicate is much easier to inspect and understand than many unit tests, in addition to the added testing strength.
+
+We need to increase the vocabulary we’re using when talking about correctness. We need to have a wider understanding of performance, security, accessibility, flexibility, and how to measure such qualities of programs so that we know what we are looking for in our applications, and we have mechanisms for verifying these qualities. In status quo, correctness is typically attributed as functional correctness, where it mostly means “input-outputs are as expected”, and most other expectations from an application is bundled under “non-functional properties” and the software engineering community has ignored to properly measure and verify them at large.
+
+**Let me sum up with a prediction.** For a very long time, I have believed LLMs would not be good coders, even with further improvements. My views have shifted after their success in competitive programming, perhaps as a reformed competitive programmer, that was my Lee Sedol moment. **I now, although tentatively, believe that LLMs can indeed succeed in all domains with perfect oracles**.
+
+It is important to understand that this does not mean LLMs will be gods producing 100x code, because virtually no domain that software engineering is useful has a perfect oracle. A perfect oracle is a type of feedback where you are given a “correct/incorrect” answer every single time, and they only appear in games. Winning or losing a game is a perfect oracle, as well as creating a program that can pass the judge in a competitive programming contest.
+
+Even the most formalized aspect of programming, the theorem provers where users can prove their code correct, are not perfect oracles, as they cannot tell you if you are on a good path at an intermediate point in the proof, but only give you information if your proof is correct or if you are stuck. I hope that this imperfect oracle will be enough to win the game of proving, and that LLMs will be better than us in automated proofs. If such a day comes, our next job could be creating new theorems, asking LLMs to produce code and proofs, and scaling such systems into production grade codebases safely and securely.
+
+Please let me know what you think of this at [akeles@umd.edu](mailto:akeles@umd.edu), and share with others if you found this interesting.
