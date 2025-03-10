@@ -4,6 +4,11 @@ taxonomies = [{ name = "tags" }, { name = "language"}]
 
 base_url = "https://alperenkeles.com"
 title = "Alperen Keles"
+
+
+# Generate a feed file at the root of the site
+generate_feed = true
+
 [extra]
 theme = "light"
 socials = [
