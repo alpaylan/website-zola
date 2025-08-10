@@ -1,0 +1,7 @@
+{# templates/macros/readtime.html #}
+{% macro minutes(page, wpm=225) %}
+  {# nearest minute: add half wpm then round #}
+  {% set mins = ((page.word_count + (wpm / 2)) / wpm) | round %}
+  {% if mins < 1 and page.word_count > 0 %}{% set mins = 1 %}{% endif %}
+  {{ mins }} min read
+{% endmacro %}

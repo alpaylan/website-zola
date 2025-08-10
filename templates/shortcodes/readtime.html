@@ -1,0 +1,4 @@
+{# templates/shortcodes/readtime.html #}
+{% set wpm = wpm | default(value=225) %}
+{% set mins = (page.word_count + wpm - 1) / wpm %}
+{{ mins | ceil }} min read

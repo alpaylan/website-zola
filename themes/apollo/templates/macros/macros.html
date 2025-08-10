@@ -1,3 +1,5 @@
+{% import "macros/readtime.html" as readtime %}
+
 {% macro list_tag_posts(pages, tag_name=false) %}
     {% if tag_name %}
     <div class="page-header">
@@ -46,6 +48,7 @@
                 {% endif %}
 
                 <div class="meta">
+                    <span class="readtime">{{ readtime::minutes(page=page) }}</span>
                     <div class="description">
                         {% if page.description %}
                         {{ page.description }}
@@ -55,7 +58,6 @@
                         {% set hide_read_more = true %}
                         {% endif %}
                     </div>
-
                     {% if not hide_read_more %}
                     <a class="readmore" href={{ page.permalink }}>Read more ⟶</a>
                     {% endif %}
@@ -132,9 +134,7 @@
                         :: Updated on <time>{{ page.updated | date(format="%Y-%m-%d") }}</time>
                     {% endif %}
 
-                    {% if page.extra.read_time %}
-                        :: <time>{{ page.reading_time }}</time> Min Read
-                    {% endif %}
+                    :: {{ readtime::minutes(page=page) }}
 
                     {# Inline display of tags directly after the date #}
                     {% if page.taxonomies and page.taxonomies.tags %}

@@ -179,4 +179,10 @@
             <link rel="stylesheet" href="{{ get_url(path=stylesheet) }}">
         {% endfor %}
     {% endif %}
+
+    <link rel="stylesheet" href="{{ get_url(path='css/reading-progress.css') }}">
+
+    {% if page %}
+    <script defer src="{{ get_url(path='js/reading-progress.js') }}"></script>
+    {% endif %}
 </head>
