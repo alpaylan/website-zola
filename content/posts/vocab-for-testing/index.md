@@ -1,6 +1,6 @@
 +++
 title = "A Better Vocabulary for Testing"
-date = "2025-08-05"
+date = "2025-08-16"
 [taxonomies]
 tags = ['testing']
 language = ["en"]
