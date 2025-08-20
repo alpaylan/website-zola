@@ -16,6 +16,7 @@ socials = [
   { name = "github", url = "https://github.com/alpaylan", icon = "github" },
   { name = "linkedin", url = "https://linkedin.com/in/alpkeles", icon = "linkedin" },
   { name = "mail", url = "mailto:akeles@umd.edu", icon = "email" },
+  { name = "rss", url = "/atom.xml", icon = "rss" },
 ]
 menu = [
     { name = "posts", url = "/posts", weight = 1 },
