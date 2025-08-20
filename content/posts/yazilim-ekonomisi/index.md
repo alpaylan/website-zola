@@ -104,7 +104,7 @@ Endüstrinin bunun dışında kalan kısımlarına bakarsanız üretilen değeri
 
 ## Krediler
 
-Yazıya dair yorumları, eleştirileri ve tavsiyeleri için Ahmet Öğreten, Ahmet Yüksel, Arda Çelik, Barış Aşkın, Cemil Vahapoğlu, Doğaç Eldenk, Emre Güllü, Göktuğ Ekinci, Ozan Erdem, Türker Akpınar, ve Umut Güllüoğlu'na teşekkürler.
+Yazıya dair yorumları, eleştirileri ve tavsiyeleri için Ahmet Öğreten, Ahmet Yüksel, Arda Çelik, Barış Aşkın, Cemil Vahapoğlu, Doğaç Eldenk, Emre Güllü, Göktuğ Ekinci, Ozan Erdem, Türker Akpınar, ve Umut Güloğlu'na teşekkürler.
 
 ## Kapanış
 
