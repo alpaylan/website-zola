@@ -1,6 +1,7 @@
 +++
 title = "A Better Vocabulary for Testing"
 date = "2025-08-16"
+author = "Alperen Keles"
 [taxonomies]
 tags = ['testing']
 language = ["en"]
