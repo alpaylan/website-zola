@@ -1,0 +1,86 @@
+<div class="documents-tree">
+    
+    {# Papers & Publications #}
+    {% if config.extra.documents.papers %}
+    <div class="document-category">
+        <h3>Papers & Publications</h3>
+        <ul class="document-list">
+            {% for paper in config.extra.documents.papers | sort(attribute="title") %}
+            <li>
+                <a href="/documents/{{ paper.file }}" target="_blank">
+                    {{ paper.title }}
+                </a>
+                {% if paper.description %} {{ paper.description }}{% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    {# Presentations & Slides #}
+    {% if config.extra.documents.presentations %}
+    <div class="document-category">
+        <h3>Presentations & Slides</h3>
+        <ul class="document-list">
+            {% for presentation in config.extra.documents.presentations | sort(attribute="title") %}
+            <li>
+                <a href="/documents/{{ presentation.file }}" target="_blank">
+                    {{ presentation.title }}
+                </a>
+                {% if presentation.description %} {{ presentation.description }}{% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    {# Other Documents #}
+    {% if config.extra.documents.other %}
+    <div class="document-category">
+        <h3>Other Documents</h3>
+        <ul class="document-list">
+            {% for doc in config.extra.documents.other | sort(attribute="title") %}
+            <li>
+                <a href="/documents/{{ doc.file }}" target="_blank">
+                    {{ doc.title }}
+                </a>
+                {% if doc.description %} {{ doc.description }}{% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    {# Auto-discover section - shows all available files #}
+    {% set all_files = [] %}
+    {% if config.extra.documents.papers %}
+        {% for paper in config.extra.documents.papers %}
+            {% set all_files = all_files | concat(with=paper.file) %}
+        {% endfor %}
+    {% endif %}
+    {% if config.extra.documents.presentations %}
+        {% for presentation in config.extra.documents.presentations %}
+            {% set all_files = all_files | concat(with=presentation.file) %}
+        {% endfor %}
+    {% endif %}
+    {% if config.extra.documents.other %}
+        {% for doc in config.extra.documents.other %}
+            {% set all_files = all_files | concat(with=doc.file) %}
+        {% endfor %}
+    {% endif %}
+    
+    {% if all_files | length > 0 %}
+    <div class="document-category">
+        <h3>All Available Files</h3>
+        <ul class="document-list">
+            {% for file in all_files | sort %}
+            <li>
+                <a href="/documents/{{ file }}" target="_blank">
+                    {{ file }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+</div>

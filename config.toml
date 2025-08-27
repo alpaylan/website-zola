@@ -24,7 +24,7 @@ menu = [
     { name = "research", url = "/research", weight = 1 },
     { name = "projects", url = "/projects", weight = 1 },
     { name = "talks", url = "/talks", weight = 1 },
-    { name = "misc", url = "/misc", weight = 1 },
+    { name = "documents", url = "/documents", weight = 1 },
 
 ]
 
@@ -33,6 +33,23 @@ compile_sass = true
 
 # Whether to build a search index to be used later on by a JavaScript library
 build_search_index = false
+
+[extra.documents]
+papers = [
+    { file = "etna.pdf", title = "ETNA Paper", description = "ETNA research paper" },
+    { file = "etna-jfp.pdf", title = "ETNA JFP Paper", description = "ETNA Journal of Functional Programming paper" },
+    { file = "d4.pdf", title = "D4 Paper", description = "D4 research paper" },
+    { file = "dbas.pdf", title = "DBAS Paper", description = "DBAS research paper" },
+    { file = "tail.pdf", title = "Tail Paper", description = "Tail research paper" },
+    { file = "puzzles-and-algorithms.pdf", title = "Puzzles and Algorithms", description = "Puzzles and algorithms paper" }
+]
+presentations = [
+    { file = "bobkonf/slides.pdf", title = "BOB Konf Slides", description = "BOB Konf presentation slides" },
+    { file = "topsort/slides.pdf", title = "Topological Sort Slides", description = "Topological sort presentation slides" }
+]
+other = [
+    { file = "resume.pdf", title = "Resume", description = "Current resume/CV" }
+]
 
 [markdown]
 # Whether to do syntax highlighting
