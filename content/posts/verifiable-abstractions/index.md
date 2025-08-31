@@ -1,6 +1,6 @@
 +++
 title = "Breaking Verifiable Abstractions"
-date = "2025-05-20"
+date = "2025-08-31"
 [taxonomies]
 tags = ['software engineering', 'ai']
 language = ["en"]
