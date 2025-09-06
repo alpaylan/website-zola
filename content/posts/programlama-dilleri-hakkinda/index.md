@@ -9,7 +9,7 @@ language = ["tr"]
 Programlama dilleri, programcı ile bilgisayar arasındak.en temel iletişim kanalı. Yazdığımız programlar derleyiciler (compilers) ve yorumlayıcılar (interpreters) ile bilgisayarların onları çalıştırabileceği formlara dönüşüyor, sonrasında ise kullanıcılar yazdığımız programları kullanabilir hale geliyor. Her ne kadar günümüzün büyük bir kısmını bilgisayara istediklerimizi yaptırabilmek için programlama dillerini kullanarak geçirsek de, programlama dillerinin hem teorisini hem de pratiğini anlamak programcılar için bir beklentiden ziyade bir anomali, nadide bir uzmanlık. Bunun popüler kültürde yansımalarını görmek çok kolay;
 
 - Bir programlama dilini öğrenince diğerlerinin yalnız sözdizimini (syntax) öğrenerek onları yazabileceği inancı.
-- Javascript'in gariplikleriyle ilgili şakalar
+- JavaScript'in gariplikleriyle ilgili şakalar
 - Python'ın `in`, `is` gibi İngilizce kelimeleri kullandığı için daha basit ya da kolay olduğu iddiası.
 
 Yazının kalanında programlama dillerinin yerleştirildiği bu mistik, anlaşılmaz noktadan onları biraz da olsa çıkarabilmek için kendi gözümden programlama dillerini nasıl değerlendirdiğimi, farklı dillerin nasıl özelliklere sahip olduğunu, ana akımın dışına çıktığımızda programlama dillerinin nasıl farklılaşabildiğini anlatmak istiyorum. Bu yazı bir nevi geçtiğimiz yıl yazdığım [Tip Sistemleri Hakkında](/posts/tip-sistemleri-hakkinda) yazısının bir devamı, bütünleyicisi olacak, o yüzden eğer bu yazı ilginizi çekiyorsa onu da okumanızı tavsiye ederim.
@@ -53,7 +53,7 @@ int main(void){
 
 C makroları farklı dillerdeki makro ailelerine göre güçsüz ve güvensiz bir makro tipi. LISP makroları size neredeyse sıfırdan yeni bir dil tasarlama fırsatı veriyor, LISP dil ailesinden çıkmış "Dil Odaklı Programlama" mottosunu temel alan Racket ile farklı problemler için farklı "diller" yazabiliyorsunuz, ancak aslında hepsi Racket makroları ile yazılmış sözdizimleri, yani aslında alttaki dilin semantikleri hala Racket, hatta son 2 yılda yayınlanan Racket ile yazılmış ama sözdizimi neredeyse tamamen Python'ı andıran Rhombus adında bir "dil" de mevcut.
 
-Sözdiziminin önemi bir dilde kodu doğru yazdığınızda değil, yanlış yazdığınızda daha çok ortaya çıkıyor. İyi tasarlanmış bir sözdizimi alacağınız hataların lokalize olmasına önem verir, eğer ki siz 17. satırda yaptığınız bir yazım hatası için 42. satırda hata alıyorsanız, programlama dili sözdizimi anlamında size ihanet etmiş demektir. Benzer şekilde programlama dilinin sizin yaptığınız hataları sessizce yok etmesi de sözdizimsel bir hata, bunun en iyi örneklerinden birisi Javascript'teki ASI (Automatic Semicolon Insertion):
+Sözdiziminin önemi bir dilde kodu doğru yazdığınızda değil, yanlış yazdığınızda daha çok ortaya çıkıyor. İyi tasarlanmış bir sözdizimi alacağınız hataların lokalize olmasına önem verir, eğer ki siz 17. satırda yaptığınız bir yazım hatası için 42. satırda hata alıyorsanız, programlama dili sözdizimi anlamında size ihanet etmiş demektir. Benzer şekilde programlama dilinin sizin yaptığınız hataları sessizce yok etmesi de sözdizimsel bir hata, bunun en iyi örneklerinden birisi JavaScript'teki ASI (Automatic Semicolon Insertion):
 
 ```js
 function getObject() {
@@ -67,7 +67,7 @@ console.log(getObject());
 // undefined
 ```
 
-ASI Javascript'in sözdizim dizaynının bir parçası, eklenebilecek herhangi bir ifadenin sonuna noktalı virgül (`;`) ekleyerek dili yeni başlayanlara daha yakın hale getirme çabasının bir sonucu, ve benim gözümde kötü bir dizaynın iyi bir örneği. Dilin sözdiziminin parçası olan başka örnekler Python'ın tarihsel olarak popüler olan kıvırcık parantez (`{}`) blok sözdizimini reddedip girinti (indentation) bazlı bloklar oluşturması, ki daha geçmişe baktığımızda kıvırcık parantez öncesi `BEGIN END`, `IF FI`, `FOR ENDFOR` gibi farklı sözdizimsel tercihler de görüyoruz. Tabii en ünlü sözdizimsel tercih, bu tarz bloklar, işaretçiler, operatör öncelikleri vb. gibi tercihleri bir kenara bırakıp S-ifadeleri (s-expressions) kullanmak, LISP dil ailesini s-ifadeleriyle dolu bol parantezli kodlarından tanıyabiliyoruz.
+ASI JavaScript'in sözdizim dizaynının bir parçası, eklenebilecek herhangi bir ifadenin sonuna noktalı virgül (`;`) ekleyerek dili yeni başlayanlara daha yakın hale getirme çabasının bir sonucu, ve benim gözümde kötü bir dizaynın iyi bir örneği. Dilin sözdiziminin parçası olan başka örnekler Python'ın tarihsel olarak popüler olan kıvırcık parantez (`{}`) blok sözdizimini reddedip girinti (indentation) bazlı bloklar oluşturması, ki daha geçmişe baktığımızda kıvırcık parantez öncesi `BEGIN END`, `IF FI`, `FOR ENDFOR` gibi farklı sözdizimsel tercihler de görüyoruz. Tabii en ünlü sözdizimsel tercih, bu tarz bloklar, işaretçiler, operatör öncelikleri vb. gibi tercihleri bir kenara bırakıp S-ifadeleri (s-expressions) kullanmak, LISP dil ailesini s-ifadeleriyle dolu bol parantezli kodlarından tanıyabiliyoruz.
 
 ```lisp
 (progn
@@ -82,7 +82,7 @@ ASI Javascript'in sözdizim dizaynının bir parçası, eklenebilecek herhangi b
 
 Her ne kadar bu şekilde görmesek de, sözdizimini bir kenara bırakmanın bir başka örneğini devops ailesinde `JSON` veya `YAML` bazlı sözdizimlerinin popüler olmasında görüyoruz. Github aksiyonlarınızı yazdığınız YAML dosyası aslında bir programlama dili.
 
-Aynı dilin semantik olarak değişmeyen ancak sözdizimsel olarak değişen 2 halinden bahsediyorsak, o zaman popüler "programlama dili fark etmez, sözdizimini öğrenince hepsi aynı zaten" algısı doğru olabilir, ancak ben o halde bile doğru olduğunu düşünmüyorum, çünkü sözdizimi bizim için dilin bazı parçalarını kullanmayı daha kolay, bazı parçalarını kullanmayı daha zor hale getiriyor, eğer dilde bir veri yapısı için özel sözdizimi varsa, programcıların onu kullanma ihtimali çok daha artıyor. Python ve Javascript'in ikisi de sonradan üstüne eklenmiş statik tip sistemlerine sahip, ancak Typescript MyPy'dan çok daha popüler, benim bu konudaki görüşüm Typescript tiplerinin yazmanın sözdizimsel olarak Python tip tüyolarından (type hints) çok daha kolay olması. Javascript'te çok benzer kullanım şeklillerine sahip olmalarına rağmen objelerin Map'e göre çok daha popüler olduğunu görüyoruz, çünkü obje oluşturmak için özel sözdizimi varken, ve bu dilin çok temeline yerleşmişken, Map fonksiyonlarının dilde yazılmış farklı bir veri yapısından bir farkı yok. Sözdizimi dile olan sosyal algımızı etkiliyor, bu da sonrasında sosyal bir obje olan programlama dilini değiştiriyor, ekosistemi, araçları, dilin kullanımını ve gelişimini yönlendiriyor.
+Aynı dilin semantik olarak değişmeyen ancak sözdizimsel olarak değişen 2 halinden bahsediyorsak, o zaman popüler "programlama dili fark etmez, sözdizimini öğrenince hepsi aynı zaten" algısı doğru olabilir, ancak ben o halde bile doğru olduğunu düşünmüyorum, çünkü sözdizimi bizim için dilin bazı parçalarını kullanmayı daha kolay, bazı parçalarını kullanmayı daha zor hale getiriyor, eğer dilde bir veri yapısı için özel sözdizimi varsa, programcıların onu kullanma ihtimali çok daha artıyor. Python ve JavaScript'in ikisi de sonradan üstüne eklenmiş statik tip sistemlerine sahip, ancak TypeScript MyPy'dan çok daha popüler, benim bu konudaki görüşüm TypeScript tiplerinin yazmanın sözdizimsel olarak Python tip tüyolarından (type hints) çok daha kolay olması. JavaScript'te çok benzer kullanım şeklillerine sahip olmalarına rağmen objelerin Map'e göre çok daha popüler olduğunu görüyoruz, çünkü obje oluşturmak için özel sözdizimi varken, ve bu dilin çok temeline yerleşmişken, Map fonksiyonlarının dilde yazılmış farklı bir veri yapısından bir farkı yok. Sözdizimi dile olan sosyal algımızı etkiliyor, bu da sonrasında sosyal bir obje olan programlama dilini değiştiriyor, ekosistemi, araçları, dilin kullanımını ve gelişimini yönlendiriyor.
 
 ## Semantik - Semantics (Anlambilim)
 
@@ -98,7 +98,7 @@ e ::= true | false | n | e1 + e2 | e1 * e2 | e1 > e2 | if e1 then e2 else e3 | (
 v ::= true | false | n
 ```
 
-Aynı tanımı Typescript'te yapmak istersek
+Aynı tanımı TypeScript'te yapmak istersek
 
 ```ts
 type Expr = 
@@ -155,7 +155,7 @@ function square(n: number) : number {
 }
 ```
 
-Bu fonksiyonu `square(1 + 2)` ile çağırdığımızda Typescript'teki değerlendirme aşağıdaki gibi yaşanıyor:
+Bu fonksiyonu `square(1 + 2)` ile çağırdığımızda TypeScript'teki değerlendirme aşağıdaki gibi yaşanıyor:
 
 ```ts
 square(1 + 2) // 1 + 2 -> 3
@@ -173,7 +173,7 @@ square(1 + 2) // square(1 + 2) -> (1 + 2) * (1 + 2)
 9
 ```
 
-Typescript'te fonksiyonu çağırmadan önce argümanların değerlerini hesapladık, ancak Haskell'da  fonksiyonu bir değer (value) yerine bir hesaplama (computation) ile çağırdık, ve ancak değerin kendisine ihtiyaç duyduğumuzda hesaplamayı yaptık. Bu örnek için "bu neden önemli, aynı şeyi hesaplıyoruz işte" diyebilirsiniz, ancak sıkı-olmayan değerlendirme bizlere programları çok farklı şekillerde yazma fırsatı veriyor aslında. Bunun klasik örneklerinden birisi Haskell'daki "sonsuz veri yapıları". Dilde bir değer ancak ona ihtiyaç duyulduğunda hesaplandığı için sonsuza kadar giden seriler yazabiliyoruz mesela `1, 4, 9...` gibi. Bu serilerin elemanları ancak onları hesaplamamız gerektiği noktada hesaplandığı için teoride sonsuz olan bu seriyi programımızda oluşturup, manipüle edip, istediğimiz şekilde kullanabiliyoruz. Mesela aşağıda sonsuz bir dizi kullanarak Fibonacci sayılarının hesaplandığı bir örneği paylaştım.
+TypeScript'te fonksiyonu çağırmadan önce argümanların değerlerini hesapladık, ancak Haskell'da  fonksiyonu bir değer (value) yerine bir hesaplama (computation) ile çağırdık, ve ancak değerin kendisine ihtiyaç duyduğumuzda hesaplamayı yaptık. Bu örnek için "bu neden önemli, aynı şeyi hesaplıyoruz işte" diyebilirsiniz, ancak sıkı-olmayan değerlendirme bizlere programları çok farklı şekillerde yazma fırsatı veriyor aslında. Bunun klasik örneklerinden birisi Haskell'daki "sonsuz veri yapıları". Dilde bir değer ancak ona ihtiyaç duyulduğunda hesaplandığı için sonsuza kadar giden seriler yazabiliyoruz mesela `1, 4, 9...` gibi. Bu serilerin elemanları ancak onları hesaplamamız gerektiği noktada hesaplandığı için teoride sonsuz olan bu seriyi programımızda oluşturup, manipüle edip, istediğimiz şekilde kullanabiliyoruz. Mesela aşağıda sonsuz bir dizi kullanarak Fibonacci sayılarının hesaplandığı bir örneği paylaştım.
 
 ```haskell
 -- Sonsuz fibonacci listesi
@@ -184,7 +184,7 @@ fibs = 0 : 1 : zipWith (+) fibs (tail fibs)
 main = print (take 10 fibs)
 ```
 
-Sıkı ve sıkı-olmayan değerlendirme stratejileri kendi içinde pek çok alt kategoriye ayrılıyor, mesela Haskell yalnızca sıkı-olmayan değerlendirme değil, aynı zamanda tembel değerlendirme (lazy evaluation) dediğimiz sıkı-olmayan değerlendirmeyi aynı hesaplamayı defalarca yapmamak için değer paylaşımı yapan bir metodoloji ile uyguluyor. Javascript'in `==` ve `===` işaretlerinin, Python'ın `==` ve `is` karşılaştırmalarının farklı olmasının sebebi olan "referans" ve "değer" ayrımı da dilleri birbirinden ayırıyor. C programlama dilinde bir fonksiyona gönderdiğiniz her girdi bir değer (call by value), o yüzden fonksiyonu çağırdığınız her bir obje kopyalanıyor. Eğer bir fonksiyonu büyük bir obje ile çağırırsanız o obje kopyalandığı için performans sıkıntısı yaşayabilirsiniz hatta, bu yüzden fonksiyonu objenin kendisi ile değil, objeyi işaret eden bir işaretçiyi (pointer) ile çağırıyoruz. Diğer yandan Java, Javascript, Python gibi dillerde ise sayılar, karakterler gibi belli girdi tipleri değer olarak gönderilip kopyalanırken objeler referans ile gönderiliyor, bu stratjinin adına ben de bu yazıyı yazarken öğrendim ki "paylaşarak çağırma" (call by sharing) deniyor. Diğer yanda Rust programlama dilinde taşıma semantikleri (move semantics) var, eğer ki siz bir fonksiyonu çağırırken girdinin açık bir şekilde referansını kullanmadıysanız Rust o objeyi o fonksiyona "taşıyor", dolayısıyla o nokta itibariyle o değere erişiminizi kaybediyorsunuz.
+Sıkı ve sıkı-olmayan değerlendirme stratejileri kendi içinde pek çok alt kategoriye ayrılıyor, mesela Haskell yalnızca sıkı-olmayan değerlendirme değil, aynı zamanda tembel değerlendirme (lazy evaluation) dediğimiz sıkı-olmayan değerlendirmeyi aynı hesaplamayı defalarca yapmamak için değer paylaşımı yapan bir metodoloji ile uyguluyor. JavaScript'in `==` ve `===` işaretlerinin, Python'ın `==` ve `is` karşılaştırmalarının farklı olmasının sebebi olan "referans" ve "değer" ayrımı da dilleri birbirinden ayırıyor. C programlama dilinde bir fonksiyona gönderdiğiniz her girdi bir değer (call by value), o yüzden fonksiyonu çağırdığınız her bir obje kopyalanıyor. Eğer bir fonksiyonu büyük bir obje ile çağırırsanız o obje kopyalandığı için performans sıkıntısı yaşayabilirsiniz hatta, bu yüzden fonksiyonu objenin kendisi ile değil, objeyi işaret eden bir işaretçiyi (pointer) ile çağırıyoruz. Diğer yandan Java, JavaScript, Python gibi dillerde ise sayılar, karakterler gibi belli girdi tipleri değer olarak gönderilip kopyalanırken objeler referans ile gönderiliyor, bu stratjinin adına ben de bu yazıyı yazarken öğrendim ki "paylaşarak çağırma" (call by sharing) deniyor. Diğer yanda Rust programlama dilinde taşıma semantikleri (move semantics) var, eğer ki siz bir fonksiyonu çağırırken girdinin açık bir şekilde referansını kullanmadıysanız Rust o objeyi o fonksiyona "taşıyor", dolayısıyla o nokta itibariyle o değere erişiminizi kaybediyorsunuz.
 
 ### Bellek Yönetimi
 
@@ -219,7 +219,7 @@ else:
 
 Her şeyden önce program çalışırken `x is not str` kontrolünü yapabilmek için dilin dinamik tipli bir dil olması gerek. İkinci olarak da programımız `x: str` durumu için `x`, diğer durumlarda `false` dönüyor, dolayısıyla bu fonksiyonun tipini hesaplamayı denersek karşımıza gelecek olan tip `(str -> str)&(Any -> bool[False])` gibi kompleks bir tip olacak, pek çok tip sistemi bu tarz tipleri ifade edecek kadar kompleks değil.
 
-Yine de sosyal olarak programlama dillerinin kullanımına baktığımızda ana akım tip sistemleri diller arasında geçiş yapmak için ciddi bir bariyer değil gibi duruyor. Python -> Java, C++ -> Javascript gibi dil geçişlerinde kullanıcıların çok büyük şikayetler ettiklerini duymuyoruz, en azından ben şahsen bununla çok karşılaşmadım. Dolayısıyla bu yazının temasına uygun olarak tip sistemlerinin dilleri birbirinden kullanıcı geçişini engelleyecek şekilde ayırdığı durumları kısaca incelemek istiyorum.
+Yine de sosyal olarak programlama dillerinin kullanımına baktığımızda ana akım tip sistemleri diller arasında geçiş yapmak için ciddi bir bariyer değil gibi duruyor. Python -> Java, C++ -> JavaScript gibi dil geçişlerinde kullanıcıların çok büyük şikayetler ettiklerini duymuyoruz, en azından ben şahsen bununla çok karşılaşmadım. Dolayısıyla bu yazının temasına uygun olarak tip sistemlerinin dilleri birbirinden kullanıcı geçişini engelleyecek şekilde ayırdığı durumları kısaca incelemek istiyorum.
 
 #### Kaynak Tipleri (Resource Types)
 
@@ -242,7 +242,7 @@ Klasik tip sistemlerinde programların tipleri değerlere bağımlı olmaz, tipl
 
 #### Akışkan Tipler (Liquid Types)
 
-Klasik tip sistemlerinin en büyük eksilerinden bir tanesi yaptığımız hesaplamaların tiplere işlenmemesi. Örnek vermek gerekirse, `filter(|x| x % 2 == 0)` fonksiyonu bize hiçbir zaman tek sayı dönemeyecekken, klasik tip sistemlerinde bu ifadenin tipi yine `int` olacak, yani değerimizin sahip olduğuna emin olduğumuz bazı özellikler o değerin tipine işlenmeyecek. Bizler bu özellikleri kafamızda tutmak zorunda kalacağız. Tek, çift oyuncak bir örnek gibi olmuş olabilir, o yüzden gelin Typescript'in kontrollerinin bizi tip güvenliğini (type safety) kırmaya ittiği bir örneği inceleyelim. Typescript'te normal şartlar altında daraltma (narrowing) dediğimiz bir mekanizma biz değerimizi kontrol ettikten sonra tipi o kontrole göre güncelliyor, ancak bu mekanizmanın limitleri var.
+Klasik tip sistemlerinin en büyük eksilerinden bir tanesi yaptığımız hesaplamaların tiplere işlenmemesi. Örnek vermek gerekirse, `filter(|x| x % 2 == 0)` fonksiyonu bize hiçbir zaman tek sayı dönemeyecekken, klasik tip sistemlerinde bu ifadenin tipi yine `int` olacak, yani değerimizin sahip olduğuna emin olduğumuz bazı özellikler o değerin tipine işlenmeyecek. Bizler bu özellikleri kafamızda tutmak zorunda kalacağız. Tek, çift oyuncak bir örnek gibi olmuş olabilir, o yüzden gelin TypeScript'in kontrollerinin bizi tip güvenliğini (type safety) kırmaya ittiği bir örneği inceleyelim. TypeScript'te normal şartlar altında daraltma (narrowing) dediğimiz bir mekanizma biz değerimizi kontrol ettikten sonra tipi o kontrole göre güncelliyor, ancak bu mekanizmanın limitleri var.
 
 ```ts
 type A = { a: string | null };
@@ -250,14 +250,14 @@ type B = { b: number | null };
 type U = A | B;
 
 function pick(u: U, k: 'a' | 'b') {
-  if (k in u && u[k] !== null) { // güvenli, ancak Typescript tarafından reddediliyor.
+  if (k in u && u[k] !== null) { // güvenli, ancak TypeScript tarafından reddediliyor.
     return u[k]; 
   }
   return undefined;
 }
 ```
 
-Tabii bu Typescript için uzun vadede düzeltilebilecek bir implementasyon eksikliği de olabilirdi, ancak akışkan bir tip sistemi olmadığı sürece bu tarz tip güncellemeleri her zaman belirli şartlar altında çalışmayı hedefleyerek yapılacak, dolayısıyla çalışmadıkları örnekler üretmek her zaman mümkün olacak. Akışkan tip sistemlerinde tipler üzerinde yapılan işlemlere göre güncellendiği için tip güvenliğine zarar vermeden bu tarz programlar yazmak mümkün olabiliyor.
+Tabii bu TypeScript için uzun vadede düzeltilebilecek bir implementasyon eksikliği de olabilirdi, ancak akışkan bir tip sistemi olmadığı sürece bu tarz tip güncellemeleri her zaman belirli şartlar altında çalışmayı hedefleyerek yapılacak, dolayısıyla çalışmadıkları örnekler üretmek her zaman mümkün olacak. Akışkan tip sistemlerinde tipler üzerinde yapılan işlemlere göre güncellendiği için tip güvenliğine zarar vermeden bu tarz programlar yazmak mümkün olabiliyor.
 
 #### Efekt Tiplemesi (Effect Typing)
 
@@ -271,35 +271,35 @@ Yazı fazlaca uzadı, yoksa aslında farklı dillerdeki özyineleme optimizasyon
 
 Yazıyı bitirmeden önce en başta bahsettiğim bir probleme geri dönmek istiyorum, **kullandığımız programlama dillerini anlamıyoruz**. Dillere kapalı kutular gibi baktığımız, dilin sözdizimini öğrenip de derleyici ve yorumlayıcıyı şikayet etmeden çalıştırmayı başardıktan sonra o programın gerçekten ne yaptığını anlamaya çalışmak yerine atari oynar gibi doğru cevabı görene kadar farklı konfigürasyonlar deneyerek programlamaya çalışıyoruz, bu özellikle programlamaya yeni başlayanlarda çok daha yaygın. Halbuki kullandığımız programlama dillerinin hepsinin, yer yer garip ve ilginç de olsa, kesin semantikleri var. Bir programı yazdıktan sonra onu incelediğimizde ne yapacağının kesin bir tanımı var, bunları öğrenmek de çok zor değil. Bunun için klasik 2 tane örneği alıp onları demistize etmeye çalışacağım.
 
-### Javascript: `"b" + "a" + +"a" + "a"; // -> 'baNaNa'`
+### JavaScript: `"b" + "a" + +"a" + "a"; // -> 'baNaNa'`
 
-Javascript'in gariplikleri popüler kültürde bir şaka malzemesi haline gelmiş durumda, ben en azından şahsen birkaç ayda bir bunlarla ilgili yorumlar görüyorum, insanlar genelde çok şaşırıyor, ya da dilde bir saçmalık olduğuna inanıyor, halbuki oturup biraz incelediğimizde semantikler hiç de zor değil.
+JavaScript'in gariplikleri popüler kültürde bir şaka malzemesi haline gelmiş durumda, ben en azından şahsen birkaç ayda bir bunlarla ilgili yorumlar görüyorum, insanlar genelde çok şaşırıyor, ya da dilde bir saçmalık olduğuna inanıyor, halbuki oturup biraz incelediğimizde semantikler hiç de zor değil.
 
-Javascript'in en önemli dizayn hedeflerinden bir tanesi programların mümkün olduğunca hata vermemesi, çalışabildiği her durumda çalışması. Bunu dilin tip sisteminin dinamik olmasıyla birleştirdiğimizde görüyoruz ki bunu yapmanın en iyi yolu "gizli tip çevirileri" (implicit type conversions). Javascript pek çok dilin tip hatası vereceği durumlarda değerleri otomatik olarak `string` tipine çevirerek bu operasyonların hata vermek yerine yanlış da olsa sonuç vermesini sağlıyor.
+JavaScript'in en önemli dizayn hedeflerinden bir tanesi programların mümkün olduğunca hata vermemesi, çalışabildiği her durumda çalışması. Bunu dilin tip sisteminin dinamik olmasıyla birleştirdiğimizde görüyoruz ki bunu yapmanın en iyi yolu "gizli tip çevirileri" (implicit type conversions). JavaScript pek çok dilin tip hatası vereceği durumlarda değerleri otomatik olarak `string` tipine çevirerek bu operasyonların hata vermek yerine yanlış da olsa sonuç vermesini sağlıyor.
 
-`"b" + "a" + +"a" + "a"` kodu Javascript için şu şekilde parçalara ayrılıyor:
+`"b" + "a" + +"a" + "a"` kodu JavaScript için şu şekilde parçalara ayrılıyor:
 
-```javascript
+```JavaScript
 "b" + "a" + (+"a") + "a"
 ```
 
-Sonrasında programı değerlendirmey başlıyoruz, `+"a"` aslında bir "açık tip çevirisi" (explicit type conversion), `+` operatörü sağındaki değeri `number` tipine çeviriyor. `string -> number` çevirisi için Javascript `parseNumber` fonksiyonunu kullanıyor, dolayısıyla `+"123"` bize `123.0` veriyor, benzer şekilde `+"a"` da `not a number`, yani `NaN` olarak değerlendiriliyor.
+Sonrasında programı değerlendirmey başlıyoruz, `+"a"` aslında bir "açık tip çevirisi" (explicit type conversion), `+` operatörü sağındaki değeri `number` tipine çeviriyor. `string -> number` çevirisi için JavaScript `parseNumber` fonksiyonunu kullanıyor, dolayısıyla `+"123"` bize `123.0` veriyor, benzer şekilde `+"a"` da `not a number`, yani `NaN` olarak değerlendiriliyor.
 
-```javascript
+```JavaScript
 "b" + "a" + (+"a") + "a"
 "b" + "a" + NaN + "a"
 ```
 
 İki string arasında `+` operatörü onları arka arkaya bağlıyor, yani `"b" + "a" = "ba"`.  
 
-```javascript
+```JavaScript
 "b" + "a" + NaN + "a"
 "ba" + NaN + "a"
 ```
 
-Ancak bu noktada bir tip uyumsuzluğuyla karşılaşıyoruz, toplama operatörü `string + number` bağlamında tanımlı değil, o bağlamda Javascript önce `number -> string` dönüşümünü yapıp sonra `string + string` operasyonunu uyguluyor.
+Ancak bu noktada bir tip uyumsuzluğuyla karşılaşıyoruz, toplama operatörü `string + number` bağlamında tanımlı değil, o bağlamda JavaScript önce `number -> string` dönüşümünü yapıp sonra `string + string` operasyonunu uyguluyor.
 
-```javascript
+```JavaScript
 "ba" + NaN + "a"
 "ba" + "NaN" + "a"
 "baNaN" + "a"
@@ -310,7 +310,7 @@ Sonucumuza varmış olduk, baktığımızda aradaki tüm adımlar aslında kavra
 
 ### Python
 
-Yazıyı kapatmadan önce bir de Python'la ilgili konuşmak istedim, bu sefer Javascript'in tam tersi şekilde. Genelde dilde operatörler İngilizce kelimelerle tanımlandığı için Python'un yeni başlayanlar için daha kolay olduğu, İngilzice gibi yazılabildiği bir mit var, baktığınızda aslında Python Javascript'ten çoğu konuda çok farklı değil. Gizli tip çevirileri konusuna bakarsak Python da `if "a" + "b" then 1 else None` gibi durumlarda tip çevirileri yapıyor, `"a" + "b"` ifadesini önce `bool` tipine çevirip sonrasında sonucu hesaplıyor. Brown Üniversitesinden çıkmış Python semantiklerinin problemlerini ve garipliklerini çalışan [çok detaylı bir makale](https://cs.brown.edu/~sk/Publications/Papers/Published/pmmwplck-python-full-monty/paper.pdf) de var hatta. Dolayısıyla programlama dilleriyle ilgili yorum yaparken yalnızca yüzeysel seviyede sözdizimlerini ya da anahtar kelimelerin kullanımını değil, dilin semantiklerini değerlendirmek gerektiğine kısaca değinmeyi mantıklı mantıklı gördüm.
+Yazıyı kapatmadan önce bir de Python'la ilgili konuşmak istedim, bu sefer JavaScript'in tam tersi şekilde. Genelde dilde operatörler İngilizce kelimelerle tanımlandığı için Python'un yeni başlayanlar için daha kolay olduğu, İngilzice gibi yazılabildiği bir mit var, baktığınızda aslında Python JavaScript'ten çoğu konuda çok farklı değil. Gizli tip çevirileri konusuna bakarsak Python da `if "a" + "b" then 1 else None` gibi durumlarda tip çevirileri yapıyor, `"a" + "b"` ifadesini önce `bool` tipine çevirip sonrasında sonucu hesaplıyor. Brown Üniversitesinden çıkmış Python semantiklerinin problemlerini ve garipliklerini çalışan [çok detaylı bir makale](https://cs.brown.edu/~sk/Publications/Papers/Published/pmmwplck-python-full-monty/paper.pdf) de var hatta. Dolayısıyla programlama dilleriyle ilgili yorum yaparken yalnızca yüzeysel seviyede sözdizimlerini ya da anahtar kelimelerin kullanımını değil, dilin semantiklerini değerlendirmek gerektiğine kısaca değinmeyi mantıklı mantıklı gördüm.
 
 ## Kapanış
 
