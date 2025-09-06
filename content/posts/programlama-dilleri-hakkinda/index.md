@@ -283,7 +283,7 @@ JavaScript'in en önemli dizayn hedeflerinden bir tanesi programların mümkün 
 "b" + "a" + (+"a") + "a"
 ```
 
-Sonrasında programı değerlendirmey başlıyoruz, `+"a"` aslında bir "açık tip çevirisi" (explicit type conversion), `+` operatörü sağındaki değeri `number` tipine çeviriyor. `string -> number` çevirisi için JavaScript `parseNumber` fonksiyonunu kullanıyor, dolayısıyla `+"123"` bize `123.0` veriyor, benzer şekilde `+"a"` da `not a number`, yani `NaN` olarak değerlendiriliyor.
+Sonrasında programı değerlendirmeye başlıyoruz, `+"a"` aslında bir "açık tip çevirisi" (explicit type conversion), `+` operatörü sağındaki değeri `number` tipine çeviriyor. `string -> number` çevirisi için JavaScript `parseNumber` fonksiyonunu kullanıyor, dolayısıyla `+"123"` bize `123.0` veriyor, benzer şekilde `+"a"` da `not a number`, yani `NaN` olarak değerlendiriliyor.
 
 ```JavaScript
 "b" + "a" + (+"a") + "a"
