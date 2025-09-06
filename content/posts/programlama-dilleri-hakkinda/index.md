@@ -6,7 +6,7 @@ tags = ['programming languages']
 language = ["tr"]
 +++
 
-Programlama dilleri, programcı ile bilgisayar arasındak.en temel iletişim kanalı. Yazdığımız programlar derleyiciler (compilers) ve yorumlayıcılar (interpreters) ile bilgisayarların onları çalıştırabileceği formlara dönüşüyor, sonrasında ise kullanıcılar yazdığımız programları kullanabilir hale geliyor. Her ne kadar günümüzün büyük bir kısmını bilgisayara istediklerimizi yaptırabilmek için programlama dillerini kullanarak geçirsek de, programlama dillerinin hem teorisini hem de pratiğini anlamak programcılar için bir beklentiden ziyade bir anomali, nadide bir uzmanlık. Bunun popüler kültürde yansımalarını görmek çok kolay;
+Programlama dilleri, programcı ile bilgisayar arasındaki en temel iletişim kanalı. Yazdığımız programlar derleyiciler (compilers) ve yorumlayıcılar (interpreters) ile bilgisayarların onları çalıştırabileceği formlara dönüşüyor, sonrasında ise kullanıcılar yazdığımız programları kullanabilir hale geliyor. Her ne kadar günümüzün büyük bir kısmını bilgisayara istediklerimizi yaptırabilmek için programlama dillerini kullanarak geçirsek de, programlama dillerinin hem teorisini hem de pratiğini anlamak programcılar için bir beklentiden ziyade bir anomali, nadide bir uzmanlık. Bunun popüler kültürde yansımalarını görmek çok kolay;
 
 - Bir programlama dilini öğrenince diğerlerinin yalnız sözdizimini (syntax) öğrenerek onları yazabileceği inancı.
 - JavaScript'in gariplikleriyle ilgili şakalar
