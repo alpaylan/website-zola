@@ -9,24 +9,30 @@
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
+            align-items: flex-start;
+            min-height: 100vh;
             margin: 0;
+            padding: 20px;
             background-color: #f0f0f0;
+            box-sizing: border-box;
         }
         .container {
             display: flex;
-            gap: 40px;
+            gap: 30px;
             background-color: #fff;
-            padding: 20px;
+            padding: 30px;
             border-radius: 10px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            width: 100%;
+            box-sizing: border-box;
         }
         .list-container {
             text-align: center;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            flex: 1;
+            min-width: 0;
         }
         h1 {
             font-size: 24px;
@@ -41,16 +47,17 @@
             font-size: 18px;
             padding: 10px;
             background-color: #f9f9f9;
-            margin: 10px 0;
+            margin: 5px 0;
             border-radius: 5px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         input {
-            width: 60px;
-            padding: 5px;
+            width: 80px;
+            padding: 8px;
             font-size: 16px;
+            box-sizing: border-box;
         }
         button {
             padding: 10px 20px;
@@ -74,6 +81,8 @@
             margin: 0;
             flex-grow: 1;
             text-align: left;
+            max-height: 400px;
+            overflow-y: auto;
         }
         .person-list li {
             font-size: 18px;
@@ -95,9 +104,46 @@
         .button-container {
             display: flex;
             justify-content: space-between;
+            gap: 10px;
             margin-top: 20px;
             position: sticky;
             bottom: 0;
+            flex-wrap: wrap;
+        }
+        .button-container button {
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .weights-section {
+            margin-bottom: 20px;
+        }
+        
+        .draft-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .list-container {
+                width: 100%;
+            }
+            
+            .button-container {
+                flex-direction: column;
+            }
+            
+            .button-container button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
@@ -105,37 +151,267 @@
 
 <div class="container">
     <div class="list-container">
-        <h1>Edit Weights</h1>
-        <ul id="editableList">
-            <!-- Original list with editable weights will be generated here -->
-        </ul>
+        <div class="weights-section">
+            <h1>Edit Weights</h1>
+            <ul id="editableList">
+                <!-- Original list with editable weights will be generated here -->
+            </ul>
+        </div>
     </div>
 
     <div class="list-container">
-        <h1>Randomly Ordered People</h1>
-        <ul id="personList" class="person-list"></ul>
-        <div class="button-container">
-            <button id="pickNextBtn" onclick="pickNext()">Pick Next</button>
-            <button id="resetBtn" class="reset" onclick="resetList()" style="display: none;">Reset</button>
+        <div class="draft-section">
+            <h1>Randomly Ordered People</h1>
+            <div style="margin-bottom: 20px;">
+                <label for="seedInput" style="display: block; margin-bottom: 10px; font-weight: bold;">Seed (for reproducible results):</label>
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <input type="text" id="seedInput" placeholder="Enter seed..." style="flex: 1; min-width: 200px; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                    <button onclick="setSeed()" style="padding: 8px 16px; font-size: 14px; background-color: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer; white-space: nowrap;">Set Seed</button>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+                <h3 style="margin-top: 0; color: #495057;">Decrypt Your Position</h3>
+                <p style="margin: 5px 0 15px 0; color: #6c757d; font-size: 14px;">Enter your key to reveal your name in the draft order above</p>
+                <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px; flex-wrap: wrap;">
+                    <input type="password" id="decryptKey" placeholder="Enter your personal key..." style="flex: 1; min-width: 250px; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                    <button onclick="decryptResult()" style="padding: 8px 16px; font-size: 14px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; white-space: nowrap;">Decrypt</button>
+                </div>
+                <div id="decryptResult" style="font-weight: bold; color: #dc3545;"></div>
+            </div>
+            <ul id="personList" class="person-list"></ul>
+            <div class="button-container">
+                <button id="pickNextBtn" onclick="pickNext()">Pick Next</button>
+                <button id="generateOrderBtn" onclick="generateOrder()" style="background-color: #FF9800;">Generate Order</button>
+                <button id="resetBtn" class="reset" onclick="resetList()" style="display: none;">Reset</button>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
     let people = [
-        { name: 'Keleş', weight: 9 },
-        { name: 'Alp', weight: 8 },
-        { name: 'Mehmet', weight: 5.75 },
-        { name: 'Ayberk', weight: 5.75 },
-        { name: 'İbrahim', weight: 5.75 },
-        { name: 'Doruk', weight: 5.75 },
-        { name: 'Umut', weight: 5 },
-        { name: 'Enes', weight: 5 },
-        { name: 'Arda', weight: 1 },
-        { name: 'Batuhan', weight: 1 }
+        { name: 'Keleş', weight: 9, key: 'kelekeles2024' },
+        { name: 'Alp', weight: 8, key: 'alpsecret123' },
+        { name: 'Mehmet', weight: 5.75, key: 'mehmetkey456' },
+        { name: 'Ayberk', weight: 5.75, key: 'ayberkpass789' },
+        { name: 'İbrahim', weight: 5.75, key: 'ibrahimcode321' },
+        { name: 'Doruk', weight: 5.75, key: 'dorukkey654' },
+        { name: 'Umut', weight: 5, key: 'umutsecret987' },
+        { name: 'Enes', weight: 5, key: 'eneskey147' },
+        { name: 'Arda', weight: 1, key: 'ardapass258' },
+        { name: 'Batuhan', weight: 1, key: 'batuhankey369' }
     ];
     let tempPeople = [...people];
     let shuffledPeople = [];
+    let seededRandom = null;
+    let currentSeed = null;
+    let predeterminedOrder = [];
+    let currentPickIndex = 0;
+    let encryptedOrder = [];
+
+    // Simple encryption function
+    function encrypt(text, key) {
+        let result = '';
+        for (let i = 0; i < text.length; i++) {
+            const textChar = text.charCodeAt(i);
+            const keyChar = key.charCodeAt(i % key.length);
+            result += String.fromCharCode((textChar + keyChar) % 256);
+        }
+        return btoa(result); // Base64 encode
+    }
+
+    // Simple decryption function
+    function decrypt(encryptedText, key) {
+        try {
+            const decoded = atob(encryptedText); // Base64 decode
+            let result = '';
+            for (let i = 0; i < decoded.length; i++) {
+                const encryptedChar = decoded.charCodeAt(i);
+                const keyChar = key.charCodeAt(i % key.length);
+                result += String.fromCharCode((encryptedChar - keyChar + 256) % 256);
+            }
+            return result;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    // Seeded random number generator (Linear Congruential Generator)
+    function createSeededRandom(seed) {
+        let state = seed;
+        return function() {
+            state = (state * 1664525 + 1013904223) % 4294967296;
+            return state / 4294967296;
+        };
+    }
+
+    // Set seed and determine the order
+    function setSeed() {
+        const seedInput = document.getElementById('seedInput');
+        const seed = seedInput.value || Date.now().toString();
+        currentSeed = seed;
+        
+        // Generate the predetermined order
+        predeterminedOrder = generateOrderWithSeed(seed);
+        currentPickIndex = 0;
+        
+        // Create encrypted versions for each person
+        encryptedOrder = [];
+        predeterminedOrder.forEach((person, index) => {
+            const position = index + 1;
+            const encryptedPosition = encrypt(position.toString(), person.key);
+            encryptedOrder.push({
+                name: person.name,
+                encryptedPosition: encryptedPosition,
+                position: position
+            });
+        });
+        
+        // Clear the display
+        const personList = document.getElementById('personList');
+        personList.innerHTML = '';
+        
+        // Show buttons
+        document.getElementById('pickNextBtn').style.display = 'inline-block';
+        document.getElementById('generateOrderBtn').style.display = 'inline-block';
+        document.getElementById('resetBtn').style.display = 'none';
+        
+        // Update tempPeople for pick next functionality
+        tempPeople = [...people];
+        shuffledPeople = [];
+        
+        // No need to populate dropdown anymore
+    }
+
+    // Generate complete order with seed
+    function generateOrderWithSeed(seed) {
+        const tempSeededRandom = createSeededRandom(hashString(seed));
+        const orderedPeople = [];
+        const remainingPeople = [...people];
+        
+        while (remainingPeople.length > 0) {
+            let totalWeight = remainingPeople.reduce((acc, person) => acc + person.weight, 0);
+            let random = tempSeededRandom() * totalWeight;
+            let selectedPerson = null;
+            
+            for (let person of remainingPeople) {
+                if (random < person.weight) {
+                    selectedPerson = person;
+                    break;
+                }
+                random -= person.weight;
+            }
+            
+            orderedPeople.push(selectedPerson);
+            remainingPeople.splice(remainingPeople.indexOf(selectedPerson), 1);
+        }
+        
+        return orderedPeople;
+    }
+
+    // Generate order - show complete list at once
+    function generateOrder() {
+        if (predeterminedOrder.length === 0) {
+            // If no seed is set, generate a random order
+            setSeed();
+        }
+        
+        displayOrder(predeterminedOrder);
+        
+        // Hide pick next button and show reset
+        document.getElementById('pickNextBtn').style.display = 'none';
+        document.getElementById('generateOrderBtn').style.display = 'none';
+        document.getElementById('resetBtn').style.display = 'inline-block';
+    }
+
+
+    // Decrypt result for a person
+    function decryptResult() {
+        const decryptKey = document.getElementById('decryptKey');
+        const resultDiv = document.getElementById('decryptResult');
+        
+        const key = decryptKey.value;
+        
+        if (!key) {
+            resultDiv.textContent = 'Please enter your key.';
+            resultDiv.style.color = '#dc3545';
+            return;
+        }
+        
+        if (encryptedOrder.length === 0) {
+            resultDiv.textContent = 'No encrypted order available. Please set a seed first.';
+            resultDiv.style.color = '#dc3545';
+            return;
+        }
+        
+        // Try to find which person this key belongs to
+        let foundPerson = null;
+        let foundPosition = null;
+        
+        for (const personData of encryptedOrder) {
+            const decryptedPosition = decrypt(personData.encryptedPosition, key);
+            if (decryptedPosition === personData.position.toString()) {
+                foundPerson = personData.name;
+                foundPosition = personData.position;
+                break;
+            }
+        }
+        
+        if (!foundPerson) {
+            resultDiv.textContent = 'Invalid key! This key does not match any person.';
+            resultDiv.style.color = '#dc3545';
+            return;
+        }
+        
+        // Update the display to show the person's name in their position
+        const positionElement = document.getElementById(`position-${foundPosition}`);
+        if (positionElement) {
+            positionElement.textContent = `${foundPosition}. ${foundPerson}`;
+            positionElement.style.backgroundColor = '#d4edda';
+            positionElement.style.border = '2px solid #28a745';
+        }
+        
+        resultDiv.textContent = `Welcome ${foundPerson}! Your position has been revealed above.`;
+        resultDiv.style.color = '#28a745';
+    }
+
+    // Hash string to number for seed
+    function hashString(str) {
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            const char = str.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash; // Convert to 32-bit integer
+        }
+        return Math.abs(hash);
+    }
+
+    // Display the complete order (encrypted)
+    function displayOrder(orderedPeople) {
+        const personList = document.getElementById('personList');
+        personList.innerHTML = '';
+        
+        orderedPeople.forEach((person, index) => {
+            const li = document.createElement('li');
+            li.textContent = `${index + 1}. [ENCRYPTED]`;
+            li.style.backgroundColor = index % 2 === 0 ? '#f9f9f9' : '#e9e9e9';
+            li.id = `position-${index + 1}`;
+            personList.appendChild(li);
+        });
+    }
+
+    // Weighted random selection with seeded random
+    function weightedRandomSeeded(people) {
+        let totalWeight = people.reduce((acc, person) => acc + person.weight, 0);
+        let random = seededRandom() * totalWeight;
+        for (let person of people) {
+            if (random < person.weight) {
+                return person;
+            }
+            random -= person.weight;
+        }
+    }
 
     // Generate the editable list with weights
     function generateEditableList() {
@@ -217,37 +493,52 @@
 
     }
 
-    // Pick the next person based on weighted randomness with word scramble animation
+    // Pick the next person from predetermined order with word scramble animation
     function pickNext() {
-        if (tempPeople.length === 0) {
+        if (predeterminedOrder.length === 0) {
+            // If no seed is set, generate a random order
+            setSeed();
+        }
+
+        if (currentPickIndex >= predeterminedOrder.length) {
             document.getElementById('pickNextBtn').style.display = 'none';
+            document.getElementById('generateOrderBtn').style.display = 'none';
             document.getElementById('resetBtn').style.display = 'inline-block';
             return;
         }
 
-        const selectedPerson = weightedRandom(tempPeople);
-        shuffledPeople.push(selectedPerson);
+        const selectedPerson = predeterminedOrder[currentPickIndex];
+        currentPickIndex++;
 
         const personList = document.getElementById('personList');
         const li = document.createElement('li');
         li.classList.add('scramble-text'); // Add scramble effect styling
+        li.id = `position-${currentPickIndex}`;
         personList.appendChild(li);
 
-        // Run scramble effect before setting the final name
-        scrambleText(li, selectedPerson.name, 1500);
-
-        tempPeople.splice(tempPeople.indexOf(selectedPerson), 1); // Remove selected person from the list
+        // Run scramble effect before setting the encrypted name
+        scrambleText(li, '[ENCRYPTED]', 1500);
     }
 
     // Reset the list after all people are selected
     function resetList() {
         shuffledPeople = [];
         tempPeople = [...people];
+        seededRandom = null;
+        currentSeed = null;
+        predeterminedOrder = [];
+        currentPickIndex = 0;
+        encryptedOrder = [];
 
         const personList = document.getElementById('personList');
         personList.innerHTML = ''; // Clear the display list
 
+        // Clear decrypt result
+        document.getElementById('decryptResult').textContent = '';
+        document.getElementById('decryptKey').value = '';
+
         document.getElementById('pickNextBtn').style.display = 'inline-block';
+        document.getElementById('generateOrderBtn').style.display = 'inline-block';
         document.getElementById('resetBtn').style.display = 'none';
     }
 
