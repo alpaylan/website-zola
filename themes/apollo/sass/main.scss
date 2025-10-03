@@ -36,6 +36,13 @@ html {
   word-wrap: break-word;
 }
 
+/* Mobile font size - smaller for better mobile experience */
+@media all and (max-width: 639px) {
+  html {
+    font-size: 14px;
+  }
+}
+
 @media all and (min-width:640px) {
   html {
     font-size: 16.5px;
