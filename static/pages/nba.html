@@ -170,15 +170,6 @@
                 </div>
             </div>
             
-            <div style="margin-bottom: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
-                <h3 style="margin-top: 0; color: #495057;">Decrypt Your Position</h3>
-                <p style="margin: 5px 0 15px 0; color: #6c757d; font-size: 14px;">Enter your key to reveal your name in the draft order above</p>
-                <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px; flex-wrap: wrap;">
-                    <input type="password" id="decryptKey" placeholder="Enter your personal key..." style="flex: 1; min-width: 250px; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
-                    <button onclick="decryptResult()" style="padding: 8px 16px; font-size: 14px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; white-space: nowrap;">Decrypt</button>
-                </div>
-                <div id="decryptResult" style="font-weight: bold; color: #dc3545;"></div>
-            </div>
             <ul id="personList" class="person-list"></ul>
             <div class="button-container">
                 <button id="pickNextBtn" onclick="pickNext()">Pick Next</button>
@@ -191,16 +182,16 @@
 
 <script>
     let people = [
-        { name: 'Enes'      , weight: 1,    key: 'eneskey147' },
-        { name: 'Umut'      , weight: 1,    key: 'umutsecret987' },
-        { name: 'Keleş'     , weight: 3,    key: 'kelekeles2024' },
-        { name: 'Alp'       , weight: 3,    key: 'alpsecret123' },
-        { name: 'Batuhan'   , weight: 5,    key: 'batuhankey369' },
-        { name: 'Mehmet'    , weight: 5,    key: 'mehmetkey456' },
-        { name: 'Arda'      , weight: 10,   key: 'ardapass258' },
-        { name: 'Melih'     , weight: 9,    key: 'melihpass789' },
-        { name: 'Doruk'     , weight: 8,    key: 'dorukkey654' },
-        { name: 'İbrahim'   , weight: 7,    key: 'ibrahimcode321' },
+        { name: 'Enes'      , weight: 1 },
+        { name: 'Umut'      , weight: 1 },
+        { name: 'Keleş'     , weight: 3 },
+        { name: 'Alp'       , weight: 3 },
+        { name: 'Batuhan'   , weight: 5 },
+        { name: 'Mehmet'    , weight: 5 },
+        { name: 'Arda'      , weight: 10 },
+        { name: 'Melih'     , weight: 9 },
+        { name: 'Doruk'     , weight: 8 },
+        { name: 'İbrahim'   , weight: 7 },
     ];
     let tempPeople = [...people];
     let shuffledPeople = [];
@@ -208,34 +199,9 @@
     let currentSeed = null;
     let predeterminedOrder = [];
     let currentPickIndex = 0;
-    let encryptedOrder = [];
+    
 
-    // Simple encryption function
-    function encrypt(text, key) {
-        let result = '';
-        for (let i = 0; i < text.length; i++) {
-            const textChar = text.charCodeAt(i);
-            const keyChar = key.charCodeAt(i % key.length);
-            result += String.fromCharCode((textChar + keyChar) % 256);
-        }
-        return btoa(result); // Base64 encode
-    }
-
-    // Simple decryption function
-    function decrypt(encryptedText, key) {
-        try {
-            const decoded = atob(encryptedText); // Base64 decode
-            let result = '';
-            for (let i = 0; i < decoded.length; i++) {
-                const encryptedChar = decoded.charCodeAt(i);
-                const keyChar = key.charCodeAt(i % key.length);
-                result += String.fromCharCode((encryptedChar - keyChar + 256) % 256);
-            }
-            return result;
-        } catch (e) {
-            return null;
-        }
-    }
+    
 
     // Seeded random number generator (Linear Congruential Generator)
     function createSeededRandom(seed) {
@@ -256,17 +222,7 @@
         predeterminedOrder = generateOrderWithSeed(seed);
         currentPickIndex = 0;
         
-        // Create encrypted versions for each person
-        encryptedOrder = [];
-        predeterminedOrder.forEach((person, index) => {
-            const position = index + 1;
-            const encryptedPosition = encrypt(position.toString(), person.key);
-            encryptedOrder.push({
-                name: person.name,
-                encryptedPosition: encryptedPosition,
-                position: position
-            });
-        });
+        // Encryption removed: we show names directly
         
         // Clear the display
         const personList = document.getElementById('personList');
@@ -325,56 +281,7 @@
         document.getElementById('resetBtn').style.display = 'inline-block';
     }
 
-
-    // Decrypt result for a person
-    function decryptResult() {
-        const decryptKey = document.getElementById('decryptKey');
-        const resultDiv = document.getElementById('decryptResult');
-        
-        const key = decryptKey.value;
-        
-        if (!key) {
-            resultDiv.textContent = 'Please enter your key.';
-            resultDiv.style.color = '#dc3545';
-            return;
-        }
-        
-        if (encryptedOrder.length === 0) {
-            resultDiv.textContent = 'No encrypted order available. Please set a seed first.';
-            resultDiv.style.color = '#dc3545';
-            return;
-        }
-        
-        // Try to find which person this key belongs to
-        let foundPerson = null;
-        let foundPosition = null;
-        
-        for (const personData of encryptedOrder) {
-            const decryptedPosition = decrypt(personData.encryptedPosition, key);
-            if (decryptedPosition === personData.position.toString()) {
-                foundPerson = personData.name;
-                foundPosition = personData.position;
-                break;
-            }
-        }
-        
-        if (!foundPerson) {
-            resultDiv.textContent = 'Invalid key! This key does not match any person.';
-            resultDiv.style.color = '#dc3545';
-            return;
-        }
-        
-        // Update the display to show the person's name in their position
-        const positionElement = document.getElementById(`position-${foundPosition}`);
-        if (positionElement) {
-            positionElement.textContent = `${foundPosition}. ${foundPerson}`;
-            positionElement.style.backgroundColor = '#d4edda';
-            positionElement.style.border = '2px solid #28a745';
-        }
-        
-        resultDiv.textContent = `Welcome ${foundPerson}! Your position has been revealed above.`;
-        resultDiv.style.color = '#28a745';
-    }
+    
 
     // Hash string to number for seed
     function hashString(str) {
@@ -387,14 +294,14 @@
         return Math.abs(hash);
     }
 
-    // Display the complete order (encrypted)
+    // Display the complete order (names shown)
     function displayOrder(orderedPeople) {
         const personList = document.getElementById('personList');
         personList.innerHTML = '';
         
         orderedPeople.forEach((person, index) => {
             const li = document.createElement('li');
-            li.textContent = `${index + 1}. [ENCRYPTED]`;
+            li.textContent = `${index + 1}. ${person.name}`;
             li.style.backgroundColor = index % 2 === 0 ? '#f9f9f9' : '#e9e9e9';
             li.id = `position-${index + 1}`;
             personList.appendChild(li);
@@ -516,8 +423,8 @@
         li.id = `position-${currentPickIndex}`;
         personList.appendChild(li);
 
-        // Run scramble effect before setting the encrypted name
-        scrambleText(li, '[ENCRYPTED]', 1500);
+        // Run scramble effect before setting the final name
+        scrambleText(li, `${currentPickIndex}. ${selectedPerson.name}`, 1500);
     }
 
     // Reset the list after all people are selected
@@ -528,14 +435,12 @@
         currentSeed = null;
         predeterminedOrder = [];
         currentPickIndex = 0;
-        encryptedOrder = [];
+        
 
         const personList = document.getElementById('personList');
         personList.innerHTML = ''; // Clear the display list
 
-        // Clear decrypt result
-        document.getElementById('decryptResult').textContent = '';
-        document.getElementById('decryptKey').value = '';
+        
 
         document.getElementById('pickNextBtn').style.display = 'inline-block';
         document.getElementById('generateOrderBtn').style.display = 'inline-block';
