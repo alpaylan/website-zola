@@ -146,6 +146,13 @@
                             </span>
                     {% endif %}
 
+                    {% if page.extra.github_link %}
+                        :: <a class="no-hover" href="{{ page.extra.github_link }}" target="_blank" rel="noopener noreferrer">
+                            <img src="{{ get_url(path='social_icons/github.svg') }}" alt="GitHub" width="18" height="18" style="vertical-align: text-bottom; margin-left: 6px;" />
+                        </a>
+                        <span class="github-stars" aria-label="GitHub stars"></span>
+                    {% endif %}
+
                     {# View the page on GitHub #}
                     {% if page.extra.repo_view | default(value=false) %}
                         {# Use the page's repo_url if defined, otherwise use the global edit_repo_url #}
@@ -234,12 +241,19 @@
             <div class="card-info">
                 <h1 class="card-title">
                     {% if page.extra.link_to %}
-                    <a href={{ page.extra.link_to }} target="_blank">{{page.title}}</a>
+                    <a href={{ page.extra.link_to }}>{{page.title}}</a>
                     {% else %}
                     <a href={{ page.permalink }}>{{page.title}}</a>
                     {% endif %}
+                    {% if page.extra.github_link %}
+                    <a class="no-hover" href="{{ page.extra.github_link }}" target="_blank" rel="noopener noreferrer">
+                        <img src="{{ get_url(path='social_icons/github.svg') }}" alt="GitHub" width="22" height="22" style="vertical-align: text-bottom; margin-right: 6px;" />
+                        <span class="github-stars" aria-label="GitHub stars"></span>
+                    </a>
+                    {% endif %}
                 </h1>
 
+      
                 <div class="meta">
                     {%- if page.date %}
                         <time>{{ page.date | date(format="%Y-%m-%d") }}</time>

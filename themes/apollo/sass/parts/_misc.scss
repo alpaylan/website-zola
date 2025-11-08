@@ -58,6 +58,22 @@ a:hover {
   color: var(--hover-color);
 }
 
+.no-hover {
+  border-bottom: none;
+}
+
+.no-hover:hover {
+  background-color: transparent;
+  color: inherit;
+}
+
+.github-stars {
+  margin-left: 6px;
+  color: grey;
+  font-size: 90%;
+  border-bottom: none;
+}
+
 time {
   color: grey;
 }

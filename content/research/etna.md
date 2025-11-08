@@ -1,7 +1,7 @@
 +++
-title = "etna"
+title = "ETNA"
 description = "An Evaluation Platform for Property-Based Testing"
-weight = 1
+weight = 4
 
 [extra]
 link_to = "/research/etna"

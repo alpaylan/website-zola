@@ -4,7 +4,7 @@ description = "A Typed and Structured Document Editor"
 weight = 1
 
 [extra]
-link_to = "/projects/tail"
+github_link = "http://github.com/alpaylan/tail"
 +++
 
 Example project page

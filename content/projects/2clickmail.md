@@ -4,7 +4,7 @@ description = "Mass mailing made easy"
 weight = 3
 
 [extra]
-link_to = "/projects/2clickmail"
+github_link = "https://github.com/alpaylan/2clickmail"
 +++
 
 [2clickmail.com](https://www.2clickmail.com)

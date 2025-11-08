@@ -1,10 +1,10 @@
 +++
 title = "ICFP Programming Contest 2022"
-description = "A programming contest under the International Conference on Functional Programming"
+description = "An international programming contest"
 weight = 4
 
 [extra]
-link_to = "/projects/icfpcontest"
+github_link = "https://github.com/icfpcontest2022/mini-vinci"
 +++
 
 Example project page
