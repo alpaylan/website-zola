@@ -6,7 +6,7 @@ tags = ['software engineering', 'ai']
 language = ["en"]
 +++
 
-This post is a sequel to my thoughts on "What are the limits of LLMs" ([Verifiability is the Limit](../verifiability-is-the-limit/index.md)) and "What are the domains I believe LLMs will shine at autonomously" ([Breaking Verifiable Abstractions](../verifiable-abstractions/index.md)). As I see verifiability as part of the mainstream discussions more and more, I decided to break down on the limits of verifiability, focusing on how verification as a general principle isn't sufficient, and what more do we need.
+This post is a sequel to my thoughts on "What are the limits of LLMs" ([Verifiability is the Limit](/verifiability-is-the-limit)) and "What are the domains I believe LLMs will shine at autonomously" ([Breaking Verifiable Abstractions](/verifiable-abstractions)). As I see verifiability as part of the mainstream discussions more and more, I decided to break down on the limits of verifiability, focusing on how verification as a general principle isn't sufficient, and what more do we need.
 
 In my original post, I posed verification as a human endeavour, as opposed to the mainstream usage of the term that usually means
 computational verification. Computational verification is a procedural activity, it is the act of asserting facts about programs
