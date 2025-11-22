@@ -17,7 +17,7 @@ As we found more and more bugs, it became more and more apparent that finding bu
 must validate and fix the said bugs. Hence, the "counterexamples", inputs that trigger the alleged bugs, must be legible,
 inspectable, managable. Ideally, the tester should receive the simplest possible form of the input, isolated from any noise,
 only providing the minimal necessary structure for the reproduction, and the eventual fixing, of the bug. The solution emerged
-in different names, but in similar shapes, sometimes called delta-debugging, some called shrinking.
+in different names, but in similar shapes, minimization, delta-debugging, or shrinking.
 
 Shrinking is one of these ideas that immediately make sense once you hear about it. Let's say that we generated some random
 input for some program, perhaps a random PNG image for an image processor. Once a bug is triggered in some part of the system,
@@ -88,7 +88,7 @@ this approach is that we preserve the original invariants that the generator res
 we only manipulated the generation process into generating a smaller structure.
 
 The first approach of going from a large structure to smaller ones by using a `reproducer` for detecting if the fault
-continues to occur is typically called `external` or `type-based` shrinking`, although I like to call it `structural shrinking.`
+continues to occur is typically called `external` or `type-based` shrinking, although I like to call it `structural shrinking.`
 The second approach is called `internal`, or `integrated` shrinking; Property-Based Testing libraries are typically
 divided in the ways they pick the shrinking methodology, Hypothesis famously [uses](https://hypothesis.works/articles/integrated-shrinking/)
 integrated shrinking, whereas many of the QuickCheck descendents use structural shrinking.
