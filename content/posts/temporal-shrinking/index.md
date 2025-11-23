@@ -126,3 +126,15 @@ This core idea of retrigger percentage allows Antithesis to localize the bug tem
 crucial to the retriggering of the bug, which is ultimately a form of shrinking, hence the name of the article. It also feels somewhat
 descendent of the spectrum based fault localization techniques that identify differences between positive and negative inputs, but
 moving it into the temporal realm.
+
+A potential analysis built on this capability leads to the following bug probability graph shown below. The exact details of the
+computation for producing the graph can be found in [Antithesis docs](https://antithesis.com/docs/reports/likelihood/), as well
+as how to interpret the results of the graph.
+
+![probability graph](https://antithesis.com/img_opt/a01ZUsOJsk-3673.webp)
+
+It should be noted that I'm not affiliated with Antithesis (although I collaborate with them on different topics), and temporal
+shrinking is not limited to Antithesis, but rather applicable for any Deterministic Simulation Environment. I posit that in a few
+years, we will probably see similar tools built on concurrency testing libraries such as [Shuttle](https://github.com/awslabs/shuttle)
+or [Fray](https://github.com/cmu-pasta/fray), because they are in a similar design space and have the same challenges with respect
+to shrinking and debugging.
