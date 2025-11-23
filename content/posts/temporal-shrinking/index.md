@@ -9,9 +9,32 @@ language = ["en"]
 Random testing, in isolation, is a stupid idea. You take a program, which has a practically infinite
 amount of possible inputs, you randomly pick one of those infinite possibilities in the hopes of
 breaking the program, or some assertion about the program, and it actually works (discovers bug) in even the most
-naive form possible. Over the years, people have developed many different improvements on this naive
+naive form possible, which is essentially the following loop:
+
+```python
+while True:
+    input = generate_random_input()
+    if not property(input):
+        report_bug(input)
+```
+
+Over the years, people have developed many different improvements on this naive
 form I described. The most famous example is coverage guidance, which led to the rise of fuzz testing in the
-last decade, finding thousands, perhaps millions of different bugs across systems.
+last decade, finding thousands, perhaps millions of different bugs across systems. In coverage guiding,
+the random inputs are biased towards inputs that increase the code coverage of the system under test, leading to
+better exploration of the input space. The modified loop looks like this:
+
+```python
+pool = initialize_pool()
+while True:
+    input = mutate(select_from_pool(pool))
+
+    if not property(input):
+        report_bug(input)
+    
+    if increases_coverage(input, pool):
+        pool.add(input)  
+```
 
 As we found more and more bugs, it became more and more apparent that finding bugs was, and is, not sufficient. Someone
 must validate and fix the said bugs. Hence, the "counterexamples", inputs that trigger the alleged bugs, must be legible,
@@ -28,6 +51,17 @@ to making the values smaller, such as reducing the size of the image, or converg
 color, hence the name *shrinking*. In shrinking, we start from a bug-triggering input case, and we repeatedly produce smaller (shrunk)
 versions of the input as long as there is a smaller input that still retriggers the bug. If we cannot find a smaller instance,
 we report the original input to the user.
+
+Given some input `I` that triggers a bug, we can define a shrinking function `shrink(I) -> [I_1, I_2...I_n]`, we can write
+a version of the shrinking algorithm as follows:
+
+```python
+def shrink_input(input):
+    for smaller_input in shrink(input):
+        if triggers_bug(smaller_input):
+            return shrink_input(smaller_input)
+    return input
+```
 
 *Enters temporality.* The default perspective into random testing is that it produces many inputs from scratch, you may conjure up PNGs
 from thin air, produce balanced binary trees, generate network topologies, create virtual physical environments or write texts with
@@ -62,10 +96,10 @@ the following alternative sequence of interactions:
 
 ```sql
 CREATE TABLE t0 (c0, c1);
-CREATE TABLE t1 (c0, c1); -- (2)
+CREATE TABLE t1 (c0, c1, c2); -- (2)
 INSERT INTO t0 VALUES (0, 0), (1, 1), (2, 2);
-INSERT INTO t1 VALUES (0, 0), (1, 1), (2, 2); -- (4)
-SELECT FROM t1 WHERE c0 >= 1; -- (5)
+INSERT INTO t1 VALUES (NULL, 'why', 'not'); -- (4)
+SELECT FROM t1 WHERE c0 != 1 OR c1 != 'how'; -- (5)
 SELECT FROM t0 WHERE c0 >= 1; -- @bind r
 -- @assert r = (1, 1), (2, 2)
 ```
