@@ -100,6 +100,7 @@ CREATE TABLE t1 (c0, c1, c2); -- (2)
 INSERT INTO t0 VALUES (0, 0), (1, 1), (2, 2);
 INSERT INTO t1 VALUES (NULL, 'why', 'not'); -- (4)
 SELECT FROM t1 WHERE c0 != 1 OR c1 != 'how'; -- (5)
+SELECT FROM t0 WHERE TRUE; -- (6)
 SELECT FROM t0 WHERE c0 >= 1; -- @bind r
 -- @assert r = (1, 1), (2, 2)
 ```
@@ -108,8 +109,9 @@ We can slice this program up into 2 parts, the parts that are **relevant** to th
 This relevancy is of course a heuristic, perhaps what seems irrelevant is the cause of a failure we see, hence we need to make
 sure our assumptions are sound. The slicing heuristic I'll use is table-based slicing, where we only care about the interactions
 with the tables related to the failing assertion. `r` is computed by a query over `t0`, hence we remove all interactions that do
-not read or write to `t0`. Another heuristic is to remove as many reads as possible, as they (hopefully) do not affect the state
-of the database.
+not read or write to `t0`. In the example above, this slicing allows us to eliminate queries (2), (4), and (5) as they do not mention
+`t0`, but rather only `t1`. Another heuristic is to remove as many reads as possible, as they (hopefully) do not affect the state
+of the database, which allows us to remove query (6) as well. After slicing, we are left with the original example, which is much smaller.
 
 We can, however, have another type of shrinking, one that leverages the temporal generation instead of trying to work through the
 limitations it imposes. What do we do, we time travel!
