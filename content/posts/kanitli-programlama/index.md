@@ -1,5 +1,5 @@
 +++
-title = "Formal Metotlar ve Kanıtlı Programlama"
+title = "Formal Metotlar ve Kanıtlı Programlama Hakkında"
 date = "2025-12-18"
 [taxonomies]
 tags = ['software engineering', 'formal methods']
