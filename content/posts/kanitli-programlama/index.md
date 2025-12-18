@@ -200,8 +200,80 @@ Formal metotların programlamanın tamamına etki etmesi için, çok daha çeşi
 programcıların bu nitelikleri yazabilmesi için bir dil sağlamalıyız ki, doğruluk yalnızca bizim düşündüğümüz ve tasarladığımız
 niteliklerden ibaret olmasın.
 
+## Tip-Odaklı Geliştirme
+
 Bu dillerden ilki, daha önce de bahsettiğim üzere, tipler. [Tip sistemleri](https://alperenkeles.com/posts/tip-sistemleri-hakkinda/),
 bizim yazdığımız programları kısıtlayabilmemizi, tipleri kullanarak programların ulaşmaması gereken durumlardan kaçınmamıza izin veriyor.
 Bundan bazen tip-odaklı geliştirme (type-driven programlama) olarak bahsedildiğini görebilirsiniz, bu yaklaşımın mottosu "Hatalı
-durumları temsil edilemez yap" ([Make invalid states unrepresentable](https://geeklaunch.io/blog/make-invalid-states-unrepresentable/)).
-Çoğu zaman, programlarımızda tip sisteminin izin verdiği, yani derleyicinin bir hata vermeyeceği, ancak 
+durumları temsil edilemez yap" ([Make invalid states unrepresentable](https://lambda-the-ultimate.org/node/2216#comment-31690)).
+Çoğu zaman, programlarımızda tip sisteminin izin verdiği, yani derleyicinin bir hata vermeyeceği, ancak aslında mümkün olmaması gereken
+ihtimaller var. Tip-odaklı geliştirme bunları ortadan kaldırabiliyor.
+
+```ts
+type Insan = {
+    isim: string,
+    okul?: string,
+    sirket?: string,
+}
+```
+
+Yukarıdaki tip, bir kişiyi tanımlarken, `okul` ya da `sirket` alanlarının `undefined` olmasına izin veriyor. Alttaki veri modeline göre
+bunun doğru olduğu noktalar vardır, ancak şu anda tartıştığımız evrende bir kişi ya okula, ya da şirkete gidebiliyor olsun. Yani bunların
+ikisi de aynı anda var olamaz, ikisi de aynı anda boş da olamaz, ancak veri modelimiz buna izin veriyor. `{isim: "Alp"} as Insan` yazmak
+tip hatası vermeyecek. Alternatif olarak, bu tipi aşağıdaki gibi tanımlayabilirdik:
+
+```ts
+type Insan   = { isim: string } & (Ogrenci | Calisan)
+type Ogrenci = { okul: string }
+type Calisan = { sirket: string }
+```
+
+Bu örnekte, `Insan` ya bir öğrenci olup okula sahip olacak, ya da bir çalışan olup şirkete; hiçbirisine sahip olmadığı durumlarda tip
+sistemi bize hata verdiği için o ihtimal çalışma zamanında var olmayacak.
+
+## Kontrat Bazlı Dizayn (Design by Contract)
+
+Kontratlar fikir olarak nereden çıktı emin değilim, ancak benim şahsen bildiğim en eski popüler örnek Eiffel programlama dili. Kontratlar
+bizim alttaki programa dair ne tarz varsayımlarımızın olduğunu (assumptions, preconditions), ne tarz sonuçlar beklediğimizi (postconditions),
+programın hangi nitelikleri koruduğunu (invariants) tanımlamamızı sağlıyor. Aşağıda, Dafny programlama dilinde `Max` fonksiyonunun
+tanımı var:
+
+```dafny
+method Max(a: int, b: int) returns (m: int)
+  ensures m >= a
+  ensures m >= b
+  ensures m == a || m == b
+{
+  if a >= b {
+    m := a;
+  } else {
+    m := b;
+  }
+}
+```
+
+Kontrat diyor ki, metodun ürettiği `m` değeri hem `a` hem de `b` parametrelerinden büyük eşit olmalı, hem de ikisinden
+birisine eşit olmalıdır. Kontratın kendisi, fonksiyonun implementasyonundan bağımsız olarak neyin doğru olduğunu tanımlıyor,
+Dafny ise derleme zamanında implementasyonun bu kontrata uyduğunu kanıtlıyor. Eğer implementasyonda bir hata varsa, mesela
+tüm fonksiyonu silip yalnızca `m := b` yazarsak, `ensures m >= a` şartı kanıtlanamadığı için Dafny programı derlemeyecek.
+
+Gelin bir de yukarıda bahsettiğimiz `midpoint` örneğine bakalım:
+
+```dafny
+method Midpoint(low: int, high: int) returns (mid: int)
+    requires low <= high
+    ensures mid * 2 >= low + high - 1
+    ensures mid * 2 <= low + high
+{
+    mid := (low + high) / 2;
+}
+```
+
+Dafny'de `int` çoğu anaakım programlama dilinin aksine 32 bitlik değil, dolayısıyla bu örnekte taşma konusunda endişelenmemiz
+gerekmiyor. Onun yerine `requires` bize bu fonksiyonun hangi şartlar altında çağırılabildiğini söylüyor, ancak `low <= high` durumunda
+bu fonksiyonu çağırabildiğimiz için içerde `if a < b` kontrolünü tekrar yapmadan sonucu hesaplayabiliyoruz, `midpoint`'i ise
+çarpma işleminin sonucu üzerinden tanımlıyoruz.
+
+Burada küçük programlardan bahsettiğimiz bakmayın, AWS yeni yazdığı Yetkilendirme Politikaları Dili (Authorization Policy Language) olan
+[Cedar](https://www.amazon.science/blog/how-we-built-cedar-with-automated-reasoning-and-differential-testing)'ı önce Dafny'de geliştirdi,
+benzer şekilde [şifreleme kütüphanesini](https://github.com/aws/aws-encryption-sdk) Dafny'de kanıtladı. 
