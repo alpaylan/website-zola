@@ -322,30 +322,105 @@ ikinci parametresi `Nat.succ n` (n+1) ise sonucu `add n m`'nin ardılı yapıyor
 işleminde sahip olduğumuz bazı özellikler var, bunlardan bir tanesi toplamanın değişme özelliği (commutativity), yani `a + b = b + a`. Gelin bunu Lean'de teorem olarak tanımlayalım:
 
 ```lean
-theorem add_comm : ∀ a b : Nat, add a b = add b a
+theorem add_comm : ∀ (n m : Nat), n + m = m + n
 ```
 
-Bu teorem diyor ki, her `a` ve `b` doğal sayısı için `add a b` ifadesi `add b a` ifadesine eşit. Şimdi bu teoremi kanıtlamamız gerekiyor.
+Bu teorem diyor ki, her `n` ve `m` doğal sayısı için `add n m` ifadesi `add m n` ifadesine eşit. Şimdi bu teoremi kanıtlamamız gerekiyor.
 
 ```lean
-theorem add_comm : ∀ a b : Nat, add a b = add b a
-| Nat.zero,     b => 
-    -- 0 + b = b + 0 olduğunu kanıtlamamız gerekiyor.
-    calc
-        add Nat.zero b 
-        = b                    := by rfl
-        = add b Nat.zero       := by induction b; rfl; simp [add, *]
-| Nat.succ a,   b => 
-    -- (a + 1) + b = b + (a + 1) olduğunu kanıtlamamız gerekiyor.
-    calc
-        add (Nat.succ a) b
-        = Nat.succ (add a b)   := by rfl
-        = Nat.succ (add b a)   := by induction a; rfl; simp [add, *]
-        = add b (Nat.succ a)   := by rfl
+theorem add_comm : ∀ (n m : Nat), n + m = m + n
+  | n, 0   => Eq.symm (Nat.zero_add n)
+  | n, m+1 => by
+    have : Nat.succ (n + m) = Nat.succ (m + n) := by apply congrArg; apply Nat.add_comm
+    rw [Nat.succ_add m n]
+    apply this
+
 ```
 
 Bu kanıtı tüm detaylarıyla anlamanıza gerek yok, bir noktada bu yazıyı bugün yazmayı geçtiğimiz yıllardan ayıran en büyük fark bu. Yazının başında da bahsettiğim gibi bugünün iddiası, yapay zekanın
 bu kanıtları bizim için yazabileceği bir geleceğe doğru yol aldığımız. Bu varsayımsal yolun devamında bizim teoremleri yazmamız yetiyor, çünkü arka plandaki kanıt kontrolcüsü (proof checker) bizim sırtımızı
 tamamen dayayabildiğimiz, başka hiçbir programlama dilinde, hiçbir ortamda sahip olmadığımız bir garantiye sahip olduğumuz bir ortam sağlıyor. Programlamanın temeline işlemiş, her ortamda, her zaman bizi
-sınırlayan varsayımlarımızı ortadan kaldırabiliyor. Herhangi bir testten, her türlü kod incelemesinden daha güçlü bir garanti bu kazandığımız.
+sınırlayan varsayımlarımızı ortadan kaldırabiliyor. Herhangi bir testten, her türlü kod incelemesinden daha güçlü bir garanti bu kazandığımız. Hatta bu işle ilgilenen şirketlerin iddiaları, yapay zekanın
+bu teoremleri de bizim sözlü olarak yazdığımız tanımlardan otomatik olarak oluşturabileceği yönünde (ben buna katılmıyorum, bu konudaki argümanlarımı okumak için [Verifiability is the Limit](https://alperenkeles.com/posts/verifiability-is-the-limit/), [Breaking Verifiable Abstractions](https://alperenkeles.com/posts/verifiable-abstractions), ve [Verification is Not the Silver Bullet](https://alperenkeles.com/posts/verification-is-not-the-silver-bullet/) yazılarımı okuyabilirsiniz). Lean ile teorem kanıtlama üzerine kendinizi geliştirmek için [Theorem Proving in Lean](https://leanprover.github.io/theorem_proving_in_lean4/) kitabını okuyabilirsiniz.
 
+Bu dillerin belli sınırları var. Her şeyden önce kullandığımız programlama dilini değiştirmemizi, yeni bir ekosisteme sırtımızı dayamamızı gerektiriyor. Lean gibi dillerde yazdığımız programların
+performansının anaakım dillerde yazdığımız programların performansına kıyasla çok daha kötü olmasını bekliyoruz, çünkü teoremleri kanıtlamak için yazdığımız programlar çok daha deklaratif, teoremin
+şeklini andıracak şekilde yazılmalı, kanıt mühendisliğinin (proof engineering) klasik prensiplerinden birisi teorem, kanıt ve programı birbirinden ayırmanın çok zor olması. Bir diğer zorluk ise,
+bu dillerde ifade edebileceğimiz teoremlerin o dillerdeki matematiksel modellere dayalı olması. Mesela, hiçbir zaman bir programın diğerinden daha optimize olduğunu Lean'de kanıtlayamayız, çünkü
+fiziksel bilgisayarların performansı bizim matematiksel olarak modelleyip kanıtlar yapabildiğimiz kadar basit değil, en azından bugün. Deterministik olmayan, rastgelelikler içeren ya da eşzamanlı programlar
+(concurrent programs) hakkında kanıtlar yazmak da bugün çok zor, ancak zaman içerisinde gelişiyor, dolayısıyla belki de birkaç seneye bunları da kanıtlayabilir hale geleceğiz.
+
+Bu problemlerin bir çözümü var, o da nitelik-bazlı test etme (property-based testing -- PBT).
+
+## Nitelik-Bazlı Test Etme (Property-Based Testing -- PBT)
+
+PBT, temelde buraya kadar yazdığımız metodolojiler ile ayrık değil, hatta barışık ve bağlı. PBT, bir nitelik, ya da kanıtlama bağlamında bir teorem gerektiriyor. Bu teoremin ardından, teoremi test etmek için
+teoremde bahsi geçen tüm değişkenlerin rastgele örneklerini üretebilmemiz gerekiyor. Bunun sonucunda az önce yazdığımız `add_comm` teoremini PBT ile test etmek istersek, bunu Typescript'te aşağıdaki gibi
+yazabiliriz.
+
+```typescript
+type Nat = { kind: 'zero' } | { kind: 'succ', pred: Nat };
+
+function add(a: Nat, b: Nat): Nat {
+    if (a.kind === 'zero') {
+        return b;
+    } else {
+        return { kind: 'succ', pred: add(a.pred, b) };
+    }
+}
+
+function natEqual(a: Nat, b: Nat): boolean {
+    if (a.kind === 'zero' && b.kind === 'zero') {
+        return true;
+    } else if (a.kind === 'succ' && b.kind === 'succ') {
+        return natEqual(a.pred, b.pred);
+    } else {
+        return false;
+    }
+}
+
+function toNat(n: number): Nat {
+    if (n <= 0) {
+        return { kind: 'zero' };
+    } else {
+        return { kind: 'succ', pred: toNat(n - 1) };
+    }
+}
+
+function generateNat(): Nat {
+    const n = Math.floor(Math.random() * 100); // 0 ile 99 arasında rastgele bir sayı
+    return toNat(n);
+}
+
+function testAddComm(iterations: number) {
+    for (let i = 0; i < iterations; i++) {
+        const a = generateNat();
+        const b = generateNat();
+        const left = add(a, b);
+        const right = add(b, a);
+        if (!natEqual(left, right)) {
+            console.error(a, "+", b, "=", left, " ile ", b, "+", a, "=", right, " eşit değil!");
+            return;
+        }
+    }
+    console.log('Tüm testler geçti!');
+}
+```
+
+Burada, teoremimizi `natEqual(add(a, b), add(b, a))` fonksiyonuyla test ediyoruz. `generateNat` fonksiyonu ise rastgele doğal sayılar
+üretmek için kullanılıyor.
+
+Geçtiğimiz yıllarda Cardano ve AWS PBT ile kanıtlı programlama yaklaşımlarını birleştirerek Lean'de geliştirdikleri kanıtlı programları
+Rust'ta geliştirdikleri üretim sınıfı (production grade) programları test etmek için kullandılar. Bu yaklaşımda, Lean programı ile Rust programının
+her girdi için aynı çıktıyı vermesi gerektiğini bildiğimiz için, Lean programını bir referans model olarak kullanıp, Rust programını Lean programına karşı
+test ettiğimizde Lean'de kanıtlanan teoremlerin Rust programında da geçerli olduğunu garanti edebiliyoruz.
+
+PBT'nin faydalı olması için yalnızca kanıtlı programlamayla birlikte kullanılmasına gerek yok, bugün PBT daha müdahale etmeden kod yazılan yapay zeka
+yaklaşımlarında (Agentic AI), kodun doğruluğunu test etmek için kullanılabiliyor. Daha gün, Claude Code'da [majör bir yenilemenin](https://x.com/trq212/status/2001439032795107441) PBT ile yapıldığının
+örneğini gördük. Benzer şekilde [BitsEvolve](https://www.datadoghq.com/blog/engineering/self-optimizing-system/) gibi yaklaşımlar da PBT'yi kullanarak otomatik optimizasyon sistemleri inşa ediyor.
+
+## Kapanış
+
+Formal metotlar, programlarımızın doğruluğunu arttırmak için kullanabileceğimiz güçlü araçlar. Bu araçlar bugüne kadar niş olsa da, yapay zeka yardımıyla daha erişilebilir
+hale geldiklerini görüyoruz, ben şahsen gelmeye devam edeceğine dair işaretler görüyorum. Türkçe'de böyle bir kaynağın eksikliğini gördüğüm için yazmak istedim, eğer eksik gördüğünüz
+ya da yanlış olduğunu düşündüğünüz bir nokta varsa bana [akeles@umd.edu](mailto:akeles@umd.edu) adresinden ulaşabilirsiniz. Bir sonraki yazıda görüşmek üzere!
