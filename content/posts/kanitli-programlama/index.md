@@ -276,7 +276,76 @@ bu fonksiyonu çağırabildiğimiz için içerde `if a < b` kontrolünü tekrar 
 
 Burada küçük programlardan bahsettiğime bakmayın, AWS yeni yazdığı Yetkilendirme Politikaları Dili (Authorization Policy Language) olan
 [Cedar](https://www.amazon.science/blog/how-we-built-cedar-with-automated-reasoning-and-differential-testing)'ı önce Dafny'de geliştirdi,
-benzer şekilde [şifreleme kütüphanesini](https://github.com/aws/aws-encryption-sdk) Dafny'de kanıtladı. Her ne kadar çok ciddi uzmanlık
-ve zaman gerektirdiği için bu kütüphaneleri geliştirmek, yazdığımız programları kanıtlamak bugün zor olsa da, asıl soru bu aslında, yapay
-zeka yardımıyla kanıtlamalı programlama yapabildiğimiz bir dünyada bu tarz teknolojileri kullanarak yazdığımız programların
-doğruluğunu arttırabilir miyiz?
+benzer şekilde [şifreleme kütüphanesini](https://github.com/aws/aws-encryption-sdk) Dafny'de kanıtladı.
+Dafny'deki kontratlar statik kontratlar, pek çok programlama dilinde çalışma zamanında kontrol edilen dinamik kontrat kütüphaneleri
+de var, Python'da [Deal](https://deal.readthedocs.io/index.html) var, [Racket](https://docs.racket-lang.org/guide/contracts.html) ise kontratlara dil seviyesinde bir özellik olarak sahip.
+Bazı programlama dillerinde ise Dafny tipi statik kontrat sistemleri geliştiriliyor, Rust'ta Verus ve Flux, Haskell'da Liquid Haskell ile programlarımızın
+belli özelliklerini statik olarak kanıtlayabiliyoruz. Bugün bu sistemleri kullanmak, bu sistemlerin üzerine kanıtlı programlar ve kütüphaneler geliştirmek
+bugün için çok ciddi uzmanlık ve zaman gerektirdse de asıl soru şu aslında, yarın ne olacak?
+
+**Yapay zeka yardımıyla kanıtlamalı programlama yapabildiğimiz bir dünyada bu tarz teknolojileri kullanarak yazdığımız programların
+doğruluğunu arttırabilir miyiz?**
+
+## İnteraktif Teorem Kanıtlama (Interactive Theorem Proving)
+
+Buraya kadarki bahsettiğim metotlarda kanıtlama işleminin kendisini biz yapmadık. Tip sistemleri programların bizim onlara verdiğimiz sınırlamalarını
+otomatik olarak kanıtlıyor, kanıtlayamadığında bize tip hatası veriyor. Statik kontrat sistemleri Hoare Mantığı (Hoare Logic) ile programların
+yazdığımız kontratlara uyduğunu otomatik olarak kanıtlıyor, sistemin otomatik kanıtlamada zorlandığı noktalarda biz biraz yardımcı olabilsek de
+elle kanıt yazılması için tasarlanmamış bir sistemde kanıt yazmak, kanıt yazılması için tasarlanmış sistemlerde yazmaktan çok daha zor, şimdi bu sistemlerden,
+interaktif teorem kanıtlayıcılardan (interactive theorem prover) bahsedeceğim.
+
+İnteraktif teorem kanıtlama araçları kendi içerisinde teknik detaylarına göre farklı kollara ayrılıyor, misal Isabelle/HOL görece daha eski, bizim alışık olduğumuz
+klasik mantık üzerine kurulu bir kanıt sistemi kullanıyor. Ben, bağlama da uygun olması için, görece yeni bir kanıtlayıcı olan Lean'e odaklanacağım. Lean,
+bizim alışık olduğumuz matematiksel modellerden uzak, CIC (Calculus of Inductive Constructions) adında bir matematiksel temel üzerine kurulu. Bu temelin bize sağladığı
+ana fayda ise, Curry-Howard Denkliği (Curry-Howard Correspondence). Curry-Howard Denkliği bize diyor ki, bizim yazdığımız programlardaki tipler aslında teoremler,
+o tiplere uyan programlar ise o teoremlerin kanıtı. Dolayısıyla, biz bir teoremi dilimizde bir teorem olarak yazarsak, yazdığımız programın bir tip hatası vermemesi
+o teoremi kanıtladığımız anlamına geliyor. Gelin biraz pratik örneklerle bakalım:
+
+Bir tipi aşağıdaki gibi tanımlıyoruz, aşağıdaki tanım diyor ki, tümevarımsal olarak, bir doğal sayı ya sıfırdır, ya da bir doğal sayının ardılıdır (successor).
+
+```lean
+Inductive Nat : Type
+| zero : Nat
+| succ : Nat -> Nat
+```
+
+Bu tip üzerinde toplama işlemini aşağıdaki gibi tanımlayabiliriz:
+
+```lean
+def add : Nat -> Nat -> Nat
+| Nat.zero,     m => m 
+| Nat.succ n,   m => Nat.succ (add n m)
+```
+
+Burada `add` fonksiyonu, ilk parametresi `Nat.zero` (0) ise sonucu ikinci parametreye eşit yapıyor, yani `0 + x = x` işlemini tanımlıyor,
+ikinci parametresi `Nat.succ n` (n+1) ise sonucu `add n m`'nin ardılı yapıyor, yani ` (n + 1) + m = 1 + (n + m)` işlemini tanımlıyor. Klasik toplama
+işleminde sahip olduğumuz bazı özellikler var, bunlardan bir tanesi toplamanın değişme özelliği (commutativity), yani `a + b = b + a`. Gelin bunu Lean'de teorem olarak tanımlayalım:
+
+```lean
+theorem add_comm : ∀ a b : Nat, add a b = add b a
+```
+
+Bu teorem diyor ki, her `a` ve `b` doğal sayısı için `add a b` ifadesi `add b a` ifadesine eşit. Şimdi bu teoremi kanıtlamamız gerekiyor.
+
+```lean
+theorem add_comm : ∀ a b : Nat, add a b = add b a
+| Nat.zero,     b => 
+    -- 0 + b = b + 0 olduğunu kanıtlamamız gerekiyor.
+    calc
+        add Nat.zero b 
+        = b                    := by rfl
+        = add b Nat.zero       := by induction b; rfl; simp [add, *]
+| Nat.succ a,   b => 
+    -- (a + 1) + b = b + (a + 1) olduğunu kanıtlamamız gerekiyor.
+    calc
+        add (Nat.succ a) b
+        = Nat.succ (add a b)   := by rfl
+        = Nat.succ (add b a)   := by induction a; rfl; simp [add, *]
+        = add b (Nat.succ a)   := by rfl
+```
+
+Bu kanıtı tüm detaylarıyla anlamanıza gerek yok, bir noktada bu yazıyı bugün yazmayı geçtiğimiz yıllardan ayıran en büyük fark bu. Yazının başında da bahsettiğim gibi bugünün iddiası, yapay zekanın
+bu kanıtları bizim için yazabileceği bir geleceğe doğru yol aldığımız. Bu varsayımsal yolun devamında bizim teoremleri yazmamız yetiyor, çünkü arka plandaki kanıt kontrolcüsü (proof checker) bizim sırtımızı
+tamamen dayayabildiğimiz, başka hiçbir programlama dilinde, hiçbir ortamda sahip olmadığımız bir garantiye sahip olduğumuz bir ortam sağlıyor. Programlamanın temeline işlemiş, her ortamda, her zaman bizi
+sınırlayan varsayımlarımızı ortadan kaldırabiliyor. Herhangi bir testten, her türlü kod incelemesinden daha güçlü bir garanti bu kazandığımız.
+
