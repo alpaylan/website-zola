@@ -274,6 +274,9 @@ gerekmiyor. Onun yerine `requires` bize bu fonksiyonun hangi şartlar altında �
 bu fonksiyonu çağırabildiğimiz için içerde `if a < b` kontrolünü tekrar yapmadan sonucu hesaplayabiliyoruz, `midpoint`'i ise
 çarpma işleminin sonucu üzerinden tanımlıyoruz.
 
-Burada küçük programlardan bahsettiğimiz bakmayın, AWS yeni yazdığı Yetkilendirme Politikaları Dili (Authorization Policy Language) olan
+Burada küçük programlardan bahsettiğime bakmayın, AWS yeni yazdığı Yetkilendirme Politikaları Dili (Authorization Policy Language) olan
 [Cedar](https://www.amazon.science/blog/how-we-built-cedar-with-automated-reasoning-and-differential-testing)'ı önce Dafny'de geliştirdi,
-benzer şekilde [şifreleme kütüphanesini](https://github.com/aws/aws-encryption-sdk) Dafny'de kanıtladı. 
+benzer şekilde [şifreleme kütüphanesini](https://github.com/aws/aws-encryption-sdk) Dafny'de kanıtladı. Her ne kadar çok ciddi uzmanlık
+ve zaman gerektirdiği için bu kütüphaneleri geliştirmek, yazdığımız programları kanıtlamak bugün zor olsa da, asıl soru bu aslında, yapay
+zeka yardımıyla kanıtlamalı programlama yapabildiğimiz bir dünyada bu tarz teknolojileri kullanarak yazdığımız programların
+doğruluğunu arttırabilir miyiz?
