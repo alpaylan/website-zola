@@ -4,12 +4,13 @@
 <style>
     .github-card {
         width: 300px;
-        border: 1px solid #ddd;
+        border: 1px solid var(--border-color);
         border-radius: 8px;
         overflow: hidden;
-        font-family: Arial, sans-serif;
+        font-family: var(--text-font);
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background: var(--bg-1);
     }
 
     .github-card:hover {
@@ -21,13 +22,17 @@
         text-decoration: none;
         color: inherit;
     }
+    .github-card a:hover {
+        background-color: transparent;
+        color: inherit;
+    }
 
     .github-card-header {
         display: flex;
         align-items: center;
         padding: 16px;
-        background-color: #f6f8fa;
-        border-bottom: 1px solid #ddd;
+        background-color: var(--bg-2);
+        border-bottom: 1px solid var(--border-color);
     }
 
     .github-card-header img {
@@ -40,7 +45,7 @@
     .github-card-header h3 {
         font-size: 1.2em;
         margin: 0;
-        color: #333;
+        color: var(--text-0);
     }
 
     .github-card-header h3::before {
@@ -53,11 +58,17 @@
     .github-card-body {
         padding: 16px;
         font-size: 0.9em;
-        color: #555;
+        color: var(--text-0);
     }
 
     .github-card-body p {
         margin: 0;
+        color: var(--text-0);
+    }
+
+    /* Dark mode tweaks */
+    html.dark .github-card-header img {
+        filter: invert(1);
     }
 </style>
 <div class="github-card">

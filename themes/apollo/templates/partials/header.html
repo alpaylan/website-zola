@@ -154,6 +154,12 @@
         <link id="darkModeStyle" rel="stylesheet" type="text/css" href="{{ get_url(path='theme/dark.css') }}" />
     {% endif %}
 
+    {# Syntax highlighting stylesheets for light/dark mode (when using highlight_theme = "css") #}
+    {% if config.markdown.highlight_code and config.markdown.highlight_theme == "css" %}
+        <link rel="stylesheet" type="text/css" href="{{ get_url(path='syntax-theme-light.css') }}" />
+        <link id="darkHighlightStyle" rel="stylesheet" type="text/css" href="{{ get_url(path='syntax-theme-dark.css') }}" />
+    {% endif %}
+
     <!-- Set the correct theme in the script -->
     <script src={{ get_url(path="js/themetoggle.js") }}></script>
     {% if theme == "dark" %}

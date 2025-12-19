@@ -10,29 +10,39 @@ span.tr {
     padding: 2px 4px;
 }
 
-button.language-button {
+/* Language toggles (buttons on /posts) + matching link styling (homepage shortcuts) */
+.language-button {
     border: none;
     border-radius: 4px;
-    width: 36px;
-    height: 24px;
     padding: 2px 4px;
     margin-left: 6px;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    text-decoration: none;
 }
 
-button.language-button.en {
+.language-button.en {
     background-color: #133E87;
     color: #f0f0f0;
 }
 
-button.language-button.tr {
+.language-button.tr {
     background-color: #B8001F;
     color: #f0f0f0;
 }
 
-button.language-button.inactive {
+.language-button.inactive {
     background-color: #f0f0f0;
     color: #133E87;
+}
+
+/* Keep the original compact sizing for the actual toggle buttons */
+button.language-button {
+    width: 36px;
+    height: 24px;
 }
 
 

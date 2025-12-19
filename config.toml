@@ -10,7 +10,8 @@ author = "Alperen Keles"
 generate_feed = true
 
 [extra]
-theme = "light"
+theme = "toggle"
+stylesheets = ["css/theme-fixes.css"]
 socials = [
   { name = "twitter", url = "https://twitter.com/keleesssss", icon = "twitter" },
   { name = "github", url = "https://github.com/alpaylan", icon = "github" },
@@ -55,5 +56,11 @@ other = [
 # Whether to do syntax highlighting
 # Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
 highlight_code = true
-highlight_theme = "gruvbox-light"
+highlight_theme = "css"
 bottom_footnotes = true
+
+# Generate CSS files for syntax highlighting themes (used for light/dark mode)
+highlight_themes_css = [
+  { theme = "gruvbox-light", filename = "syntax-theme-light.css" },
+  { theme = "gruvbox-dark", filename = "syntax-theme-dark.css" },
+]

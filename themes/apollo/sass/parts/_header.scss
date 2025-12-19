@@ -20,6 +20,7 @@ header {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
+    align-items: baseline;
     padding: 1em 0;
 }
 
@@ -28,7 +29,7 @@ header .main {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: baseline;
     gap: 12px;
     font-size: 1.5rem;
 
@@ -50,6 +51,9 @@ header .socials {
 
 #dark-mode-toggle {
     justify-content: center;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
 }
 
 .socials {
@@ -104,6 +108,14 @@ header .socials {
     width: 15px;
     height: 15px;
     border: unset;
+    vertical-align: middle;
+}
+
+/* Keep nav content vertically centered with icons */
+header nav {
+    display: flex;
+    align-items: center;
+    line-height: 1.2;
 }
 
 h1,

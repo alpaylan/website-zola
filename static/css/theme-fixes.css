@@ -1,0 +1,38 @@
+/* Ensure theme CSS variables apply based on html.dark/html.light */
+html.light {
+  --text-0: #1f1f1f;
+  --text-1: #666666;
+  --bg-0: #ffffff;
+  --bg-1: #f7f7f7;
+  --bg-2: #eaeaea;
+  --border-color: var(--bg-2);
+  --primary-color: #6A9AB0;
+  --hover-color: #ffffff;
+}
+
+html.dark {
+  --text-0: #ededed;
+  --text-1: #9a9a9a;
+  --bg-0: #262626;
+  --bg-1: #2e2e2e;
+  --bg-2: #3a3a3a;
+  --border-color: var(--bg-2);
+  --primary-color: #7BB6CC;
+  --hover-color: #ffffff;
+}
+
+/* Code block variable defaults */
+:root {
+  --bg-primary: var(--bg-1);
+  --text-color: var(--text-0);
+  --label-color: #f0f0f0;
+  --hightlight-color: #f0f0f0;
+}
+html.dark {
+  --hightlight-color: #204e8a;
+}
+
+/* Enforce code block colors over inline styles from highlighter */
+/* Code blocks are handled by Zola syntax CSS themes when highlight_theme = "css" */
+
+

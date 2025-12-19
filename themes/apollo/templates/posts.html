@@ -32,18 +32,77 @@
         <button class="language-button tr" id="lb-tr" onclick="toggleLanguage('tr')" id="tr">TR</button>
 
         <script>
-            function toggleLanguage(lang) {
-                var posts = document.querySelectorAll(`.list-item.${lang}`);
-                posts.forEach(function(post) {
-                    if (post.style.display === 'none') {
-                        post.style.display = 'block';
-                        document.getElementById(`lb-${lang}`).classList.remove('inactive');
-                    } else {
-                        post.style.display = 'none';
-                        document.getElementById(`lb-${lang}`).classList.add('inactive');
-                    }
+            function setLangVisibility(lang, visible) {
+                var posts = document.querySelectorAll('.list-item.' + lang);
+                posts.forEach(function(post) { post.style.display = visible ? 'block' : 'none'; });
+                var btn = document.getElementById('lb-' + lang);
+                if (btn) btn.classList.toggle('inactive', !visible);
+            }
+
+            function getActiveLangs() {
+                return ['en', 'tr'].filter(function(lang) {
+                    var btn = document.getElementById('lb-' + lang);
+                    return btn && !btn.classList.contains('inactive');
                 });
             }
+
+            function syncLangToUrl() {
+                try {
+                    var url = new URL(window.location.href);
+                    var active = getActiveLangs();
+                    if (active.length === 1) {
+                        url.searchParams.set('lang', active[0]);
+                    } else {
+                        url.searchParams.delete('lang');
+                    }
+                    history.replaceState({}, '', url.toString());
+                } catch (_e) {
+                    // no-op
+                }
+            }
+
+            function toggleLanguage(lang) {
+                var btn = document.getElementById('lb-' + lang);
+                if (!btn) return;
+
+                // Toggle current language visibility
+                var becomingActive = btn.classList.contains('inactive');
+                setLangVisibility(lang, becomingActive);
+
+                // Don't allow both languages to be hidden
+                var active = getActiveLangs();
+                if (active.length === 0) {
+                    setLangVisibility(lang, true);
+                    return;
+                }
+
+                syncLangToUrl();
+            }
+
+            // Auto-select language from URL: /posts?lang=en|tr (or #en/#tr)
+            function initLanguageFromUrl() {
+                try {
+                    var params = new URLSearchParams(window.location.search);
+                    var lang = (params.get('lang') || '').toLowerCase();
+                    if (!lang) {
+                        var hash = (window.location.hash || '').replace('#', '').toLowerCase();
+                        lang = hash;
+                    }
+                    if (lang !== 'en' && lang !== 'tr') return;
+
+                    // Hide all languages first (both start visible by default)
+                    setLangVisibility('en', false);
+                    setLangVisibility('tr', false);
+                    setLangVisibility(lang, true);
+
+                    syncLangToUrl();
+                } catch (_e) {
+                    // no-op
+                }
+            }
+
+            // Run after the post list is present in the DOM
+            document.addEventListener('DOMContentLoaded', initLanguageFromUrl);
         </script>
     </div>
 

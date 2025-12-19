@@ -1,4 +1,4 @@
-$bg-0: #121212;
+$bg-0: #262626;
 
 // Dark theme needs a bigger contrast compared to the white theme.
 $bg-1: lighten($bg-0, 5%);
@@ -17,10 +17,19 @@ $text-1: lighten($bg-0, 60%);
 
   --border-color: var(--bg-2);
 
-  --primary-color: #ef5350;
+  /* Variant of light theme primary (#6A9AB0), tuned for dark backgrounds */
+  --primary-color: #7BB6CC;
   --hover-color: white;
 
   .social>img {
     filter: invert(1);
   }
+  
+  img[src*="social_icons/"] {
+    filter: invert(1);
+  }
+}
+ 
+html.dark img[src*="social_icons/"] {
+  filter: invert(1);
 }

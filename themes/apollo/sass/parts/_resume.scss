@@ -12,7 +12,7 @@ article.resume {
     }
 
     .experiences {
-        border: 2px solid #eaeaea;
+        border: 2px solid var(--border-color);
         padding: 2em;
         padding-top: 0;
 
@@ -55,7 +55,8 @@ article.resume {
                     gap: 0.5em;
 
                     .keyword {
-                        background-color: #f0f0f0;
+                        background-color: var(--bg-1);
+                        border: 1px solid var(--border-color);
                         padding: 0.2em 0.5em;
                         border-radius: 0.2em;
                         font-size: 0.8em;

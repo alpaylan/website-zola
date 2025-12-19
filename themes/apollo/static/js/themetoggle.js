@@ -22,6 +22,12 @@ function updateItemToggleTheme() {
     if (darkModeStyle) {
         darkModeStyle.disabled = (mode === "light");
     }
+
+    // Toggle syntax highlighting stylesheet (when using highlight_theme = "css")
+    const darkHighlightStyle = document.getElementById("darkHighlightStyle");
+    if (darkHighlightStyle) {
+        darkHighlightStyle.disabled = (mode === "light");
+    }
     
     const sunIcon = document.getElementById("sun-icon");
     const moonIcon = document.getElementById("moon-icon");
