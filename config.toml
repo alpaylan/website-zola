@@ -7,7 +7,7 @@ title = "Alperen Keles"
 
 author = "Alperen Keles"
 # Generate a feed file at the root of the site
-generate_feed = true
+generate_feeds = true
 
 [extra]
 theme = "toggle"
