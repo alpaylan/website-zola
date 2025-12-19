@@ -14,13 +14,18 @@
   }
 
   a:hover {
-    color: var(--hover_color);
+    color: var(--hover-color);
     background-color: var(--primary-color);
   }
 
-  a::before {
-    content: "🏷 "; /* Ensure there's a space after the emoji for spacing */
+  a:focus,
+  a:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+  }
+
+  .tag-icon {
     display: inline;
-    white-space: nowrap !important;
+    margin-right: 0.25em;
   }
 }
