@@ -45,7 +45,9 @@ millions of tests, but researchers still find bugs in SQLite, similar situations
 The only way to prove the absence of bugs is formal verification, and industry has seen great examples of this. Highly cited formal verification
 projects include CompCert C Compiler, [the random testing of which against GCC and Clang](https://users.cs.utah.edu/~regehr/papers/pldi11-preprint.pdf)
 has led to finding 79 bugs in GCC and 202 bugs in Clang, and only 2 bugs in CompCert in its *unverified* parser, finding no bugs in its verified compilation
-pass, a striking win for formal verification.
+pass, a striking win for formal verification. (Thanks to [A. Jesse Jiryu Davis](https://emptysqua.re/blog/) informing me, I learned that researchers have
+[studied](https://www.cs.purdue.edu/homes/pfonseca/papers/eurosys2017-dsbugs.pdf) the source of failures in formally verified distributed systems, and
+found that wrong assumptions about the unverified parts of the system are the likely culprit.)
 
 This makes formal verification a prime target for AI-assisted programming. Given that we have a formal specification, we can just let the machine wander around
 for hours, days, even weeks. If it comes back with a solution, we shall trust not to the probabilistic predictions of the so-called artificial intelligence,
@@ -133,7 +135,7 @@ models for verification might be hard, just using the real hardware for our meas
 
 In games, there are clear winners and losers. In verification, you can prove that your theorem is correct, you can prove that your theorem is incorrect, but
 absence of a proof for a theorem does not imply that the theorem is incorrect, it is possible that you just haven't found the proof. This means the feedback
-you get when writing a proof is limited as you cannot rely on your inability to progress as a signal about your theorem, it is pluasible that you are the problem.
+you get when writing a proof is limited as you cannot rely on your inability to progress as a signal about your theorem, it is plausible that you are the problem.
 This is why QuickChick, a testing tool descending from the famous QuickCheck of Haskell that introduced Property-Based Testing to the world, exists in Rocq
 ecosystem as one of the three most popular packages. If verification was strictly superior to testing, QuickChick would have no reason to exist, but it serves
 a very crucial role that the verification process needs, **falsification**. I had said that the absence of a proof does not imply that a theorem is wrong, but the witness of a violation of the theorem definitely does. Random testing is the prime suspect for finding such counterexamples, pulling the verifier out of the
@@ -143,7 +145,7 @@ rabbit hole of going through many useless paths in the proof search before givin
 
 I have given examples of tests that formal verification is incapable of modeling, and examples of tests that complement formal verification process by creating
 a short that falsifies false theorems instead of trying to prove them in vain. The synergy between testing and formal verification doesn't end here, I am a firm
-supported of Verification-Guided Development (VGD), which in addition to leveraging this synergy, solves the problem of proof assistants being too slow. In verification
+supporter of Verification-Guided Development (VGD), which in addition to leveraging this synergy, solves the problem of proof assistants being too slow. In verification
 guided development, we implement two versions of the same system, one is the simpler to reason, verified version, the other is the complex, production one. We then
 test the property that the production system conforms to the reference implementation that is verified by running them with the same inputs and asserting that
 the result is the same every single time. VGD *lifts* the proof to the production implementation from the slower one implemented in the proof assistant by leveraging
