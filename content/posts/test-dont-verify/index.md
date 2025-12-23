@@ -145,12 +145,13 @@ rabbit hole of going through many useless paths in the proof search before givin
 
 I have given examples of tests that formal verification is incapable of modeling, and examples of tests that complement formal verification process by creating
 a short that falsifies false theorems instead of trying to prove them in vain. The synergy between testing and formal verification doesn't end here, I am a firm
-supporter of Verification-Guided Development (VGD), which in addition to leveraging this synergy, solves the problem of proof assistants being too slow. In verification
+supporter of [Verification-Guided Development (VGD)](https://aws.amazon.com/blogs/opensource/lean-into-verified-software-development/), which in addition to leveraging this synergy, solves the problem of proof
+assistants being too slow. In verification
 guided development, we implement two versions of the same system, one is the simpler to reason, verified version, the other is the complex, production one. We then
 test the property that the production system conforms to the reference implementation that is verified by running them with the same inputs and asserting that
 the result is the same every single time. VGD *lifts* the proof to the production implementation from the slower one implemented in the proof assistant by leveraging
-differential random testing, which allows for building a best-of-both-worlds system that is both correct and fast. Below is an image taken from the paper that (as far as I know) introduced
-the notion of VGD, explaining their workflow.
+differential random testing, which allows for building a best-of-both-worlds system that is both correct and fast. Below is an image taken from [the paper](https://arxiv.org/abs/2407.01688)
+that (as far as I know) introduced the notion of VGD, explaining their workflow.
 
 ![cedar vgd](image.png)
 
