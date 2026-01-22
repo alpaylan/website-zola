@@ -92,7 +92,7 @@ int low = 0; // (low : [0, 0])
 // Burada `a.length: int` aslında bize [-2^31, 2^31 - 1] değerini verirdi,
 // ancak uzunluğun hesaplanma yönteminden dolayı hiçbir zaman negatif
 // olamayacağını biliyoruz, o yüzden elimizde [0, 2^31 - 1] var.
-int high = a.length - 1; // a.length : [0, 2^31 - 1] => high : [-1, 2^31 - 1]
+int high = a.length - 1; // a.length : [0, 2^31 - 1] => high : [-1, 2^31 - 2]
 ```
 
 Sıradaki işlem daha kompleks, çünkü elimizde 2 farklı seçenek var. While döngüsündeki
@@ -138,7 +138,7 @@ yani `if` içerisindeki kontrolün ilk iterasyona girmeden yanlış olmasından 
 ```java
 // Var olan değişkenleri hatırlayalım
 int low = 0; // (low : [0, 0])
-int high = a.length - 1; // (high : [-1, 2^31 - 1])
+int high = a.length - 1; // (high : [-1, 2^31 - 2])
 if (low <= high) { // kontrol yanlış olmalı, demek ki (!low <= high), bu da demek ki (low > high) 
 ...
 }
@@ -147,10 +147,10 @@ return -(low + 1);  // dolayısıyla (- low + 1) = -1, taşma yok.
 ```
 
 Tüm detayları vermeye çalıştığımda burası çok uzayacak, dolayısıyla buradan itibaren biraz hızlı gideceğim. Diğer
-durumda `low <= high` olmalı, dolayısıyla `low: [0, 0]`, `high: [0, 2^31-1]` ile devam ediyoruz.
+durumda `low <= high` olmalı, dolayısıyla `low: [0, 0]`, `high: [0, 2^31-2]` ile devam ediyoruz.
 
 ```java
-int mid = (low + high) / 2; // Aralıklar üzerinde toplama ve bölme işlemi: ([0, 0] + [0, 2^31-1]) / 2 = [0, 2^30]
+int mid = (low + high) / 2; // Aralıklar üzerinde toplama ve bölme işlemi: ([0, 0] + [0, 2^31-2]) / 2 = [0, 2^30 - 1]
 int midVal = a[mid]; // Dizinin elemanları hakkında bir bilgi sahibi değiliz, dolayısıyla midVal: [-2^31, 2^31 - 1]
 
 // Eğer buraya kadarki hesaplamalarımız bizi bir kontrolün yanlış olduğu sonucuna ulaştırırsa,
@@ -174,12 +174,12 @@ Bu evrende, yine yukarda yaptığımız While döngüsünü açma, ikiye bölme,
 Bunlar sonucunda 
 
 ```java
-// low: [1, 2^30 + 1]`, high: [0, 2^31-1]
-int mid = (low + high) / 2; // low + high = [1, 2^30 + 1] + [0, 2^31-1] = [0, 2^31 + 2^30]
+// low: [1, 2^30 + 1]`, high: [0, 2^31-2]
+int mid = (low + high) / 2; // low + high = [1, 2^30 + 1] + [0, 2^31-2] = [0, 2^31 + 2^30 + 1]
 ```
 
 32-bit tamsayılarla ifade edebildiğimiz en büyük tamsayının 2^31-1 olduğunu daha önce söylemiştik, ancak
-fark ettiyseniz bu işlem sonucunda ortaya çıkan aralık bu sınırı aştı `[0, 2^31 + 2^30]`. Dolayısıyla
+fark ettiyseniz bu işlem sonucunda ortaya çıkan aralık bu sınırı aştı `[0, 2^31 + 2^30 + 1]`. Dolayısıyla
 bu analiz ile kullanıcıya geri dönüp, senin bu işlemin potansiyel olarak senin tipinin sınırlarını aşıyor
 diyebiliriz.
 
