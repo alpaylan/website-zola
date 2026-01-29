@@ -7,7 +7,11 @@ title = "Alperen Keles"
 
 author = "Alperen Keles"
 # Generate a feed file at the root of the site
+# Zola 0.18 uses generate_feed + feed_filename; 0.19+ uses generate_feeds + feed_filenames
+generate_feed = true
 generate_feeds = true
+feed_filename = "atom.xml"
+feed_filenames = ["atom.xml"]
 
 [extra]
 theme = "toggle"
