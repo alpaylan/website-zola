@@ -89,7 +89,7 @@ demos that is doing this, but I would also expect this to happen.
 ### Verifying Translations
 
 The loop we saw at the beginning of the section is a *differential test*, where two systems must be observable equivalent.
-It's the most popular form of Property-Based Testing in software engineering, because it is the simplest property of software.
+It's the most popular form of Property-Based Testing in software engineering, because it is one of the simplest properties we can express about a piece of software.
 Traditionally it's used for validating ports across languages (translations), refactors, optimizations, and there's an even
 interesting method of software development where when implementing a new system, you first build a *model*, a naive, simpler
 version that defines the observable correct behavior of the system is, and use that to test your production grade system that
