@@ -12,8 +12,8 @@ in which they created translations of a browser, Java LSP, Windows emulator and 
 followed by an Anthropic post on [Building a C compiler with a team of parallel Claudes](https://www.anthropic.com/engineering/building-c-compiler), which has only further fan the flames of the hype. Both of these posts have garnered lots of positive
 attention but have failed to stand to the expectations of the demos, Cursor browser got lots of well-deserved critique, and people had
 their good laughs when the C compiler that could compile the Linux kernel failed on a Hello World example. I view both of these as
-fundamentally broken PR attempts at translating production grade software products using a toy translation engine, and getting
-broken toy results. It seems from a speculative point of view that the models are capable enough to do this translation, so my
+initial attempts at translating production grade software products using an immature translation engine, and getting
+broken results. It seems from a speculative point of view that the models are capable enough to do this translation, so my
 position is that the translation harnesses themselves aren't good enough, or the total budget required is much higher. I'll go
 into the economics of translation in the [translation as a function of money](#translation-as-a-function-of-money) section.
 
