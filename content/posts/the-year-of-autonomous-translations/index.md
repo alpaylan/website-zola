@@ -98,13 +98,13 @@ browsers and many other types of software for many years, and now differential t
 its ability to produce shiny demos for new AI models.
 
 There's a larger technical debate here, which is what does it mean for a translation to be correct, because observable
-equivalence is my definition is doing a heavy lifting. What do we observe to make it equivalent? Test cases! So the strength
+equivalence is my definition is doing a heavy lifting. What do we observe to make it equivalent? *Test cases!* So the strength
 of the test case generation directly affects the strength of the equivalence we can ensure. There are some important
 ramifications of this, one is namely that our translations are laser focused on functional equivalence because that's the
 easiest to test for, and fails to account for equivalence in performance, equivalence in security, equivalence in any scenario
 we cannot test our systems for. For any sufficiently complex language, be it C, Rust, SQL or Brainfuck, it's impossible
 to produce all possible inputs to the system, so we must do the next best thing and try to reach as many states of the
-underlying system as possible. I suspect a large part of the bottleneck today is how we generate the test cases, how much
+underlying system as possible. I suspect a large part of the bottleneck of the translations today is how we generate the test cases, how much
 of the system we are able to test quickly enough, and how much information are we able to give back to the model as feedback
 when there's an equivalence failure, how easy it is to localize failures, how much time is spent on tracing the root
 cause of each failure, how much of the token budget are we spending that we could just solve with other, much faster techniques.
@@ -180,7 +180,7 @@ next step after translation because (1) it already includes a valid translation 
 we haven't seen much advances on it without mastering translation first; (2) there are forms of optimization that are
 as easily tested as translation even though optimization is much more nuanced.
 
-The simplest form of optimization is a dominant one, where the new program is strictly better than the old one across all dimensions, for all possible inputs. This type of optimization is typically possible by doing less, meaning we remove
+The simplest form of optimization is a dominant optimization, where the new program is strictly better than the old one across all dimensions, for all possible inputs. This type of optimization is typically possible by doing less, meaning we remove
 allocations, extra pointer chasing via indirections, push ifs up and loops down to make our programs do less work. Given a
 program where it's possible to have such optimizations, we can once again treat the model as a neural search engine that proposes possibly optimized programs we can reject via benchmarks with little changes to the testing harness we had
 for translations.
