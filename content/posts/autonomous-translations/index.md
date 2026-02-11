@@ -190,6 +190,8 @@ known input distributions or focusing on absolute wins where making a small inpu
 than making a very large input run on 0.9x time. I think for these types of optimizations it's harder to automate the harnesses
 as it requires subjective judgement on the acceptable bounds on different input types and distributions.
 
+We are already seeing examples of these, I myself have worked on one we called BitsEvolve [Datadog](https://www.datadoghq.com/blog/engineering/self-optimizing-system/), there is [ShinkaEvolve](https://sakana.ai/shinka-evolve/) by Sakana, [Algotune](https://algotune.io), [ADRS](https://sky.cs.berkeley.edu/project/adrs/), [Glia](https://arxiv.org/abs/2510.27176) and a bunch more I probably have been missing on.
+
 ## Can we copy behind closed windows?
 
 A futuristic application going forward in this technology is not just translating open source applications we have unlimited
