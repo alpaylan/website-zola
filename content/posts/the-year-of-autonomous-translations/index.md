@@ -69,8 +69,8 @@ AI models that can generate code that are astonishingly good at following instru
 cost a decent amount of money to run, but they make it so that we can now sample from a much better distribution of
 possible translations than was previously possible. We can even guide this sampling by augmenting our instructions
 with feedback from the testing harness, so the suggestions of the model is self-improving within this translation loop.
-We can modularize the software into multiple units or modules, each of which is separately validated, which once
-means we the model now doesn't even have to generate the whole thing, it can generate each smaller unit and compose
+We can modularize the software into multiple units or modules, each of which is separately validated, which means
+that the doesn't even have to generate the whole thing, it can generate each smaller unit and compose
 the whole thing together.
 
 There's an economic balance here:
