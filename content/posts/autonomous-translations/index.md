@@ -1,5 +1,5 @@
 +++
-title = "The Year of Autonomous Translations, and Where to Go From Here"
+title = "The Mechanics of Autonomous Software Translation"
 date = "2026-02-11"
 [taxonomies]
 tags = ['software engineering', 'ai', 'testing']
@@ -9,7 +9,7 @@ language = ["en"]
 2026 started with a boom of AI-assisted autonomous translations, on 14th of January,
 Cursor published their post on [Scaling long-running autonomous coding](https://cursor.com/blog/scaling-agents)
 in which they created translations of a browser, Java LSP, Windows emulator and Excel. This was
-followed by an Anthropic post on [Building a C compiler with a team of parallel Claudes](https://www.anthropic.com/engineering/building-c-compiler), which has only further fan the flames of the hype. Both of these posts have garnered lots of positive
+followed by an Anthropic post on [Building a C compiler with a team of parallel Claudes](https://www.anthropic.com/engineering/building-c-compiler), which has only further fanned the flames of the hype. Both of these posts have garnered lots of positive
 attention but have failed to stand to the expectations of the demos, Cursor browser got lots of well-deserved critique, and people had
 their good laughs when the C compiler that could compile the Linux kernel failed on a Hello World example. I view both of these as
 initial attempts at translating production grade software products using an immature translation engine, and getting
@@ -28,8 +28,8 @@ and finish with a discussion of a world where ubiquitous translation of software
 
 I should start this section with a disclaimer to its title, **AI currently does not translate software**. If AI translated software,
 it would be like waving a magic wand, we would say "give me a Rust version of Doom", and voila, we would get one. What instead
-happens right now is, people use LLMs as neural seach engines, *AI proposes translations*, which are then rejected
-by a translation harness that is designed by a human, in these cases experts that understand the mistakes LLMs make,
+happens right now is, people use LLMs as neural search engines, *AI proposes translations*, which are then rejected
+by a translation harness, a concrete evaluator that decides if the translation has succeeded or not, that is designed by a human, in these cases experts that understand the mistakes LLMs make,
 and know how to create a robust testing loop with continuous improvements. This may change in the future where
 the harnesses themselves good enough for translation are written by the models, which is I think the point where the terminology
 should shift, not at this point in the history. The fundamental current change is that these translations are now economically
@@ -78,13 +78,13 @@ There's an economic balance here:
 > `translation cost ≈ (cost per iteration) × (expected iterations until “good enough”) + (harness engineering + oversight)`
 
 As models and harnesses get better, the expected number of iterations to reach equivalence do and will get lower,
-and assuming that the cost to generation itself doens't increase too much, we should expect the cost of translation
+and assuming that the cost to generation itself doesn't increase too much, we should expect the cost of translation
 to drop significantly, expecting to see many more of these results. There are two significant developments from the model
 side here, one is that they are getting better at following specifications, the two is that they are getting better at
 being in the control plane. In addition to doing the translations themselves, we can trust the model to make better
 judgements within the harness such as invoking subagents to translate a logical module and producing a smaller random test for
-it, essentially letting the model dicdate how much of the translation is successfully completed. I'm not aware of any current
-demos that is doing this, but I would also expect this to happen.
+it, essentially letting the model dictate how much of the translation is successfully completed. I'm not aware of any current
+demos that are doing this, but I would also expect this to happen.
 
 ### Verifying Translations
 
@@ -115,8 +115,8 @@ ecosystems, how much value do we produce here? What good is it to produce transl
 
 ## How can we derive value out of translations?
 
-The answer here isn't really obvious. Let's say we have a perfect translator from Javascript to Rust, and we give it
-the following Javascript program:
+The answer here isn't really obvious. Let's say we have a perfect translator from JavaScript to Rust, and we give it
+the following JavaScript program:
 
 ```js
 function add(a, b) {
@@ -132,7 +132,7 @@ fn add(a: i32, b: i32) -> i32 {
 }
 ```
 
-Of course this is completely wrong, because we are translating a Javascript function, which can take any JS object, so the correct translation would be something like:
+Of course this is completely wrong, because we are translating a JavaScript function, which can take any JS object, so the correct translation would be something like:
 
 ```rust
 enum JsValue {
@@ -164,7 +164,7 @@ the underlying types as long as the public interface, which is usually a simpler
 deserialize, is preserved. Therefore, it is in my opinion more possible to make an application more readable, maintainable, or
 faster via translation as opposed to libraries.
 
-Another point we can derive value is platform dependence. For instance, on web, we could only run Javascript as a scripting
+Another point we can derive value is platform dependence. For instance, on web, we could only run JavaScript as a scripting
 language for a while, although nowadays WASM is changing this, but if it had not, we could use translation to run arbitrary
 languages on the web, as older symbolic translation methods such as ghcjs, emscripten had done. This type of platform
 dependence also exists in other ecosystems such as smaller embedded devices, where we might want to run a Rust application
@@ -204,7 +204,7 @@ I wrote a bit earlier that translation between languages themselves isn't straig
 translations can be hardly useful. There's a bit of intellectual dishonesty here, because such as translation
 also gives us the ability to specify types of the software too. We can take programs that are initially
 too liberal with their types and progressively cut down those overly permissive types into simpler forms,
-just as how the V8 JIT compiler dynamically computes when Javascript function types can be pruned and simplified
+just as how the V8 JIT compiler dynamically computes when JavaScript function types can be pruned and simplified
 based on existing input profiles. Our translation units also don't have to be aligned at functions, which might
 again force us to use patterns that are at a disadvantage in one language but useful in the other, such as memory
 management patterns in C that isn't expressible in safe Rust, but could have been avoided if we draw the translation
