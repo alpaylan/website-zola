@@ -26,7 +26,7 @@ and finish with a discussion of a world where ubiquitous translation of software
 
 ## How does AI translate software?
 
-I should start this section with a disclaimer to its title, **AI does not translate software**. If AI translated software,
+I should start this section with a disclaimer to its title, **AI currently does not translate software**. If AI translated software,
 it would be like waving a magic wand, we would say "give me a Rust version of Doom", and voila, we would get one. What instead
 happens right now is, people use LLMs as neural seach engines, *AI proposes translations*, which are then rejected
 by a translation harness that is designed by a human, in these cases experts that understand the mistakes LLMs make,
