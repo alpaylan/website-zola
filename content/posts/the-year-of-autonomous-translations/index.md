@@ -1,6 +1,6 @@
 +++
 title = "The Year of Autonomous Translations, and Where to Go From Here"
-date = "2026-02-20"
+date = "2026-02-11"
 [taxonomies]
 tags = ['software engineering', 'ai', 'testing']
 language = ["en"]
