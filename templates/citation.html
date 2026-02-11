@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+<main>
+    <article>
+        <h1>Cite: <a href="{{ page.extra.original_url }}">{{ page.extra.original_title }}</a></h1>
+
+        <h2>BibTeX</h2>
+        <pre id="bibtex">{{ page.extra.bibtex }}</pre>
+        <button onclick="copyToClipboard('bibtex')">Copy BibTeX</button>
+
+        <h2>APA</h2>
+        <pre id="apa">{{ page.extra.apa }}</pre>
+        <button onclick="copyToClipboard('apa')">Copy APA</button>
+
+        <p>
+            Raw endpoints:
+            <a href="{{ page.extra.original_url }}cite/bibtex">BibTeX</a> |
+            <a href="{{ page.extra.original_url }}cite/apa">APA</a>
+        </p>
+    </article>
+</main>
+
+<script>
+function copyToClipboard(id) {
+    var text = document.getElementById(id).textContent;
+    navigator.clipboard.writeText(text).then(function() {
+        var btn = event.target;
+        var original = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(function() { btn.textContent = original; }, 2000);
+    });
+}
+</script>
+{% endblock main_content %}
