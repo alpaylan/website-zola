@@ -41,16 +41,16 @@ build_search_index = false
 
 [extra.documents]
 papers = [
-    { file = "etna.pdf", title = "ETNA Paper", description = "ETNA research paper" },
-    { file = "etna-jfp.pdf", title = "ETNA JFP Paper", description = "ETNA Journal of Functional Programming paper" },
-    { file = "d4.pdf", title = "D4 Paper", description = "D4 research paper" },
-    { file = "dbas.pdf", title = "DBAS Paper", description = "DBAS research paper" },
-    { file = "tail.pdf", title = "Tail Paper", description = "Tail research paper" },
-    { file = "puzzles-and-algorithms.pdf", title = "Puzzles and Algorithms", description = "Puzzles and algorithms paper" }
+    { file = "etna.pdf", title = "ETNA Experience Report", description = "ETNA ICFP Experience Report" },
+    { file = "etna-jfp.pdf", title = "ETNA Research Paper", description = "Extended ETNA Journal of Functional Programming Research Paper" },
+    { file = "d4.pdf", title = "D4: Debugging Databases During Development", description = "Database testing research paper under development" },
+    { file = "dbas.pdf", title = "Programmable Property-Based Testing", description = "Novel PBT approach under review" },
+    { file = "tail.pdf", title = "Tail: A Typed and Structured Document Editor", description = "Extended abstract for a typed and structured document editor" },
+    { file = "puzzles-and-algorithms.pdf", title = "Puzzles and Algorithms", description = "Opinion piece on how puzzles can be used to learn algorithmic thinking" }
 ]
 presentations = [
     { file = "bobkonf/slides.pdf", title = "BOB Konf Slides", description = "BOB Konf presentation slides" },
-    { file = "topsort/slides.pdf", title = "Topological Sort Slides", description = "Topological sort presentation slides" }
+    { file = "topsort/slides.pdf", title = "TopSort Slides", description = "TopSort presentation slides" }
 ]
 other = [
     { file = "resume.pdf", title = "Resume", description = "Current resume/CV" }
@@ -60,6 +60,7 @@ other = [
 # Whether to do syntax highlighting
 # Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
 highlight_code = true
+extra_syntaxes_and_themes = ["syntaxes"]
 highlight_theme = "css"
 bottom_footnotes = true
 

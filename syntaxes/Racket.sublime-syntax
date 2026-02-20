@@ -1,0 +1,103 @@
+%YAML 1.2
+---
+name: Racket
+file_extensions: [rkt, rktl, rktd]
+scope: source.racket
+
+contexts:
+  main:
+    # Line comments
+    - match: ';.*$'
+      scope: comment.line.semicolon.racket
+
+    # Block comments
+    - match: '#\|'
+      scope: punctuation.definition.comment.begin.racket
+      push: block_comment
+
+    # Strings
+    - match: '"'
+      scope: punctuation.definition.string.begin.racket
+      push: string
+
+    # Character literals
+    - match: '#\\(space|newline|tab|nul|backspace|delete|escape|alarm|return|[^\s])'
+      scope: constant.character.racket
+
+    # Boolean literals
+    - match: '#[tf]\b'
+      scope: constant.language.boolean.racket
+
+    # Numeric literals
+    - match: '(?<=[(\s])[-+]?[0-9]+(?:\.[0-9]+)?(?:[eE][-+]?[0-9]+)?(?=[)\s]|$)'
+      scope: constant.numeric.racket
+    - match: '(?<=[(\s])[0-9]+(?=[)\s]|$)'
+      scope: constant.numeric.racket
+
+    # Hash keywords
+    - match: '#:[\w-]+'
+      scope: constant.other.keyword.racket
+
+    # Language declaration
+    - match: '^#lang\s+\S+'
+      scope: meta.module.racket keyword.control.racket
+
+    # Core definition forms
+    - match: '(?<=\()(define-syntax|define-syntax-rule|define-values|define|let-values|let\*-values|let-syntax|letrec-syntax|let\*|letrec|let|lambda|λ|case-lambda)\b'
+      scope: keyword.control.definition.racket
+
+    # Control flow
+    - match: '(?<=\()(if|cond|case|when|unless|and|or|begin|begin0|do|for|for/list|for/fold|for\*|for\*/list|for\*/fold|for/and|for/or|for/first|for/last|for/sum|for/product|for/hash|match|match\*|match-let|match-define)\b'
+      scope: keyword.control.racket
+
+    # Binding forms
+    - match: '(?<=\()(set!|define-struct|struct|class|interface|mixin|provide|require|module|module\*|module\+|import|export|prefix-in|only-in|except-in|rename-in)\b'
+      scope: keyword.other.racket
+
+    # Common functions
+    - match: '(?<=\()(map|filter|foldl|foldr|apply|append|reverse|sort|length|list|cons|car|cdr|cadr|caddr|first|second|third|rest|empty\?|null\?|pair\?|list\?|number\?|string\?|symbol\?|boolean\?|procedure\?|eq\?|equal\?|eqv\?|not|add1|sub1|values|call-with-values|display|displayln|printf|fprintf|format|error|raise|with-handlers|dynamic-wind|parameterize|void)\b'
+      scope: support.function.racket
+
+    # Arithmetic operators as function calls
+    - match: '(?<=\()(\+|-|\*|/|=|<|>|<=|>=|min|max|abs|floor|ceiling|round|truncate|log|expt|sqrt|modulo|remainder|quotient|gcd|lcm|zero\?|positive\?|negative\?|even\?|odd\?|exact\?|inexact\?|number->string|string->number)\b'
+      scope: support.function.math.racket
+
+    # String operations
+    - match: '(?<=\()(string-append|string-length|string-ref|string-copy|substring|string-upcase|string-downcase|string-contains\?|string-split|string-join|string->list|list->string|string->symbol|symbol->string|string->number|number->string|regexp-match|regexp-replace)\b'
+      scope: support.function.string.racket
+
+    # Quoting
+    - match: "['`](?=[(])"
+      scope: keyword.operator.quote.racket
+    - match: ",@|,"
+      scope: keyword.operator.unquote.racket
+    - match: '(?<=\()(quote|quasiquote|unquote|unquote-splicing|syntax|quasisyntax|unsyntax|unsyntax-splicing)\b'
+      scope: keyword.control.quote.racket
+
+    # Property/testing keywords (for PBT code)
+    - match: '(?<=\()(property|forall|check-property|generate|result|shrink-eager|run-loop|run-rackcheck-gen)\b'
+      scope: entity.name.function.racket
+
+    # Identifiers that look like function definitions
+    - match: '(?<=\(define\s\()[\w?!+\-*/<>=.]+\b'
+      scope: entity.name.function.racket
+
+  block_comment:
+    - match: '#\|'
+      push: block_comment
+    - match: '\|#'
+      scope: punctuation.definition.comment.end.racket
+      pop: true
+    - match: '.'
+      scope: comment.block.racket
+
+  string:
+    - match: '\\[nrt"\\abefv0]'
+      scope: constant.character.escape.racket
+    - match: '\\x[0-9a-fA-F]+'
+      scope: constant.character.escape.racket
+    - match: '"'
+      scope: punctuation.definition.string.end.racket
+      pop: true
+    - match: '.'
+      scope: string.quoted.double.racket

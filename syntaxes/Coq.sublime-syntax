@@ -1,0 +1,71 @@
+%YAML 1.2
+---
+name: Coq
+file_extensions: [v]
+scope: source.coq
+
+contexts:
+  main:
+    # Line comments
+    - match: '\(\*'
+      scope: punctuation.definition.comment.begin.coq
+      push: block_comment
+
+    # Strings
+    - match: '"'
+      scope: punctuation.definition.string.begin.coq
+      push: string
+
+    # Numeric literals
+    - match: '\b[0-9]+\b'
+      scope: constant.numeric.coq
+
+    # Vernacular commands
+    - match: '\b(Theorem|Lemma|Fact|Remark|Corollary|Proposition|Property|Definition|Fixpoint|CoFixpoint|Let|Example|Inductive|CoInductive|Record|Structure|Class|Instance|Existing\s+Instance|Canonical|Coercion|Identity\s+Coercion|Implicit\s+Types?|Section|Module|End|Require|Import|Export|Open\s+Scope|Close\s+Scope|Bind\s+Scope|Delimit\s+Scope|Notation|Infix|Ltac|Ltac2|Tactic\s+Notation|Set|Unset|Arguments|Obligation|Program|Equations|Derive|From|Goal|Proof|Qed|Defined|Admitted|Abort|Save|Print|Check|Compute|Eval|About|Search|SearchHead|SearchPattern|SearchRewrite|Locate|Register|Typeclasses|Context|Variable|Variables|Hypothesis|Hypotheses|Parameter|Parameters|Axiom|Axioms|Conjecture)\b'
+      scope: keyword.control.vernacular.coq
+
+    # Gallina keywords
+    - match: '\b(forall|exists|fun|fix|cofix|match|with|end|as|in|return|let|if|then|else|Type|Prop|Set|SProp)\b'
+      scope: keyword.control.gallina.coq
+
+    # Tactic keywords
+    - match: '\b(intros?|apply|exact|refine|rewrite|simpl|unfold|destruct|induction|inversion|injection|discriminate|contradiction|exfalso|assert|pose|set|remember|generalize|specialize|clear|rename|revert|replace|symmetry|transitivity|etransitivity|reflexivity|split|left|right|exists|constructor|econstructor|eapply|eauto|auto|omega|lia|ring|field|decide|trivial|congruence|tauto|firstorder|solve|repeat|try|progress|now|abstract|shelve|admit|assumption|subst|case|elim|change|pattern|cbv|red|hnf|cbn|lazy|vm_compute|native_compute)\b'
+      scope: keyword.other.tactic.coq
+
+    # Boolean literals
+    - match: '\b(true|false)\b'
+      scope: constant.language.coq
+
+    # Common operators
+    - match: '(:=|=>|->|<-|;;|\||\:\:|\+\+|&&|\|\||==|=\?|<=\?|<\?|>=\?|>\?|<>)'
+      scope: keyword.operator.coq
+
+    # Type annotations with :
+    - match: '\b(nat|bool|list|option|unit|string|Prop|Type|Set|prod|sum|sigT|sig|Empty_set)\b'
+      scope: storage.type.coq
+
+    # Result constructor-like identifiers (capitalized)
+    - match: '\b(O|S|None|Some|nil|cons|tt|inl|inr|pair|Normal|Discard|Generate|Mutate|G|Result)\b'
+      scope: entity.name.tag.coq
+
+    # ret and bind notation
+    - match: '\b(ret|bind|mkResult)\b'
+      scope: support.function.coq
+
+  block_comment:
+    - match: '\(\*'
+      push: block_comment
+    - match: '\*\)'
+      scope: punctuation.definition.comment.end.coq
+      pop: true
+    - match: '.'
+      scope: comment.block.coq
+
+  string:
+    - match: '""'
+      scope: constant.character.escape.coq
+    - match: '"'
+      scope: punctuation.definition.string.end.coq
+      pop: true
+    - match: '.'
+      scope: string.quoted.double.coq
