@@ -263,6 +263,17 @@
                     {% endif %}
                 </div>
 
+                {% if page.taxonomies and page.taxonomies.language %}
+                    <span class="card-lang-badge {{ page.taxonomies.language[0] }}">{{ page.taxonomies.language[0] | upper }}</span>
+                {% endif %}
+                {% if page.taxonomies and page.taxonomies.tags %}
+                    <span class="card-tags">
+                        {% for tag in page.taxonomies.tags %}
+                            <a href="{{ get_taxonomy_url(kind='tags', name=tag) | safe }}" class="card-tag">#{{ tag }}</a>
+                        {% endfor %}
+                    </span>
+                {% endif %}
+
                 <div class="card-description">
                     {% if page.description %}
                         {{ page.description }}

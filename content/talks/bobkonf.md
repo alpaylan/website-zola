@@ -1,7 +1,11 @@
 +++
 title = "A practical introduction to property-based testing"
 description = "Bobkonf presentation"
-weight = 1
+weight = 2
+
+[taxonomies]
+language = ["en"]
+tags = ["property-based-testing"]
 
 [extra]
 link_to = "https://media.ccc.de/v/bob11-2025-property-based-testing-keles"

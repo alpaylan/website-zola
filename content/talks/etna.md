@@ -1,7 +1,11 @@
 +++
-title = "Etna"
-description = "An Evaluation Platform for Property-Based Testing"
-weight = 1
+title = "ETNA: An Evaluation Platform for Property-Based Testing"
+description = "ICFP23"
+weight = 3
+
+[taxonomies]
+language = ["en"]
+tags = ["property-based-testing", "benchmarking"]
 
 [extra]
 link_to = "https://www.youtube.com/watch?v=fyDW5fkn-m8"

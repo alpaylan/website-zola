@@ -80,6 +80,23 @@ header .socials {
     height: 24px;
 }
 
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+
+    span {
+        display: block;
+        width: 24px;
+        height: 2px;
+        margin: 5px 0;
+        background: var(--text-color);
+        transition: 0.3s;
+    }
+}
+
 /* Mobile-specific adjustments */
 @media (max-width: 600px) {
     header {
@@ -90,6 +107,25 @@ header .socials {
 
     header .main a {
         font-size: 20px;
+    }
+
+    .hamburger {
+        display: block;
+    }
+
+    header nav {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+
+        &.open {
+            display: flex;
+        }
+    }
+
+    .page-header {
+        margin-top: 1rem;
     }
 }
 
@@ -116,6 +152,20 @@ header nav {
     display: flex;
     align-items: center;
     line-height: 1.2;
+
+    a + a {
+        margin-left: 0.5em;
+    }
+}
+
+@media (max-width: 600px) {
+    header nav {
+        display: none;
+
+        &.open {
+            display: flex;
+        }
+    }
 }
 
 h1,

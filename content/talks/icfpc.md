@@ -1,7 +1,11 @@
 +++
-title = "Programming Contest Report"
-description = "ICFP Programming Contest 2022"
-weight = 1
+title = "ICFP Programming Contest Report"
+description = "ICFP22"
+weight = 3
+
+[taxonomies]
+language = ["en"]
+tags = ["programming-contest", "functional-programming"]
 
 [extra]
 link_to = "https://www.youtube.com/watch?v=NCS3wGaB-ys"

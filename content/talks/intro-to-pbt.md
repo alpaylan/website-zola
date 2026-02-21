@@ -1,7 +1,11 @@
 +++
-title = "Introduction to Property-Based Testing"
-description = "A short introductory presentation on property-based testing"
-weight = 1
+title = "Introduction to PBT"
+description = "Turkiye Java Community"
+weight = 4
+
+[taxonomies]
+language = ["en"]
+tags = ["property-based-testing"]
 
 [extra]
 link_to = "https://www.youtube.com/watch?v=gAZMnAncvas"
