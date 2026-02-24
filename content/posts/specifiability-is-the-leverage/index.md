@@ -144,3 +144,6 @@ but I don't know of any such polished product for building fully autonomous loop
 the leverage. I don't see us identifying potential gaps to open up between the specification and the implementation and focusing on exploiting
 those gaps. It's not that there aren't people working on these problems, I mentioned in my previous posts, BitsEvolve, ShinkaEvolve, ADRS, Glia,
 Algotune, there are many people working on finding opportunities to produce autonomous tasks, but the leverage is still in the niche.
+
+(I think this will be the last one of these posts, because I feel like I told all I wanted to say in this topic, wish me luck
+on getting back to writing about testing databases and type systems!)
