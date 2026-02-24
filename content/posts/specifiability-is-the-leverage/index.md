@@ -7,13 +7,13 @@ language = ["en"]
 +++
 
 Almost a year ago, I wrote my first ever blog post on AI-assisted programming, [Verifiability is the Limit](https://alperenkeles.com/posts/verifiability-is-the-limit/).
-The core idea was a push against the school of thought that AI-assisted programming would scale to an infinite productivity level, because someone had to verify
-that the outputs conform to the given specification, the prompt. I predicted that this had, and would, give rise to uneven levels of productivity in different domains,
+The core idea was a push against the school of thought that AI-assisted programming would scale to an infinite productivity level, because *someone* had to verify
+that the outputs conform to the given specification, *the prompt*. I predicted that this had, and would, give rise to uneven levels of productivity in different domains;
 in UI development, it would make human-in-the-loop development much faster, because UIs are very easy to verify via looking, checking, inspecting the changes. If
 we could construct a perfect oracle, a computational verifier that has the ability to reject or accept any artifact produced by the model, we could get autonomous
 improvements comparable to those we got in games such as Chess or Go, which I've further explored in [Breaking Verifiable Abstractions](https://alperenkeles.com/posts/verifiable-abstractions/),
 [Test, don't (just) verify](https://alperenkeles.com/posts/test-dont-verify/) and [The Mechanics of Autonomous Software Translation](https://alperenkeles.com/posts/autonomous-translations/).
-This time, I've come back to reframe these ideas from a new lens, I don't know how useful these lenses are, perhaps both of them separate don't lend any
+This time, I've come back to reframe these ideas from a new lens, I don't know how useful these lenses are, perhaps both of them separately don't lend any
 usefulness to anyone, but if they are of interest to you, here's the thesis.
 
 **The gap between the specification and the task is the leverage.**
@@ -27,7 +27,7 @@ and we also make mistakes on how we think about specifying systems, so we've a l
 The rest of this post is talking about different domains, different ways to specify, how to gain leverage, how people have been gaining leverage, what are we still missing.
 
 The simplest form of specification is a reference. Imagine you take a screenshot of a webpage, and you ask the model to keep generating code until it recreates it. You gain
-immense leverage from this interaction, because you have left much of the specification of the details to your reference with a minimal requirement, the page must look the same.
+immense leverage from this interaction, because you have left much of the specification of the details to your reference with a minimal requirement, *the page must look the same*.
 There are, however, millions of different ways to fulfill this request. For instance, nothing prevents the model from literally making the page a canvas and putting the picture
 there, objective achieved! That is probably not you want, you want a reasonable approximation of the screenshot in a usable manner. So something that looks like a button should
 probably be a button, something that resembles a textbox should be a text area, etc. You also want reasonable behavior on scrolling, resizing, reloading... You see how this is
@@ -46,7 +46,7 @@ when developing without model assistance. We can even use the model to help us w
 you can get the model to *quiz* you, ask you questions to refine the specification you gave, in order to produce software that is a better fit to your intent. You can, as is the typical
 development workflow, check the output to refine the specification by correcting a piece of it.
 
-You might've realized in the screenshot example that references themselves are not the specifications, they are anchors, targets to adhere to. We have to also specify the gadgets,
+You might've realized in the screenshot example that references themselves are not the specifications, they are *anchors*, targets to adhere to. We have to also specify the gadgets,
 the tools, the platform to produce the artifact to conform to the reference, which would be a standalone HTML page or a React application in the screenshot instance. In other
 instances we might specify using specific programming languages, testing strategies, implementation tricks, dependencies... The highest leverage, however, comes with the ability
 to remove the human from the loop. If we could only produce a computational verifier that completely specifies our program, we could just let the model evolve the program in an
@@ -59,7 +59,7 @@ So, what is leverage?
 
 > `leverage ≈ traditional engineering cost - (harness engineering + oversight)`
 
-The leverage we acquire via AI-assisted software engineering is the effort we spend on building the harness and maintaining it
+The leverage we acquire via generative programming is the effort we spend on building the harness and maintaining it
 subtracted from the total engineering effort we would have spent if we didn't have the
 computational verifier. What does the computational verifier look like? It's a random testing loop! Produce random inputs, pass them in the new and the old implementation,
 assert that their results are the same, or at least equivalent. We once again rely on the generalization capacities of the model here, trusting that it won't keep
@@ -71,6 +71,7 @@ what we can achieve with high leverage using these computational verifiers.
 
 Well then, we get to the gist of the important question. **Where else do we have this type of leverage?**
 
+A simple answer is, any domain or scenario you can construct robust, expressive, and extensive Property-Based Testing harnesses.
 The core idea of Property-Based Testing is, users write executable specifications using first order logic. Properties are universally quantified predicates that must hold true
 for any given input, and they are implemented as predicate functions from such inputs to booleans, letting the testing harness decide on how the inputs are produced. For instance,
 we can write and test the following properties in Python:
@@ -78,9 +79,9 @@ we can write and test the following properties in Python:
 Program translation:
 
 ```python
-def translation_preserves_semantics(python_program: PythonProgram, input: Input):
-    translated_program = translate_to_rust(python_program)
-    return execute_python(python_program, input) == execute_rust(translated_program, input)
+def translation_preserves_semantics(program: PythonProgram, input: Input):
+    translated_program = translate_to_rust(program)
+    return execute_python(program, input) == execute_rust(translated_program, input)
 ```
 
 Program optimization:
@@ -94,10 +95,10 @@ def optimization_preserves_semantics(program: Program, input: Input):
 Preservation of momentum in physics simulations:
 
 ```python
-def momentum_preservation(mass1: float, velocity1: float, mass2: float, velocity2: float):
-    initial_momentum = mass1 * velocity1 + mass2 * velocity2
-    final_velocity1, final_velocity2 = simulate_collision(mass1, velocity1, mass2, velocity2)
-    final_momentum = mass1 * final_velocity1 + mass2 * final_velocity2
+def momentum_preservation(mass1: float, vel1: float, mass2: float, vel2: float):
+    initial_momentum = mass1 * vel1 + mass2 * vel2
+    final_vel1, final_vel2 = simulate_collision(mass1, vel1, mass2, vel2)
+    final_momentum = mass1 * final_vel1 + mass2 * final_vel2
     return initial_momentum == final_momentum
 ```
 
@@ -130,15 +131,15 @@ from the implementation to the specification, we start to use the [LLM as some k
 we relinquish control of every detail we choose not to specify, or not to test for. This means the model has free reign to do as it pleases as long
 as the tests pass.
 
-Universally quantified properties aren't the only way to specify software at scale. Temporal logic formulas as in TLA+, or the newly announced
+Universally quantified properties aren't the only way to specify software at scale. Temporal logic formulas as in [TLA+](https://learntla.com), or the newly announced
 [Bombadil](https://wickstrom.tech/2026-01-28-there-and-back-again-from-quickstrom-to-bombadil.html) allow users to specify behavior of a program
-temporally, as formulas over time reasoning if a property always holds for a program, or that all paths in the program eventually lead to
+temporally, as formulas over traces of the program, reasoning if a property holds all the time, for all possible paths in the program; or that all paths in the program eventually lead to
 some supposed destination such as a cleanup routine. These types of specifications are especially crucial in distributed settings because many
 distributed algorithms as expressed as temporal logic formulas and proven in model checkers like TLA+. These formulas, unsurprisingly, have to be
 combined with finer level details we expect from the implementations too, after all, many concepts in theoretical computing such as eventuality
 have to be bounded by certain limits to be practical in real life settings.
 
-Let's talk about what I see we're still missing.
+**Let's talk about what I see we're still missing.**
 
 For starters, we lack the expressivity in our specification languages to specify many useful aspects of the software. All of the harnesses people
 use in [OpenEvolve](https://github.com/algorithmicsuperintelligence/openevolve) style systems are still programs, programs that are written as bespoke,
@@ -148,9 +149,12 @@ programming. There are a multitude of impressive products such as Codex, Claude 
 take care of context management, tool calling, model selection, prompt caching, sandboxing, checkpointing and many other useful feature for AI-assisted programming,
 but I don't know of any such polished product for building fully autonomous loops. Last but not least, we are missing the mindset to look for
 the leverage. I don't see us identifying potential gaps to open up between the specification and the implementation and focusing on exploiting
-those gaps. It's not that there aren't people working on these problems, I mentioned in my previous posts, [BitsEvolve](https://www.datadoghq.com/blog/engineering/self-optimizing-system/),
+those gaps. It's not that there aren't people working on these problems, as I mentioned in my previous posts, [BitsEvolve](https://www.datadoghq.com/blog/engineering/self-optimizing-system/),
 [ShinkaEvolve](https://sakana.ai/shinka-evolve/), [ADRS](https://arxiv.org/abs/2510.06189), [Glia](https://arxiv.org/abs/2510.27176),
 [AlgoTune](https://arxiv.org/abs/2507.15887), there are many people working on finding opportunities to produce autonomous tasks, but the leverage is still in the niche.
+
+If you have any comments, feedback, or (especially) criticisms, please feel free to reach out to me at [akeles@umd.edu](mailto:akeles@umd.edu), and
+share with others if you found this interesting.
 
 (I think this will be the last one of this line of posts, because I feel like I told all I wanted to say in this topic, wish me luck
 on getting back to writing about testing databases and type systems!)
