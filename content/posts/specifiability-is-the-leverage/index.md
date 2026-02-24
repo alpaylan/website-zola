@@ -18,8 +18,9 @@ usefulness to anyone, but if they are of interest to you, here's the thesis.
 
 **The gap between the specification and the task is the leverage.**
 
-There's an important component here, which is that this new thesis isn't really that different from how verifiability is the limit. Rather it recognizes that the computational
-perfect oracle is the specification. So, it gives us a tool to answer the question, how much productivity gain can we get from using an LLM, which is that the difference in
+There's an important component here, which is that this new thesis isn't really that different from how verifiability is the limit. Rather, instead of framing a limit based on
+the verifier, be it subjective personal judgement or a perfect computational oracle, it recognizes that the verifier is the specification.
+So, it gives us a tool to answer the question, *"how much productivity gain can we get from using an LLM"*, which is that the difference in
 time to specify the task versus executing it. This is an upper limit to the productivity gain that we're far away from because these systems are far from perfect, they make mistakes,
 and we also make mistakes on how we think about specifying systems, so we've a lot to improve on.
 
@@ -35,7 +36,7 @@ more nuanced in practice. This isn't really a groundbreaking discovery, we start
 so the model has to infer, or guess, or ask, every decision beyond the reference.
 
 This isn't really so bad, because models are not blind followers of instructions, they generalize them in the context of training data. So when we ask the model to generate
-a webpage based on a screenshot, I am (99.99%) certain that it will not just print it on a canvas, it will infer that you want DOM elements organized in such a way that it
+a webpage based on a screenshot, I am certain that it will not just print it on a canvas, it will infer that you want DOM elements organized in such a way that it
 resembles the screenshot, and that's a very nice behavior we certainly want when using the models, because if we wanted to be *that* precise, we lose the leverage we get by using
 a generative model of programming, at the limit without contextual inference, the specification can be equivalent to the implementation.
 
@@ -54,8 +55,13 @@ loop in my latest post, [The Mechanics of Autonomous Software Translation](https
 
 > `total cost ≈ (inference cost per iteration) × (expected iterations until “good enough”) + (harness engineering + oversight)`
 
-Here, the leverage is the effort we spend on `(harness engineering + oversight)` subtracted from the total engineering effort we would have spent if we didn't have the
-computational verifier. What does the computational verifier looks like? It's a random testing loop! Produce random inputs, pass them in the new and the old implementation,
+So, what is leverage?
+
+> `leverage ≈ traditional engineering cost - (harness engineering + oversight)`
+
+The leverage we acquire via AI-assisted software engineering is the effort we spend on building the harness and maintaining it
+subtracted from the total engineering effort we would have spent if we didn't have the
+computational verifier. What does the computational verifier look like? It's a random testing loop! Produce random inputs, pass them in the new and the old implementation,
 assert that their results are the same, or at least equivalent. We once again rely on the generalization capacities of the model here, trusting that it won't keep
 adding new `if` statements for every single input it gets wrong until the testing loop is exhausted. Within this framework, we get increasingly higher leverage as models
 get better and harnesses are better engineered, we should get increasingly better results in translation. The current demos with the [C Compiler](https://www.anthropic.com/engineering/building-c-compiler),
@@ -142,8 +148,9 @@ programming. There are a multitude of impressive products such as Codex, Claude 
 take care of context management, tool calling, model selection, prompt caching, sandboxing, checkpointing and many other useful feature for AI-assisted programming,
 but I don't know of any such polished product for building fully autonomous loops. Last but not least, we are missing the mindset to look for
 the leverage. I don't see us identifying potential gaps to open up between the specification and the implementation and focusing on exploiting
-those gaps. It's not that there aren't people working on these problems, I mentioned in my previous posts, BitsEvolve, ShinkaEvolve, ADRS, Glia,
-Algotune, there are many people working on finding opportunities to produce autonomous tasks, but the leverage is still in the niche.
+those gaps. It's not that there aren't people working on these problems, I mentioned in my previous posts, [BitsEvolve](https://www.datadoghq.com/blog/engineering/self-optimizing-system/),
+[ShinkaEvolve](https://sakana.ai/shinka-evolve/), [ADRS](https://arxiv.org/abs/2510.06189), [Glia](https://arxiv.org/abs/2510.27176),
+[AlgoTune](https://arxiv.org/abs/2507.15887), there are many people working on finding opportunities to produce autonomous tasks, but the leverage is still in the niche.
 
-(I think this will be the last one of these posts, because I feel like I told all I wanted to say in this topic, wish me luck
+(I think this will be the last one of this line of posts, because I feel like I told all I wanted to say in this topic, wish me luck
 on getting back to writing about testing databases and type systems!)
