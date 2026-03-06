@@ -184,6 +184,56 @@
             </div>
         {% endif %}
 
+        {% if page.extra.mirror_url %}
+            {% set mirror_stay_param = page.extra.mirror_stay_param | default(value="stay") %}
+            {% set mirror_publisher = page.extra.mirror_publisher | default(value="external source") %}
+            <div class="mirror-notice" data-mirror-url="{{ page.extra.mirror_url }}" data-mirror-delay="{{ page.extra.mirror_redirect_delay | default(value=5) }}" data-mirror-stay-param="{{ mirror_stay_param }}" data-mirror-redirect-enabled="{% if page.extra.mirror_redirect | default(value=true) %}true{% else %}false{% endif %}">
+                <p>
+                    Originally published at <a href="{{ page.extra.mirror_url }}" target="_blank" rel="noopener noreferrer">{{ mirror_publisher }}</a>.
+                </p>
+                <p class="mirror-actions">
+                    Redirecting in <span class="mirror-countdown">{{ page.extra.mirror_redirect_delay | default(value=5) }}</span>s.
+                    <a href="{{ page.extra.mirror_url }}" target="_blank" rel="noopener noreferrer">Go now</a>
+                    <a class="mirror-stay-link" href="?{{ mirror_stay_param }}=1">Stay here</a>
+                </p>
+            </div>
+            <script>
+                (function() {
+                    var notice = document.querySelector('.mirror-notice');
+                    if (!notice) return;
+
+                    var mirrorUrl = notice.getAttribute('data-mirror-url');
+                    var stayParam = notice.getAttribute('data-mirror-stay-param') || 'stay';
+                    var redirectEnabled = notice.getAttribute('data-mirror-redirect-enabled') === 'true';
+                    if (!mirrorUrl || !redirectEnabled) return;
+
+                    var params = new URLSearchParams(window.location.search);
+                    if (params.get(stayParam) === '1') return;
+
+                    var countdownNode = notice.querySelector('.mirror-countdown');
+                    var delaySeconds = parseInt(notice.getAttribute('data-mirror-delay') || '5', 10);
+                    if (!Number.isFinite(delaySeconds) || delaySeconds < 0) delaySeconds = 0;
+
+                    var remaining = delaySeconds;
+                    if (countdownNode) countdownNode.textContent = String(remaining);
+
+                    if (remaining === 0) {
+                        window.location.replace(mirrorUrl);
+                        return;
+                    }
+
+                    var timer = setInterval(function() {
+                        remaining -= 1;
+                        if (countdownNode) countdownNode.textContent = String(Math.max(remaining, 0));
+                        if (remaining <= 0) {
+                            clearInterval(timer);
+                            window.location.replace(mirrorUrl);
+                        }
+                    }, 1000);
+                })();
+            </script>
+        {% endif %}
+
         {# Optional table of contents #}
         {% if config.extra.toc | default(value=false) %}
         {% if page.toc %}

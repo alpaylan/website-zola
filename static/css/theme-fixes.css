@@ -46,3 +46,23 @@ html.dark {
 .blog-post .title .meta {
   font-family: var(--blog-reading-font);
 }
+
+.mirror-notice {
+  margin: 1rem 0 1.25rem;
+  padding: 0.9rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-1);
+}
+
+.mirror-notice p {
+  margin: 0;
+}
+
+.mirror-notice .mirror-actions {
+  margin-top: 0.45rem;
+}
+
+.mirror-notice a {
+  margin-left: 0.45rem;
+}

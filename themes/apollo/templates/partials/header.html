@@ -64,6 +64,11 @@
          {% endif %}
     {% endif %}
 
+    {% if page and page.extra.canonical_url %}
+        <link rel="canonical" href="{{ page.extra.canonical_url }}" />
+        <meta property="og:url" content="{{ page.extra.canonical_url }}" />
+    {% endif %}
+
     {# Favicon #}
     {% if config.extra.favicon %}
         <link rel="icon" type="image/png" href={{ config.extra.favicon }} />
