@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 /* Ensure theme CSS variables apply based on html.dark/html.light */
 html.light {
   --text-0: #1f1f1f;
@@ -35,4 +37,12 @@ html.dark {
 /* Enforce code block colors over inline styles from highlighter */
 /* Code blocks are handled by Zola syntax CSS themes when highlight_theme = "css" */
 
+/* Braille Institute's Atkinson Hyperlegible for blog post reading text. */
+.blog-post {
+  --blog-reading-font: 'Atkinson Hyperlegible', 'Helvetica', sans-serif;
+}
 
+.blog-post section.body,
+.blog-post .title .meta {
+  font-family: var(--blog-reading-font);
+}

@@ -120,7 +120,7 @@
 
 {% macro content(page) %}
 <main>
-    <article>
+    <article{% if page.relative_path is starting_with("posts/") %} class="blog-post"{% endif %}>
         <div class="title">
             {#<h1 class="title">{{ page.title }}</h1>#}
             {{ post_macros::page_header(title=page.title) }}
