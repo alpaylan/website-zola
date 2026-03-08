@@ -49,9 +49,9 @@ papers = [
     { file = "puzzles-and-algorithms.pdf", title = "Puzzles and Algorithms", description = "Opinion piece on how puzzles can be used to learn algorithmic thinking" }
 ]
 presentations = [
-    { file = "bobkonf/slides.pdf", title = "Property-Based Testing: The Past, The Present, and The Future", description = "BOB Konf presentation slides" },
-    { file = "topsort/slides.pdf", title = "TopSort Slides", description = "What is random testing, and why do you need it?" },
-    { file = "ritual.pdf", title = "Ritual Academy Slides", description = "Correctness-Oriented Programming with AI" }
+    { file = "bobkonf/slides.pdf", title = "BOB Konf", description = "Property-Based Testing: The Past, The Present, and The Future" },
+    { file = "topsort/slides.pdf", title = "TopSort Brownbag", description = "What is random testing, and why do you need it?" },
+    { file = "ritual.pdf", title = "Ritual Academy Chat", description = "Correctness-Oriented Programming with AI" }
 ]
 other = [
     { file = "resume.pdf", title = "Resume", description = "Current resume/CV" }
