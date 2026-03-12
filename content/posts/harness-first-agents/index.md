@@ -17,6 +17,8 @@ canonical_url = "https://www.datadoghq.com/blog/ai/harness-first-agents/"
 
 This is a mirror entry of an article I co-authored published in [Datadog AI Blog](https://www.datadoghq.com/blog/ai/harness-first-agents/).
 
-AI systems can now produce software faster than teams can verify it. Rather than manually inspecting every line of agent-generated code, we propose harness-first engineering: invest in automated verification mechanisms—deterministic simulation testing, formal specifications, shadow evaluation, observability-driven feedback loops—capable of determining correctness with high confidence within seconds.
+> AI agents can now produce software faster than any team can verify it. The bottleneck has moved from writing code to trusting what was written.
 
-We demonstrate this methodology through two projects: redis-rust, a Redis-compatible server built by a single agent with layered verification (shadow-state oracles, DST, TLA+ specs, Kani proofs, Maelstrom testing), and Helix, a Kafka-compatible streaming engine that served ~10,000 messages/second in staging with p50 produce latency of 22.2ms vs Kafka's 116ms. Both projects maintained human involvement in harness design, target-setting, and architectural approval, while agents handled implementation, bug-fixing, and optimization against established constraints.
+> We have seen this pattern before. Early programmers resisted compilers because they could write better assembly by hand. Often they were right. Compilers earned trust because the languages they translate have precise semantics: The programmer defines what the program does; the compiler has freedom over how it is implemented. Automation has consistently won only when paired with verification.
+
+> With AI agents, building trust is more challenging than in the case of compilers. AI agents ingest unrestricted natural language, sometimes from untrusted sources, and translate it into running code. We must find new ways to verify the outputs of these new program synthesis engines.
