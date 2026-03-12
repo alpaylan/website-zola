@@ -3,7 +3,7 @@ title = "Closing the verification loop: Observability-driven harnesses for build
 date = "2026-03-09"
 
 [taxonomies]
-tags = ["software engineering", "ai", "testing"]
+tags = ["software engineering", "ai", "testing", "datadog"]
 language = ["en"]
 
 [extra]

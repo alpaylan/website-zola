@@ -3,7 +3,7 @@ title = "From Hand-Tuned Go to Self-Optimizing Code: Building BitsEvolve"
 date = "2025-09-18"
 
 [taxonomies]
-tags = ["software engineering", "ai", "optimization"]
+tags = ["software engineering", "ai", "optimization", "datadog"]
 language = ["en"]
 
 [extra]
