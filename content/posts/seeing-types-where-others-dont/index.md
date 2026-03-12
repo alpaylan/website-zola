@@ -3,7 +3,7 @@ title = "Seeing types where others don't"
 date = "2026-03-06"
 
 [taxonomies]
-tags = ["type systems", "programming languages", "testing", "the consensus]
+tags = ["type systems", "programming languages", "testing", "the consensus"]
 language = ["en"]
 
 [extra]
