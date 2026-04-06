@@ -283,5 +283,5 @@ insightful, if you have any objections, I would love to discuss them over at
 
 My related work on the topic:
 
-- [Programmable Property-Based Testing](https://arxiv.org/abs/2602.18545)
-- [Database-Integrated Random Testing](https://alperenkeles.com/documents/dirt.pdf)
+- {{ newtab(href="https://arxiv.org/abs/2602.18545", label="Programmable Property-Based Testing") }}
+- {{ newtab(href="https://alperenkeles.com/documents/dirt.pdf", label="Database-Integrated Random Testing") }}

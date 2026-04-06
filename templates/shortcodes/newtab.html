@@ -1,0 +1,14 @@
+{# Usage:
+   {{/* newtab(href="https://example.com", label="Example") */}}
+   {{/* newtab(href="https://example.com") */}}Example{{/* /newtab */}}
+#}
+{% set href = href %}
+{% set target_attr = target | default(value="_blank") %}
+{% set rel_attr = rel | default(value="noopener noreferrer") %}
+{% set label_text = label | default(value=body | default(value=href)) %}
+{% set class_attr = class | default(value="") %}
+{% set title_attr = title | default(value="") %}
+
+<a href="{{ href }}" target="{{ target_attr }}" rel="{{ rel_attr }}"{% if class_attr != "" %} class="{{ class_attr }}"{% endif %}{% if title_attr != "" %} title="{{ title_attr }}"{% endif %}>
+    {{ label_text | markdown(inline=true) }}
+</a>
