@@ -116,9 +116,12 @@ quickCheck gen property n =
         input <- gen
         -- Check the property with the generated input
         case property input of
-            Just True -> quickCheck gen property (n - 1) -- Test passed, generate another input
-            Just False -> pure (Just input)              -- Test failed, return the failing input
-            Nothing -> quickCheck gen property (n - 1)   -- Precondition not satisfied, generate another input
+            -- Test passed, generate another input
+            Just True -> quickCheck gen property (n - 1)
+            -- Test failed, return the failing input
+            Just False -> pure (Just input)
+            -- Precondition not satisfied, generate another input
+            Nothing -> quickCheck gen property (n - 1)
 ```
 
 This is **not** how QuickCheck actually works (for instance, it ignores shrinking and
