@@ -1,6 +1,6 @@
 +++
 title = "What is random generation?"
-date = "2026-05-06"
+date = "2026-05-10"
 [taxonomies]
 tags = ['testing']
 language = ["en"]
