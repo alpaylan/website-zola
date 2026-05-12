@@ -850,8 +850,9 @@ variety of behaviors. This also goes back to the idea of
 [Swarm Testing](https://dl.acm.org/doi/10.1145/2338965.2336763), where we essentially
 want to randomize the choices of randomness, otherwise you'll end up with random-looking
 structures, but for instance you'll never end up with a list of all 1's. Will Wilson has
-a great Papers We Love talk on this that I will link when it's available online. Another
-approach I've seen is to use Boltzmann sampling for diversifying generation.
+a great [Papers We Love talk](https://youtu.be/wzfC7Q-xNik) on this, definitely
+recommend. Another approach I've seen is to use Boltzmann sampling for diversifying
+generation.
 ([1](https://byorgey.wordpress.com/2016/09/20/the-generic-random-library-part-1-simple-generic-arbitrary-instances/),
 [2](https://byorgey.wordpress.com/2016/03/23/boltzmann-sampling-for-generic-arbitrary-instances/),
 [3](https://julesjacobs.com/misc/treegen/),
