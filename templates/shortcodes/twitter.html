@@ -1,0 +1,9 @@
+{# Twitter/X embed card shortcode. Usage: {{/* twitter(link="https://x.com/user/status/123") */}} #}
+{% set link = link %}
+
+<div class="twitter-embed" style="display: flex; justify-content: center;">
+    <blockquote class="twitter-tweet" data-dnt="true">
+        <a href="{{ link | replace(from="x.com", to="twitter.com") }}">Loading tweet...</a>
+    </blockquote>
+</div>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
