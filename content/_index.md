@@ -13,4 +13,4 @@ Some fun facts about me:
 - I blog about programming, software engineering, research, in <a class="language-button tr" href="/posts?lang=tr">Turkish</a> and <a class="language-button en" href="/posts?lang=en">English</a>.
 - I run a [reading group](/reading-group) at the intersection of computer science and software engineering.
 - I've written [a document editor](https://www.tail.rocks) with a custom renderer from scratch.
-- I've created a [puzzle](https://puzzle.alperenkeles.com) about a cryptic language, only 2 people other than me have solved it yet.
+- I've created a [puzzle](https://puzzle.alperenkeles.com) about a cryptic language, only 3 people other than me have solved it so far.
