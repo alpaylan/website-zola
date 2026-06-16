@@ -41,7 +41,7 @@ papers = [
     { file = "etna.pdf", title = "ETNA Experience Report", description = "ETNA ICFP Experience Report" },
     { file = "etna-jfp.pdf", title = "ETNA Research Paper", description = "Extended ETNA Journal of Functional Programming Research Paper" },
     { file = "d4.pdf", title = "D4: Debugging Databases During Development", description = "DBTest2026 Research Paper" },
-    { file = "programmable-pbt.pdf", title = "Programmable Property-Based Testing", description = "Novel PBT approach under review" },
+    { file = "programmable-pbt.pdf", title = "Programmable Property-Based Testing", description = "ICFP 2026 Research Paper" },
     { file = "evaluating-shrinking.pdf", title = "Evaluating Shrinking (Experience Report)", description = "Experience report on evaluating shrinking techniques in property-based testing" },
     { file = "tail.pdf", title = "Tail: A Typed and Structured Document Editor", description = "Extended abstract for a typed and structured document editor" },
     { file = "puzzles-and-algorithms.pdf", title = "Puzzles and Algorithms", description = "Opinion piece on how puzzles can be used to learn algorithmic thinking" }
