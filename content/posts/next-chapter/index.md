@@ -4,12 +4,10 @@ date = "2026-07-01"
 [taxonomies]
 tags = ["life, testing, ai"]
 language = ["en"]
-[extra]
-draft = true
 +++
 
-Yesterday, I've defended my 5 year, 5 chapter Ph.D. thesis. Today, I write about what's
-next, a spiritual 6th chapter!
+Two days ago, I've defended my 5 year, 5 chapter Ph.D. thesis. Today, I write about
+what's next, a spiritual 6th chapter!
 
 My dissertation, titled "Designing Effective Property-Based Testing Frameworks",
 comprises of the results of four research papers and projects I've worked on during my
@@ -257,7 +255,8 @@ valuable for discovering edge cases and bounds of a system, but I view understan
 production traffic as crucial for any type of guaranteed and sound automation; and
 Datadog is _the_ place for working with production traffic. I believe the team is still
 hiring, so if working on these types of projects seem exciting to you, please reach out
-to Sesh Nalla.
+to [Sesh Nalla](https://www.linkedin.com/in/seshendranalla/) or
+[Othmane Abou-Amal](https://www.linkedin.com/in/othmane-abou-amal-79a31786/).
 
 ## Related articles
 
