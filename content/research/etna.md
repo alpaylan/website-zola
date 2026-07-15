@@ -15,6 +15,8 @@ ETNA is a CLI tool and platform for empirical evaluation and comparison of PBT t
 - [ETNA: An Evaluation Platform for Property-Based Testing (ICFP 2023)](https://doi.org/10.1145/3607860) | [PDF](/documents/etna.pdf)
 - ETNA: An Evaluation Platform for Property-Based Testing (JFP, extended version) | [PDF](/documents/etna-jfp.pdf)
 
+*The full list of my papers is on the [publications page](/publications).*
+
 ## Installation and Quick Start
 
 ETNA is distributed as a Rust CLI tool. You can install it with a single command:

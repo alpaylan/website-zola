@@ -4,7 +4,7 @@ description = "Creating a Flexible Property-Based Testing Paradigm"
 weight = 1
 
 [extra]
-link_to = "/research/programmable_pbt"
+link_to = "/research/programmable-pbt"
 +++
 
 Property-based testing (PBT) frameworks provide two core components: a *property language* for writing executable specifications, and a *property runner* that tests them. Users can configure many aspects of the testing process -- hand-tuned generators, custom shrinkers, pretty printers, statistics collection -- but one thing they fundamentally cannot change is the property runner itself. The testing loop is baked into the framework.
@@ -13,7 +13,9 @@ This is a significant limitation, because there are many compelling reasons to c
 
 The root cause is a design decision shared by virtually all PBT frameworks since the original Haskell QuickCheck: properties are represented using a *shallow embedding* that makes them opaque to users. This is convenient for writing and running properties, but it means the property type is just a wrapper around a function, impossible to inspect, pattern match on, or reinterpret.
 
-**Paper:** Programmable Property-Based Testing (under submission) | [PDF](/documents/dbas.pdf)
+**Paper:** [Programmable Property-Based Testing (ICFP 2026)](https://doi.org/10.1145/3828685) | [PDF](/documents/programmable-pbt.pdf)
+
+*The full list of my papers is on the [publications page](/publications).*
 
 ## The Problem: Shallow Embeddings Lock You In
 
@@ -27,7 +29,7 @@ Now consider what a coverage-guided fuzzing runner looks like:
 
 ![Coverage-Guided Fuzzing Property Runner](./fuzzing.png)
 
-The generation loop is replaced by a **fuzzing loop** that maintains a *seed pool* of interesting inputs, generates or mutates inputs based on the pool, and uses runtime feedback (e.g., branch coverage) to decide which inputs to keep. Despite the diagrams looking similar, these runners share almost no code in practice. Each has its own framework, its own property language, its own internal machinery.
+The generation loop is replaced by a **fuzzing loop** that maintains a *seed pool* of interesting inputs, generates or mutates inputs based on the pool, and uses runtime feedback (e.g., branch coverage) to decide which inputs to keep. Although the diagrams look similar, these runners share almost no code in practice. Each has its own framework, its own property language, its own internal machinery.
 
 The literature contains even more runner designs:
 

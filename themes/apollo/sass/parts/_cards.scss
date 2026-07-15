@@ -26,11 +26,13 @@
 }
 
 .card-info {
-    padding: 0 24px 24px 24px;
+    padding: 0 16px 16px 16px;
+    font-size: 0.85rem;
 }
 
 .card-title {
     margin-top: 0.7em;
+    font-size: 1rem;
 }
 
 .card-image {
@@ -80,6 +82,16 @@
 .card-description {
     margin-top: 0.5em;
     overflow: hidden;
+}
+
+.card-slides {
+    display: inline-block;
+    margin-top: 0.6em;
+    font-size: 0.8em;
+    padding: 0.1em 0.6em;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--bg-2);
 }
 
 @media all and (max-width:720px) {

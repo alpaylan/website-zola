@@ -10,6 +10,7 @@ tags = ["property-based-testing"]
 [extra]
 link_to = "https://media.ccc.de/v/bob11-2025-property-based-testing-keles"
 remote_image = "/documents/bobkonf/cover.png"
+slides = "/documents/bobkonf/slides.pdf"
 +++
 
 <iframe width="1024" height="576" src="https://media.ccc.de/v/bob11-2025-property-based-testing-keles/oembed" frameborder="0" allowfullscreen></iframe>

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+    {{ post_macros::page_header(title=page.title) }}
+
+    <article class="resume" id="publications">
+        <div class="experiences">
+            <div class="education">
+                {% for pub in page.extra.publications %}
+                <article class="degree-container">
+                    <div class="line">
+                        <h4 class="degree">{{ pub.title }}</h4>
+                        <h4 class="date">{{ pub.venue }}</h4>
+                    </div>
+                    <p class="school">{{ pub.authors | replace(from="Alperen Keles", to="<strong>Alperen Keles</strong>") | safe }}</p>
+                    {% if pub.pdf or pub.doi or pub.writeup %}
+                    <div class="keywords">
+                        {% if pub.pdf %}<a class="keyword" href="{{ pub.pdf }}">PDF</a>{% endif %}
+                        {% if pub.doi %}<a class="keyword" href="{{ pub.doi }}">DOI</a>{% endif %}
+                        {% if pub.writeup %}<a class="keyword" href="{{ pub.writeup }}">write-up</a>{% endif %}
+                    </div>
+                    {% endif %}
+                </article>
+                {% endfor %}
+            </div>
+        </div>
+    </article>
+{% endblock main_content %}

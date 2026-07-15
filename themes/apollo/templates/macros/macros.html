@@ -332,6 +332,10 @@
                         {{ page.description }}
                     {% endif %}
                 </div>
+
+                {% if page.extra.slides %}
+                    <a class="card-slides" href="{{ page.extra.slides }}">slides (pdf)</a>
+                {% endif %}
             </div>
         </div>
         {% endif %}
