@@ -7,7 +7,8 @@ Hi there! I'm Alperen Keleş, recently got my Ph.D. from University of Maryland,
 Park. I wrote my thesis on on
 [**Designing Effective Property-Based Testing Frameworks**](/documents/thesis.pdf). I am
 interested in random testing, formal verification, their implementations in different
-programming languages, and applications in the wild.
+programming languages, and applications in the wild, and their role in the context of
+AI-assisted program synthesis.
 
 Some fun facts about me:
 
