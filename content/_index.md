@@ -4,8 +4,10 @@ template = "homepage.html"
 +++
 
 Hi there! I'm Alperen Keleş, recently got my Ph.D. from University of Maryland, College
-Park. I work on **property-based testing**, its implementations in different programming
-languages, and its applications in the wild.
+Park. I wrote my thesis on on
+[**Designing Effective Property-Based Testing Frameworks**](/documents/thesis.pdf). I am
+interested in random testing, formal verification, their implementations in different
+programming languages, and applications in the wild.
 
 Some fun facts about me:
 
