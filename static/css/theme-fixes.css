@@ -47,6 +47,27 @@ html.dark {
   font-family: var(--blog-reading-font);
 }
 
+/* Award badge on publications (e.g., Distinguished Paper) */
+.award-badge {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0.4em;
+  padding: 0.15em 0.5em;
+  border-radius: 0.2em;
+  font-size: 0.7em;
+  font-weight: bold;
+  white-space: nowrap;
+  border: 1px solid #c9a227;
+  color: #8a6d1d;
+  background: rgba(201, 162, 39, 0.12);
+}
+
+html.dark .award-badge {
+  color: #e6c65c;
+  border-color: #a68a2e;
+  background: rgba(230, 198, 92, 0.12);
+}
+
 .mirror-notice {
   margin: 1rem 0 1.25rem;
   padding: 0.9rem 1rem;
