@@ -9,7 +9,7 @@
                 {% for pub in page.extra.publications %}
                 <article class="degree-container">
                     <div class="line">
-                        <h4 class="degree">{{ pub.title }}{% if pub.award %} <span class="award-badge">🏆 {{ pub.award }}</span>{% endif %}</h4>
+                        <h4 class="degree">{{ pub.title }}</h4>
                         <h4 class="date">{{ pub.venue }}</h4>
                     </div>
                     <p class="school">{{ pub.authors | replace(from="Alperen Keles", to="<strong>Alperen Keles</strong>") | safe }}</p>
@@ -20,6 +20,7 @@
                         {% if pub.writeup %}<a class="keyword" href="{{ pub.writeup }}">write-up</a>{% endif %}
                     </div>
                     {% endif %}
+                    {% if pub.award %} <span class="award-badge">{{ pub.award }}</span>{% endif %}
                 </article>
                 {% endfor %}
             </div>
