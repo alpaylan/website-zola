@@ -86,3 +86,9 @@ html.dark .award-badge {
 .mirror-notice a {
   margin-left: 0.45rem;
 }
+
+.small-link {
+  margin-top: 2rem;
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
