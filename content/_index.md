@@ -24,5 +24,3 @@ Some fun facts about me:
   only 3 people other than me have solved it so far.
 - I've organized a [programming contest](https://mini-vinci.pages.dev/specification)
   where you programmatically paint famous paintings and pictures.
-
-<p class="small-link"><a href="/images/virginia-woolf.jpg">vw</a></p>
