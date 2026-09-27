@@ -20,13 +20,13 @@ kanıtlayabildiğimiz yöntemlerden, teknolojilerden, programlama dillerinden ba
 
 Formal metotlar ve kanıtlı programlama, tarihin çok büyük bir kısmında kullanım olarak zor ve niş bir pozisyonda kaldı.
 Bugün bu alanlarla uğraşan insanları incelediğinizde belki %90'ının akademik ortamlarda, akademik projelerde bununla uğraştığını
-görebilirsiniz. Bugün, bu gerçekliğin hızla değişebileceği bir ortama giriyoruz, Martin Kleppman'ın geçtiğimiz hafta
+görebilirsiniz. Bugün, bu gerçekliğin hızla değişebileceği bir ortama giriyoruz, Martin Kleppmann'ın geçtiğimiz hafta
 ["Yapay Zeka Formal Doğrulamayı Anaakım Hale Getirecek"](https://martin.kleppmann.com/2025/12/08/ai-formal-verification.html) yazısıyla,
 kanıtlı programlama yapabildiğimiz Lean programlama dilinde yapay zekayla matematik kanıtlama üzerine ürünler geliştiren [Harmonic](https://harmonic.fun/news#blog-post-aristotle-tech-report), [Axiom](https://axiommath.ai/territory/building-the-reasoning-engine-at-axiom), [Nous](https://venturebeat.com/ai/nous-research-just-released-nomos-1-an-open-source-ai-that-ranks-second-on) gibi girişimlerin yaygınlaşmasıyla,
 [Claude Code](https://arxiv.org/abs/2510.09907v1), [Kiro](https://kiro.dev/blog/property-based-testing/) gibi yapay zeka destekli kod
 editörlerinin hafif formal metotlar (lightweight formal methods) adıyla anılan Property-Based Testing özelliğini eklemesiyle, yapay zekanın
 ürettiği kodları [doğrulama probleminin](https://alperenkeles.com/posts/verifiability-is-the-limit/) çözümüne giden yolun formal metotlar
-olduğuna dair ciddi belirtiler görüyoruz. Ben şahsen bu gidişatın devam edeceğine, ve kanıtlama programlamanın önemli bir rol oynayacağına
+olduğuna dair ciddi belirtiler görüyoruz. Ben şahsen bu gidişatın devam edeceğine, ve kanıtlı programlamanın önemli bir rol oynayacağına
 inanıyorum, o yüzden bugün formal metotları ana akıma taşımak her zamankinden daha kolay, ve belki de her zamankinden daha değerli.
 
 ## Basit Gözüken Programların Tehlikelerine Bir Örnek
@@ -59,13 +59,13 @@ public static int binarySearch(int[] a, int key) {
         int midVal = a[mid];
 
         if (midVal < key)
-             low = mid + 1
-         else if (midVal > key)
-             high = mid - 1;
-         else
-             return mid; // key found
-     }
-     return -(low + 1);  // key not found.
+            low = mid + 1;
+        else if (midVal > key)
+            high = mid - 1;
+        else
+            return mid; // key found
+    }
+    return -(low + 1);  // key not found.
 }
 ```
 
@@ -74,7 +74,7 @@ public static int binarySearch(int[] a, int key) {
 Hata, 6. satırdaki iki tamsayının ortalamasını hesaplayan kodda (`int mid = (low + high) / 2;`).
 Problem, `int`'in tamsayı olmaması, `int` bilgisayarımızın hafızasında herhangi bir noktada yer alan
 32 bitlik bir sekansın tamsayı olarak okunması. 32 bitlik bit sekansı bize 2^32 farklı değeri temsil
-etme fırsatı veriyor, bunlar da `int` tipi için `[-2^31, 2^31 - 1]` aralığı. Eğer ki `low + high` 2^31'den
+etme fırsatı veriyor, bunlar da `int` tipi için `[-2^31, 2^31 - 1]` aralığı. Eğer ki `low + high` 2^31 - 1'den
 daha büyükse, üste taşma (overflow) dediğimiz fenomen ortaya çıkıyor, işlemin sonucunda ortaya çıkan bit sekansı
 matematiksel hesaplama ile bilgisayarlı hesaplamanın birbirinden ayrışmasına sebep oluyor. Bu hata basit,
 tecrübeli birinin yapmayacağı bir hata gibi görünebilir, ancak [Java standard kütüphanesinde](https://research.google/blog/extra-extra-read-all-about-it-nearly-all-binary-searches-and-mergesorts-are-broken/) bile karşılaşılan
@@ -82,7 +82,7 @@ bir hata bu.
 
 Peki, **formal metotlar bu problemi çözebilir miydi?**
 
-Önceklikle cevap, **evet**. Bu problemi çözebilecek birkaç farklı yöntem mevcut. Ancak problemi keşfetmeden önce,
+Öncelikle cevap, **evet**. Bu problemi çözebilecek birkaç farklı yöntem mevcut. Ancak problemi keşfetmeden önce,
 problemi tanımlamamız gerekiyor. Bu örnekteki problem, tamsayı taşması (integer overflow). Neye ihtiyacımız var?
 Programda herhangi bir noktada tamsayı taşması ihtimali varsa bunu keşfeden, bize raporlayan bir metodolojiye.
 Hadi gelin bunun için programdaki tüm tamsayıları alabilecekleri aralıklarla işaretleyelim.
@@ -108,18 +108,18 @@ olarak açıp, aynı anlamı (semantic) koruyabiliyoruz.
         int midVal = a[mid];
 
         if (midVal < key)
-             low = mid + 1
-         else if (midVal > key)
-             high = mid - 1;
-         else
-             return mid; // key found 
+            low = mid + 1;
+        else if (midVal > key)
+            high = mid - 1;
+        else
+            return mid; // key found
         // Döngünün 1. iterasyonu bitti, 2. iterasyondan devam ediyoruz.
         while (low <= high) {
             int mid = (low + high) / 2;
             int midVal = a[mid];
 
             if (midVal < key)
-                low = mid + 1
+                low = mid + 1;
             else if (midVal > key)
                 high = mid - 1;
             else
@@ -143,7 +143,7 @@ if (low <= high) { // kontrol yanlış olmalı, demek ki (!low <= high), bu da d
 ...
 }
 // (low > high) olan tek bir durum var, o da low = 0, high = -1.
-return -(low + 1);  // dolayısıyla (- low + 1) = -1, taşma yok.
+return -(low + 1);  // dolayısıyla -(low + 1) = -1, taşma yok.
 ```
 
 Tüm detayları vermeye çalıştığımda burası çok uzayacak, dolayısıyla buradan itibaren biraz hızlı gideceğim. Diğer
@@ -156,9 +156,9 @@ int midVal = a[mid]; // Dizinin elemanları hakkında bir bilgi sahibi değiliz,
 // Eğer buraya kadarki hesaplamalarımız bizi bir kontrolün yanlış olduğu sonucuna ulaştırırsa,
 // o dalı atlayabiliriz. Şu anda böyle bir sonuca ulaşamadığımız için 3 daldan ilerlemeleri ayrıca incelememiz gerekecek.
 if (midVal < key) // midVal: [-2^31, 2^31 - 1], key: [-2^31, 2^31 - 1], midVal < key = ?? 
-    low = mid + 1 // midVal < key = true, mid: [0, 2^30], dolayısıyla low: [1, 2^30 + 1]
-else if (midVal > key) // midVal: [-2^31, 2^31 - 1], key: [-2^31, 2^31 - 1], midVal < key = false, midVal > key = false
-    high = mid - 1; // midVal > key = true, mid: [0, 2^30], dolayısıyla high: [-1, 2^30 - 1]
+    low = mid + 1; // midVal < key = true, mid: [0, 2^30 - 1], dolayısıyla low: [1, 2^30]
+else if (midVal > key) // midVal: [-2^31, 2^31 - 1], key: [-2^31, 2^31 - 1], midVal < key = false, midVal > key = ??
+    high = mid - 1; // midVal > key = true, mid: [0, 2^30 - 1], dolayısıyla high: [-1, 2^30 - 2]
 else // midVal: [-2^31, 2^31 - 1], key: [-2^31, 2^31 - 1], midVal < key = false, midVal > key = false
     // (midVal < key) ve (midVal > key) yanlış, geriye yalnızca (midVal = key) kalıyor, dolayısıyla aradığımızı bulduk.
     return mid; // aradığımızı bulduğumuz için fonksiyondan çıktık, bu dalın devamında incelenecek bir şey yok, ilk
@@ -168,22 +168,22 @@ else // midVal: [-2^31, 2^31 - 1], key: [-2^31, 2^31 - 1], midVal < key = false,
 Bu hesaplamanın sonucunda, elimizde artık 3 farklı evren var. Birisinde birinci iterasyonda aradığımız elemanı bulduk,
 dolayısıyla işimiz bitti, devam etmemiz gerek yok. Diğerinde aradığımız eleman ortanın solunda, diğerinde sağında. Hadi
 gelin aradığımız elemanın ortanın sağında olduğu `midVal < key` dalında, `low = mid + 1` sonucunda elimizdeki aralıkların
-`midVal: [-2^31, 2^31 - 1]`, `key: [-2^31 + 1, 2^31 - 1]`, `low: [1, 2^30 + 1]`, `high: [0, 2^31-1]` evrenine gidelim.
+`midVal: [-2^31, 2^31 - 1]`, `key: [-2^31 + 1, 2^31 - 1]`, `low: [1, 2^30]`, `high: [0, 2^31-2]` evrenine gidelim.
 
-Bu evrende, yine yukarda yaptığımız While döngüsünü açma, ikiye bölme, `if` kontrolünün içerisinde girme işlerini yapacağız.
-Bunlar sonucunda 
+Bu evrende, yine yukarda yaptığımız While döngüsünü açma, ikiye bölme, `if` kontrolünün içerisine girme işlerini yapacağız.
+Döngünün ikinci iterasyonuna girdiğimizde `mid` hesaplaması şu hale geliyor:
 
 ```java
-// low: [1, 2^30 + 1]`, high: [0, 2^31-2]
-int mid = (low + high) / 2; // low + high = [1, 2^30 + 1] + [0, 2^31-2] = [0, 2^31 + 2^30 + 1]
+// low: [1, 2^30], high: [0, 2^31-2]
+int mid = (low + high) / 2; // low + high = [1, 2^30] + [0, 2^31-2] = [1, 2^31 + 2^30 - 2]
 ```
 
 32-bit tamsayılarla ifade edebildiğimiz en büyük tamsayının 2^31-1 olduğunu daha önce söylemiştik, ancak
-fark ettiyseniz bu işlem sonucunda ortaya çıkan aralık bu sınırı aştı `[0, 2^31 + 2^30 + 1]`. Dolayısıyla
+fark ettiyseniz bu işlem sonucunda ortaya çıkan aralık bu sınırı aştı `[1, 2^31 + 2^30 - 2]`. Dolayısıyla
 bu analiz ile kullanıcıya geri dönüp, senin bu işlemin potansiyel olarak senin tipinin sınırlarını aşıyor
 diyebiliriz.
 
-Burada yaptığımız analiz bir tip statik kod analizi (static code analysis), bu tarz analizler yalnızca tamsayı taşmalarına mı yarıyor, hayır.
+Burada yaptığımız analiz bir tür statik kod analizi (static code analysis), daha spesifik olarak aralık analizi (interval analysis), bu tarz analizler yalnızca tamsayı taşmalarına mı yarıyor, hayır.
 Mesela [Facebook Infer](https://fbinfer.com) benzer analizleri milyonlarca satır C++ koduna uygulayarak koddaki hafıza güvenliği hatalarını
 otomatik bir şekilde keşfetmeye, `NULL` işaretçileri (pointer) statik olarak keşfetmeye çalışıyor. Tahmin edebileceğiniz üzere bu yöntemlerin
 hepsinin sınırları var, yoksa bugün Rust diye bir dile ihtiyacımız olmazdı, statik olarak C++'daki tüm hafıza güvenliği problemlerini
@@ -204,7 +204,7 @@ niteliklerden ibaret olmasın.
 
 Bu dillerden ilki, daha önce de bahsettiğim üzere, tipler. [Tip sistemleri](https://alperenkeles.com/posts/tip-sistemleri-hakkinda/),
 bizim yazdığımız programları kısıtlayabilmemizi, tipleri kullanarak programların ulaşmaması gereken durumlardan kaçınmamıza izin veriyor.
-Bundan bazen tip-odaklı geliştirme (type-driven programlama) olarak bahsedildiğini görebilirsiniz, bu yaklaşımın mottosu "Hatalı
+Bundan bazen tip-odaklı geliştirme (type-driven development) olarak bahsedildiğini görebilirsiniz, bu yaklaşımın mottosu "Hatalı
 durumları temsil edilemez yap" ([Make invalid states unrepresentable](https://lambda-the-ultimate.org/node/2216#comment-31690)).
 Çoğu zaman, programlarımızda tip sisteminin izin verdiği, yani derleyicinin bir hata vermeyeceği, ancak aslında mümkün olmaması gereken
 ihtimaller var. Tip-odaklı geliştirme bunları ortadan kaldırabiliyor.
@@ -219,17 +219,18 @@ type Insan = {
 
 Yukarıdaki tip, bir kişiyi tanımlarken, `okul` ya da `sirket` alanlarının `undefined` olmasına izin veriyor. Alttaki veri modeline göre
 bunun doğru olduğu noktalar vardır, ancak şu anda tartıştığımız evrende bir kişi ya okula, ya da şirkete gidebiliyor olsun. Yani bunların
-ikisi de aynı anda var olamaz, ikisi de aynı anda boş da olamaz, ancak veri modelimiz buna izin veriyor. `{isim: "Alp"} as Insan` yazmak
-tip hatası vermeyecek. Alternatif olarak, bu tipi aşağıdaki gibi tanımlayabilirdik:
+ikisi de aynı anda var olamaz, ikisi de aynı anda boş da olamaz, ancak veri modelimiz buna izin veriyor. `const alp: Insan = { isim: "Alp" }`
+yazmak tip hatası vermeyecek. Alternatif olarak, bu tipi aşağıdaki gibi tanımlayabilirdik:
 
 ```ts
 type Insan   = { isim: string } & (Ogrenci | Calisan)
-type Ogrenci = { okul: string }
-type Calisan = { sirket: string }
+type Ogrenci = { okul: string, sirket?: never }
+type Calisan = { sirket: string, okul?: never }
 ```
 
-Bu örnekte, `Insan` ya bir öğrenci olup okula sahip olacak, ya da bir çalışan olup şirkete; hiçbirisine sahip olmadığı durumlarda tip
-sistemi bize hata verdiği için o ihtimal çalışma zamanında var olmayacak.
+Bu örnekte, `Insan` ya bir öğrenci olup okula sahip olacak, ya da bir çalışan olup şirkete. `sirket?: never` gibi alanlar ise
+bir öğrencinin aynı zamanda şirkete sahip olmasını engelliyor. Hiçbirisine sahip olmadığı ya da ikisine birden sahip olduğu durumlarda
+tip sistemi bize hata verdiği için o ihtimaller çalışma zamanında var olmayacak.
 
 ## Kontrat Bazlı Dizayn (Design by Contract)
 
@@ -257,22 +258,24 @@ birisine eşit olmalıdır. Kontratın kendisi, fonksiyonun implementasyonundan 
 Dafny ise derleme zamanında implementasyonun bu kontrata uyduğunu kanıtlıyor. Eğer implementasyonda bir hata varsa, mesela
 tüm fonksiyonu silip yalnızca `m := b` yazarsak, `ensures m >= a` şartı kanıtlanamadığı için Dafny programı derlemeyecek.
 
-Gelin bir de yukarıda bahsettiğimiz `midpoint` örneğine bakalım:
+Gelin bir de yukarıda bahsettiğimiz `midpoint` örneğine bakalım. Dafny'de `int` çoğu anaakım programlama dilinin aksine 32 bitlik
+değil, sınırsız bir tamsayı, dolayısıyla taşmayı görebilmek için önce 32 bitlik bir tamsayı tipi tanımlıyoruz:
 
 ```dafny
-method Midpoint(low: int, high: int) returns (mid: int)
-    requires low <= high
-    ensures mid * 2 >= low + high - 1
-    ensures mid * 2 <= low + high
+newtype int32 = x: int | -0x8000_0000 <= x < 0x8000_0000
+
+method Midpoint(low: int32, high: int32) returns (mid: int32)
+    requires 0 <= low <= high
+    ensures low <= mid <= high
 {
     mid := (low + high) / 2;
 }
 ```
 
-Dafny'de `int` çoğu anaakım programlama dilinin aksine 32 bitlik değil, dolayısıyla bu örnekte taşma konusunda endişelenmemiz
-gerekmiyor. Onun yerine `requires` bize bu fonksiyonun hangi şartlar altında çağırılabildiğini söylüyor, ancak `low <= high` durumunda
-bu fonksiyonu çağırabildiğimiz için içerde `if a < b` kontrolünü tekrar yapmadan sonucu hesaplayabiliyoruz, `midpoint`'i ise
-çarpma işleminin sonucu üzerinden tanımlıyoruz.
+`requires` bize bu fonksiyonun hangi şartlar altında çağırılabildiğini, `ensures` ise sonucun hangi şartları sağlaması gerektiğini söylüyor.
+Bu program derlenmeyecek, çünkü Dafny `low + high` işleminin sonucunun `int32` sınırları içinde kalacağını kanıtlayamıyor, ki bu da
+Java'daki hatanın ta kendisi. Hesaplamayı `mid := low + (high - low) / 2;` olarak değiştirdiğimizde ise Dafny hem taşma olmadığını,
+hem de sonucun `low` ile `high` arasında olduğunu kanıtlayıp programı kabul ediyor.
 
 Burada küçük programlardan bahsettiğime bakmayın, AWS yeni yazdığı Yetkilendirme Politikaları Dili (Authorization Policy Language) olan
 [Cedar](https://www.amazon.science/blog/how-we-built-cedar-with-automated-reasoning-and-differential-testing)'ı önce Dafny'de geliştirdi,
@@ -281,7 +284,7 @@ Dafny'deki kontratlar statik kontratlar, pek çok programlama dilinde çalışma
 de var, Python'da [Deal](https://deal.readthedocs.io/index.html) var, [Racket](https://docs.racket-lang.org/guide/contracts.html) ise kontratlara dil seviyesinde bir özellik olarak sahip.
 Bazı programlama dillerinde ise Dafny tipi statik kontrat sistemleri geliştiriliyor, Rust'ta Verus ve Flux, Haskell'da Liquid Haskell ile programlarımızın
 belli özelliklerini statik olarak kanıtlayabiliyoruz. Bugün bu sistemleri kullanmak, bu sistemlerin üzerine kanıtlı programlar ve kütüphaneler geliştirmek
-bugün için çok ciddi uzmanlık ve zaman gerektirdse de asıl soru şu aslında, yarın ne olacak?
+çok ciddi uzmanlık ve zaman gerektirse de asıl soru şu aslında, yarın ne olacak?
 
 **Yapay zeka yardımıyla kanıtlamalı programlama yapabildiğimiz bir dünyada bu tarz teknolojileri kullanarak yazdığımız programların
 doğruluğunu arttırabilir miyiz?**
@@ -304,40 +307,50 @@ o teoremi kanıtladığımız anlamına geliyor. Gelin biraz pratik örneklerle 
 Bir tipi aşağıdaki gibi tanımlıyoruz, aşağıdaki tanım diyor ki, tümevarımsal olarak, bir doğal sayı ya sıfırdır, ya da bir doğal sayının ardılıdır (successor).
 
 ```lean
-Inductive Nat : Type
+namespace Benim -- Lean'in kendi `Nat` tipiyle karışmaması için
+
+inductive Nat : Type
 | zero : Nat
-| succ : Nat -> Nat
+| succ : Nat → Nat
 ```
 
 Bu tip üzerinde toplama işlemini aşağıdaki gibi tanımlayabiliriz:
 
 ```lean
-def add : Nat -> Nat -> Nat
-| Nat.zero,     m => m 
-| Nat.succ n,   m => Nat.succ (add n m)
+def add : Nat → Nat → Nat
+| .zero,   m => m
+| .succ n, m => .succ (add n m)
 ```
 
 Burada `add` fonksiyonu, ilk parametresi `Nat.zero` (0) ise sonucu ikinci parametreye eşit yapıyor, yani `0 + x = x` işlemini tanımlıyor,
-ikinci parametresi `Nat.succ n` (n+1) ise sonucu `add n m`'nin ardılı yapıyor, yani ` (n + 1) + m = 1 + (n + m)` işlemini tanımlıyor. Klasik toplama
+ilk parametresi `Nat.succ n` (n+1) ise sonucu `add n m`'nin ardılı yapıyor, yani ` (n + 1) + m = 1 + (n + m)` işlemini tanımlıyor. Klasik toplama
 işleminde sahip olduğumuz bazı özellikler var, bunlardan bir tanesi toplamanın değişme özelliği (commutativity), yani `a + b = b + a`. Gelin bunu Lean'de teorem olarak tanımlayalım:
 
 ```lean
-theorem add_comm : ∀ (n m : Nat), n + m = m + n
+theorem add_comm : ∀ (n m : Nat), add n m = add m n
 ```
 
 Bu teorem diyor ki, her `n` ve `m` doğal sayısı için `add n m` ifadesi `add m n` ifadesine eşit. Şimdi bu teoremi kanıtlamamız gerekiyor.
+Bunun için önce iki yardımcı teorem (lemma) kanıtlamamız gerekiyor, çünkü `add` fonksiyonu yalnızca ilk parametresi üzerinden tanımlı,
+ikinci parametre `zero` ya da `succ m` olduğunda ne olacağını ayrıca kanıtlamamız lazım:
 
 ```lean
-theorem add_comm : ∀ (n m : Nat), n + m = m + n
-  | n, 0   => Eq.symm (Nat.zero_add n)
-  | n, m+1 => by
-    have : Nat.succ (n + m) = Nat.succ (m + n) := by apply congrArg; apply Nat.add_comm
-    rw [Nat.succ_add m n]
-    apply this
+theorem add_zero : ∀ n, add n .zero = n
+| .zero   => rfl
+| .succ n => by simp [add, add_zero n]
 
+theorem add_succ : ∀ n m, add n (.succ m) = .succ (add n m)
+| .zero,   _ => rfl
+| .succ n, m => by simp [add, add_succ n m]
+
+theorem add_comm : ∀ n m, add n m = add m n
+| .zero,   m => by simp [add, add_zero]
+| .succ n, m => by simp [add, add_succ, add_comm n m]
+
+end Benim
 ```
 
-Bu kanıtı tüm detaylarıyla anlamanıza gerek yok, bir noktada bu yazıyı bugün yazmayı geçtiğimiz yıllardan ayıran en büyük fark bu. Yazının başında da bahsettiğim gibi bugünün iddiası, yapay zekanın
+Bu kanıtı tüm detaylarıyla anlamanıza gerek yok, bir anlamda bu yazıyı bugün yazmayı geçtiğimiz yıllardan ayıran en büyük fark bu. Yazının başında da bahsettiğim gibi bugünün iddiası, yapay zekanın
 bu kanıtları bizim için yazabileceği bir geleceğe doğru yol aldığımız. Bu varsayımsal yolun devamında bizim teoremleri yazmamız yetiyor, çünkü arka plandaki kanıt kontrolcüsü (proof checker) bizim sırtımızı
 tamamen dayayabildiğimiz, başka hiçbir programlama dilinde, hiçbir ortamda sahip olmadığımız bir garantiye sahip olduğumuz bir ortam sağlıyor. Programlamanın temeline işlemiş, her ortamda, her zaman bizi
 sınırlayan varsayımlarımızı ortadan kaldırabiliyor. Herhangi bir testten, her türlü kod incelemesinden daha güçlü bir garanti bu kazandığımız. Hatta bu işle ilgilenen şirketlerin iddiaları, yapay zekanın
@@ -350,7 +363,7 @@ bu dillerde ifade edebileceğimiz teoremlerin o dillerdeki matematiksel modeller
 fiziksel bilgisayarların performansı bizim matematiksel olarak modelleyip kanıtlar yapabildiğimiz kadar basit değil, en azından bugün. Deterministik olmayan, rastgelelikler içeren ya da eşzamanlı programlar
 (concurrent programs) hakkında kanıtlar yazmak da bugün çok zor, ancak zaman içerisinde gelişiyor, dolayısıyla belki de birkaç seneye bunları da kanıtlayabilir hale geleceğiz.
 
-Bu problemlerin bir çözümü var, o da nitelik-bazlı test etme (property-based testing -- PBT).
+Bu problemlerin kısmi bir çözümü var, o da nitelik-bazlı test etme (property-based testing -- PBT).
 
 ## Nitelik-Bazlı Test Etme (Property-Based Testing -- PBT)
 
@@ -410,17 +423,18 @@ function testAddComm(iterations: number) {
 Burada, teoremimizi `natEqual(add(a, b), add(b, a))` fonksiyonuyla test ediyoruz. `generateNat` fonksiyonu ise rastgele doğal sayılar
 üretmek için kullanılıyor.
 
-Geçtiğimiz yıllarda Cardano ve AWS PBT ile kanıtlı programlama yaklaşımlarını birleştirerek Lean'de geliştirdikleri kanıtlı programları
-Rust'ta geliştirdikleri üretim sınıfı (production grade) programları test etmek için kullandılar. Bu yaklaşımda, Lean programı ile Rust programının
-her girdi için aynı çıktıyı vermesi gerektiğini bildiğimiz için, Lean programını bir referans model olarak kullanıp, Rust programını Lean programına karşı
-test ettiğimizde Lean'de kanıtlanan teoremlerin Rust programında da geçerli olduğunu garanti edebiliyoruz.
+Geçtiğimiz yıllarda AWS, PBT ile kanıtlı programlama yaklaşımlarını birleştirerek Cedar için Lean'de geliştirdiği kanıtlı modeli,
+Rust'ta geliştirdiği üretim sınıfı (production grade) implementasyonu test etmek için kullandı (benzer şekilde Cardano da Agda'da yazılmış
+formal spesifikasyonunu Haskell implementasyonunu test etmek için kullanıyor). Bu yaklaşımda, Lean programı ile Rust programının
+her girdi için aynı çıktıyı vermesi gerektiğini bildiğimiz için, Lean programını bir referans model olarak kullanıp Rust programını Lean programına karşı
+test ediyoruz. Bu bize bir garanti vermiyor, ancak Lean'de kanıtlanan teoremlerin Rust programında da geçerli olduğuna dair çok güçlü bir kanıt sağlıyor.
 
-PBT'nin faydalı olması için yalnızca kanıtlı programlamayla birlikte kullanılmasına gerek yok, bugün PBT daha müdahale etmeden kod yazılan yapay zeka
-yaklaşımlarında (Agentic AI), kodun doğruluğunu test etmek için kullanılabiliyor. Daha gün, Claude Code'da [majör bir yenilemenin](https://x.com/trq212/status/2001439032795107441) PBT ile yapıldığının
+PBT'nin faydalı olması için yalnızca kanıtlı programlamayla birlikte kullanılmasına gerek yok, bugün PBT insan müdahalesi olmadan kod yazılan yapay zeka
+yaklaşımlarında (Agentic AI), kodun doğruluğunu test etmek için kullanılabiliyor. Daha geçen gün, Claude Code'da [majör bir yenilemenin](https://x.com/trq212/status/2001439032795107441) PBT ile yapıldığının
 örneğini gördük. Benzer şekilde [BitsEvolve](https://www.datadoghq.com/blog/engineering/self-optimizing-system/) gibi yaklaşımlar da PBT'yi kullanarak otomatik optimizasyon sistemleri inşa ediyor.
 
 ## Kapanış
 
 Formal metotlar, programlarımızın doğruluğunu arttırmak için kullanabileceğimiz güçlü araçlar. Bu araçlar bugüne kadar niş olsa da, yapay zeka yardımıyla daha erişilebilir
-hale geldiklerini görüyoruz, ben şahsen gelmeye devam edeceğine dair işaretler görüyorum. Türkçe'de böyle bir kaynağın eksikliğini gördüğüm için yazmak istedim, eğer eksik gördüğünüz
+hale geldiklerini görüyoruz, ben şahsen gelmeye devam edeceğine dair işaretler görüyorum. Türkçede böyle bir kaynağın eksikliğini gördüğüm için yazmak istedim, eğer eksik gördüğünüz
 ya da yanlış olduğunu düşündüğünüz bir nokta varsa bana [akeles@umd.edu](mailto:akeles@umd.edu) adresinden ulaşabilirsiniz. Bir sonraki yazıda görüşmek üzere!
