@@ -8,7 +8,7 @@ language = ["en"]
 
 These are the lecture notes for the introduction to computer science for political scientists designed for the George Washington University Political Science Department Caucus Workshop on October 6th, 2026\.
 
-The notes are also available as a [web page](/gwu-psc-cs-101/lecture-notes.html), a [PDF](/gwu-psc-cs-101/lecture-notes.pdf) and a [Google Doc](https://docs.google.com/document/d/1srz7aCRNU7tiro41YHXBUllnNjM-iDDtvM4BZ-W7U5A/edit?usp=sharing).
+The notes are also available as a [web page](/gwu-psc-cs-101/lecture-notes.html), a [PDF](/gwu-psc-cs-101/lecture-notes.pdf) and a [Google Doc](https://docs.google.com/document/d/1srz7aCRNU7tiro41YHXBUllnNjM-iDDtvM4BZ-W7U5A/edit?usp=sharing). The slides from the lecture are [here](/gwu-psc-cs-101/slides.html).
 
 The lecture is phased into 3 parts:
 

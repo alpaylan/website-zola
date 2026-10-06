@@ -1,0 +1,1892 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CS 101 for Political Scientists</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/white.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/monokai.css">
+
+  <style>
+    .reveal h1, .reveal h2 { text-transform: none; }
+    .reveal .part { font-size: 0.6em; color: #888; letter-spacing: 0.1em; text-transform: uppercase; }
+    .reveal .columns { display: flex; gap: 2em; }
+    .reveal .columns > div { flex: 1; }
+    .reveal ul { font-size: 0.85em; }
+    .reveal .small { font-size: 0.6em; color: #555; }
+
+    /* number / encoding tables */
+    .reveal table.repr { font-size: 0.7em; margin: 0.5em auto; }
+    .reveal table.repr td, .reveal table.repr th { padding: 0.25em 1em; }
+
+    /* one document, four representations, highlighted in lockstep */
+    .reveal h2.compact { font-size: 0.9em; margin-bottom: 0.4em; }
+    .reveal .doc-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.6em;
+      width: 100%; text-align: left;
+    }
+    .reveal .doc-grid .panel { position: relative; min-width: 0; }
+    .reveal .doc-grid .panel-label {
+      font-size: 0.3em; color: #888; text-transform: uppercase; letter-spacing: 0.1em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .doc-grid pre { font-size: 0.26em; width: 100%; margin: 0; box-shadow: none; }
+    .reveal .doc-grid pre code { max-height: none; overflow: hidden; padding: 0.6em; }
+    .reveal .doc-grid .hljs-ln-numbers { display: none; }
+    .reveal .doc-grid .hljs.has-highlights tr:not(.highlight-line) { opacity: 0.3; }
+    .reveal .doc-grid .hljs.has-highlights tr.highlight-line { background: rgba(255, 80, 80, 0.25); }
+
+    /* mock rendered paper */
+    /* ASCII → Unicode zoom */
+    .reveal #unicode-zoom { width: 900px; height: 450px; display: block; margin: 0 auto; }
+    .reveal #unicode-zoom-caption { margin: 0.3em 0 0; }
+    .reveal .zoom-step { display: none; }
+    .reveal #unicode-zoom-legend { font-size: 0.4em; color: #555; opacity: 0; transition: opacity 0.6s; }
+    .reveal #unicode-zoom-legend.shown { opacity: 1; }
+    .reveal #unicode-zoom-legend span { margin: 0 0.7em; white-space: nowrap; }
+    .reveal #unicode-zoom-legend i { display: inline-block; width: 0.9em; height: 0.9em; margin-right: 0.3em; vertical-align: -0.1em; }
+
+    .reveal .paper {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 0.33em; text-align: left; color: #222; margin-top: 1.1em;
+      padding: 1em 1.5em; background: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .reveal .paper h3 { text-transform: none; font-family: inherit; font-size: 1.5em; text-align: center; margin: 0.2em 0; color: #222; }
+    .reveal .paper h4 { text-transform: none; font-family: inherit; font-size: 1.2em; margin: 0.4em 0 0.2em; color: #222; }
+    .reveal .paper p, .reveal .paper ul { margin: 0.2em 0; font-size: 1em; }
+    .reveal .paper .byline { text-align: center; font-style: italic; }
+    .reveal .slides section .fragment.boxed { opacity: 1; visibility: inherit; position: relative; padding: 0.1em 0.3em; }
+    .reveal .slides section .fragment.boxed.active { outline: 2px dashed #d33; background: rgba(255, 80, 80, 0.08); }
+    .reveal .slides section .fragment.boxed.active::after {
+      content: attr(data-label);
+      position: absolute; right: 0.3em; top: -1.1em;
+      font-family: sans-serif; font-size: 0.8em; color: #d33;
+    }
+
+    /* editor "videos" */
+    .reveal .app {
+      position: relative; width: 900px; height: 470px; margin: 0 auto; overflow: hidden;
+      border-radius: 10px; box-shadow: 0 6px 24px rgba(0,0,0,0.25); background: #f3f3f3;
+      text-align: left; font-family: -apple-system, "Segoe UI", sans-serif; font-size: 14px; color: #222;
+      cursor: pointer; user-select: none;
+    }
+    .reveal .app-bar { height: 28px; display: flex; align-items: center; gap: 7px; padding: 0 12px; background: #e4e4e4; }
+    .reveal .app-bar i { width: 11px; height: 11px; border-radius: 50%; background: #ff5f57; }
+    .reveal .app-bar i:nth-child(2) { background: #febc2e; }
+    .reveal .app-bar i:nth-child(3) { background: #28c840; }
+    .reveal .app-bar span { flex: 1; text-align: center; font-size: 12px; color: #555; margin-right: 50px; }
+    .reveal .app button {
+      font: inherit; font-size: 13px; padding: 3px 9px; margin-right: 4px; border: 1px solid #ccc;
+      background: #fff; border-radius: 4px; color: #222; transition: background 0.1s;
+    }
+    .reveal .app button.pressed, .reveal .app .style-menu div.pressed { background: #c7dcf7; }
+    .reveal .app .canvas { position: absolute; inset: 72px 0 0 0; overflow: hidden; background: #e9e9e9; }
+    .reveal .app .page {
+      width: 600px; min-height: 100%; margin: 14px auto 0; padding: 36px 56px; box-sizing: border-box;
+      background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+    .reveal .app .caret { display: inline-block; width: 1.5px; height: 1.1em; margin: 0 -0.75px; background: #222;
+      vertical-align: text-bottom; animation: blink 1s steps(1) infinite; }
+    .reveal .app .caret[hidden] { display: none; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .reveal .app .mouse {
+      position: absolute; left: 0; top: 0; width: 18px; height: 26px; pointer-events: none; z-index: 10;
+      transition: transform 0.6s cubic-bezier(.4,0,.2,1);
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 26'%3E%3Cpath d='M1 1v20l5-5 4 9 3-1.4-4-8.6h7z' fill='%23000' stroke='%23fff' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat;
+    }
+    .reveal .app .mouse.clicking { filter: drop-shadow(0 0 5px #2b7de9); }
+
+    .reveal .word .ribbon { height: 44px; display: flex; align-items: center; padding: 0 14px; background: #f8f8f8; border-bottom: 1px solid #ddd; }
+    .reveal .word .sep { width: 1px; height: 24px; background: #ddd; margin: 0 10px; }
+    .reveal .word .style-picker { position: relative; }
+    .reveal .word .style-picker > button { width: 120px; text-align: left; }
+    .reveal .word .style-menu {
+      display: none; position: absolute; top: 30px; left: 0; width: 170px; z-index: 5;
+      background: #fff; border: 1px solid #ccc; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .reveal .word .style-menu.open { display: block; }
+    .reveal .word .style-menu div { padding: 6px 10px; }
+    .reveal .word .page { font-family: "Times New Roman", Times, serif; font-size: 16px; line-height: 1.45; }
+    .reveal .word .page p { margin: 0 0 10px; }
+    .reveal .word .w-h1 { font-family: "Calibri Light", "Helvetica Neue", sans-serif; font-size: 22px; color: #2f5496; }
+    .reveal .word .w-h2 { font-family: "Calibri Light", "Helvetica Neue", sans-serif; font-size: 17px; color: #2f5496; }
+    .reveal .word .w-em { font-style: italic; }
+    .reveal .word .w-strong { font-weight: bold; }
+    .reveal .word .sel { background: #b4d5fe; }
+
+    .reveal .overleaf .split { position: absolute; inset: 28px 0 0 0; display: grid; grid-template-columns: 1fr 1fr; }
+    .reveal .overleaf .editor { background: #1e1e1e; overflow: hidden; padding-top: 8px; }
+    .reveal .overleaf .source {
+      margin: 0; box-shadow: none; width: auto; font-size: 13px; line-height: 1.5;
+      font-family: Menlo, Monaco, monospace; color: #d4d4d4; background: none;
+    }
+    .reveal .overleaf .ln { display: flex; }
+    .reveal .overleaf .ln .no { width: 30px; flex: none; padding-right: 10px; text-align: right; color: #6e7681; }
+    .reveal .overleaf .ln .tx { white-space: pre-wrap; word-break: break-word; flex: 1; padding-right: 12px; }
+    .reveal .overleaf .cmd { color: #569cd6; }
+    .reveal .overleaf .brace { color: #ffd700; }
+    .reveal .overleaf .caret { background: #fff; }
+    .reveal .overleaf .preview { position: relative; background: #e9e9e9; }
+    .reveal .overleaf .preview-bar { height: 40px; display: flex; align-items: center; padding: 0 12px; background: #f8f8f8; border-bottom: 1px solid #ddd; }
+    .reveal .overleaf .preview-bar button { background: #138a07; color: #fff; border-color: #0f6e06; }
+    .reveal .overleaf .preview-bar button.pressed { background: #0f6e06; }
+    .reveal .overleaf .canvas { inset: 40px 0 0 0; }
+    .reveal .overleaf .page {
+      width: 380px; padding: 30px 34px; margin-top: 12px; transition: opacity 0.2s;
+      font-family: "CMU Serif", "Latin Modern Roman", "Times New Roman", serif; font-size: 11px; line-height: 1.4;
+    }
+    .reveal .overleaf .compiling .page { opacity: 0.25; }
+    .reveal .overleaf .compiling .canvas::after {
+      content: "Compiling…"; position: absolute; top: 45%; left: 0; right: 0; text-align: center; color: #555;
+    }
+    .reveal .overleaf .t-title { text-align: center; font-size: 17px; margin-top: 6px; }
+    .reveal .overleaf .t-author, .reveal .overleaf .t-date { text-align: center; font-size: 12px; margin-top: 8px; }
+    .reveal .overleaf .t-body { margin-top: 18px; text-align: justify; }
+    .reveal .overleaf .t-body.twocol { column-count: 2; column-gap: 16px; }
+    .reveal .overleaf .t-section { font-weight: bold; font-size: 13px; margin: 10px 0 6px; }
+    .reveal .overleaf .t-body p { margin: 0 0 6px; text-indent: 1.2em; }
+    .reveal .overleaf .t-body p.t-ref { text-indent: -1.2em; padding-left: 1.2em; font-size: 10px; }
+
+    /* file-format pages */
+    .reveal .fmt-chips { line-height: 2.2; }
+    .reveal .fmt-chip {
+      font-family: monospace; font-size: 0.8em; padding: 0.1em 0.5em; cursor: pointer;
+      border: 1px solid #ccc; border-radius: 6px; background: #f6f6f6; color: #222;
+    }
+    .reveal .fmt-chip:hover { background: #e3eefc; border-color: #2b7de9; }
+    .reveal .fmt-modal {
+      position: absolute; inset: -20px -30px; z-index: 20; background: rgba(0,0,0,0.35);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .reveal .fmt-modal[hidden] { display: none; }
+    .reveal .fmt-close {
+      position: absolute; top: 40px; right: 60px; z-index: 1; font-size: 28px; line-height: 1;
+      border: none; background: none; color: #555; cursor: pointer;
+    }
+    .reveal .fmt-page {
+      width: 880px; max-height: 640px; overflow: auto; box-sizing: border-box; padding: 18px 26px;
+      background: #fff; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.3); text-align: left;
+    }
+    .reveal .fmt-page[hidden] { display: none; }
+    .reveal .fmt-page header { font-size: 26px; }
+    .reveal .fmt-ext { font-family: monospace; font-weight: bold; }
+    .reveal .fmt-name { color: #444; }
+    .reveal .fmt-kind { font-size: 13px; padding: 2px 8px; border-radius: 10px; vertical-align: middle; color: #fff; }
+    .reveal .fmt-kind.text { background: #59a14f; }
+    .reveal .fmt-kind.binary { background: #e15759; }
+    .reveal .fmt-path { font-family: monospace; font-size: 13px; color: #888; margin: 2px 0 10px; }
+    .reveal .fmt-label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+    .reveal .fmt-cols { display: grid; grid-template-columns: 1fr 1.25fr; gap: 14px; }
+    .reveal .fmt-raw {
+      margin: 0; width: auto; box-shadow: none; font-size: 12px; line-height: 1.45; padding: 10px 12px;
+      background: #f7f7f7; border: 1px solid #e3e3e3; border-radius: 6px; color: #222;
+      white-space: pre-wrap; word-break: break-all; max-height: 330px; overflow: auto;
+    }
+    .reveal .fmt-raw.garbled { color: #777; font-size: 11px; }
+    .reveal .fmt-cols.hex-cols { grid-template-columns: 1fr 1.7fr; }
+    .reveal .fmt-raw.hex { white-space: pre; word-break: normal; overflow-x: auto; font-size: 11.5px; }
+    .reveal .fmt-notes { font-size: 15px; margin: 12px 0 0 1.2em; }
+    .reveal .fmt-notes li { margin: 3px 0; }
+    .reveal .t-key { color: #c7254e; font-weight: bold; }
+    .reveal .t-attr { color: #2b7de9; }
+    .reveal .t-dim { color: #999; }
+    .reveal .t-head { background: #fff4c2; }
+    .reveal .t-yaml { color: #8b5cf6; font-weight: bold; }
+    .reveal .t-chunk { color: #0f7b6c; font-weight: bold; }
+    .reveal .t-tab { background: #fde2e4; }
+    .reveal .t-tab::before, .reveal .t-tab-demo { color: #c7254e; }
+    .reveal .t-tab::before { content: "⇥"; position: absolute; }
+
+    /* rendering pipelines */
+    .reveal .pipeline { display: grid; gap: 4px; width: 116%; margin-left: -8%;  /* spill into the side margins */
+      align-items: start; text-align: left; }
+    .reveal .pipeline.three { grid-template-columns: 1fr auto 1.1fr auto 1.25fr; }
+    .reveal .pipeline.four { grid-template-columns: 1fr auto 0.95fr auto 1.05fr auto 1.4fr; }
+    .reveal .pipeline .panel { min-width: 0; }
+    .reveal .pipeline .panel-label { font-size: 0.3em; color: #888; letter-spacing: 0.05em; margin-bottom: 0.2em; font-family: monospace; }
+    .reveal .pipeline .panel-label small { font-family: sans-serif; }
+    .reveal .pipeline .arrow { align-self: center; text-align: center; font-size: 0.6em; color: #999; line-height: 1; }
+    .reveal .pipeline .arrow span { display: block; font-size: 0.4em; font-family: monospace; color: #555; margin-bottom: 0.2em; }
+    .reveal .pipeline pre { font-size: 0.29em; width: 100%; margin: 0; box-shadow: none; }
+    .reveal .pipeline.four pre { font-size: 0.25em; }
+    .reveal .pipeline pre code { max-height: none; padding: 0.5em; }
+    .reveal .pipeline .hljs-ln-numbers { display: none; }
+    .reveal .pipeline .hljs-ln-code { white-space: pre-wrap; word-break: break-word; }
+    .reveal .pipeline .hljs.has-highlights tr:not(.highlight-line) { opacity: 0.3; }
+    .reveal .pipeline .hljs.has-highlights tr.highlight-line { background: rgba(255, 80, 80, 0.25); }
+    .reveal .pdf-page { position: relative; box-shadow: 0 2px 10px rgba(0,0,0,0.2); line-height: 0; }
+    .reveal .pdf-page img { width: 100%; margin: 0; display: block; }
+    .reveal .slides section .pdf-page .fragment.boxed { position: absolute; padding: 0; }
+    .reveal .slides section .pdf-page .fragment.boxed.active::after { line-height: 1; font-size: 11px; top: -15px; padding: 1px 3px; background: #fff; }
+    .reveal .slides section .fragment.step-only { display: none; }
+
+    /* git flow */
+    .reveal .git-graph { width: 112%; margin-left: -6%; height: auto; display: block; }
+    .reveal .git-graph text { font-family: -apple-system, "Segoe UI", sans-serif; }
+    .reveal .git-graph .lane-label { font-size: 13px; font-weight: 600; }
+    .reveal .git-graph .lane-line { stroke-width: 1; stroke-dasharray: 2 5; opacity: 0.5; }
+    .reveal .git-graph .edge { fill: none; stroke-width: 3; }
+    .reveal .git-graph .edge-label { font-size: 10px; fill: #888; font-style: italic; }
+    .reveal .git-graph .node circle { stroke: #fff; stroke-width: 2.5; }
+    .reveal .git-graph .node text.initial { font-size: 10px; font-weight: 700; fill: #fff; text-anchor: middle; dominant-baseline: central; }
+    .reveal .git-graph .node text.msg { font-size: 10.5px; fill: #444; text-anchor: middle; }
+    .reveal .git-graph .node.current circle { stroke: #222; stroke-width: 3; }
+    .reveal .git-graph .node.conflict circle { fill: #e15759 !important; animation: pulse 0.9s ease-in-out infinite alternate; }
+    @keyframes pulse { to { stroke: #e15759; stroke-width: 7; } }
+    .reveal .git-graph .appear { animation: appear 0.45s ease-out; }
+    @keyframes appear { from { opacity: 0; } }
+    .reveal .git-detail { width: 112%; margin-left: -6%; text-align: left; font-size: 14px; min-height: 250px; }
+    .reveal .git-detail .cmd { font-family: Menlo, monospace; font-size: 13px; color: #555; margin: 6px 0; }
+    .reveal .git-detail .who { display: inline-block; padding: 1px 8px; border-radius: 10px; color: #fff; font-family: sans-serif; font-size: 12px; margin-right: 8px; }
+    .reveal .git-detail .note { font-size: 14px; color: #444; margin: 4px 0 8px; }
+    .reveal .git-detail .file { border: 1px solid #ddd; border-radius: 6px; margin-bottom: 8px; overflow: hidden; }
+    .reveal .git-detail .file-name { font-family: Menlo, monospace; font-size: 12px; background: #f4f4f4; padding: 3px 10px; border-bottom: 1px solid #ddd; color: #555; }
+    .reveal .git-detail .ln { font-family: Menlo, monospace; font-size: 12.5px; line-height: 1.55; padding: 0 10px; white-space: pre-wrap; }
+    .reveal .git-detail .ln.add { background: #e6ffec; }
+    .reveal .git-detail .ln.del { background: #ffebe9; }
+    .reveal .git-detail .ln.mark { background: #fff1c2; color: #8a5a00; font-weight: bold; }
+    .reveal .git-detail .ln.ours { background: #e3eefc; }
+    .reveal .git-detail .ln.theirs { background: #fdebd8; }
+    .reveal .git-detail .ln.ctx { color: #888; }
+    .reveal .git-detail .ln .tag { float: right; font-family: sans-serif; font-size: 11px; color: #fff; padding: 0 6px; border-radius: 8px; margin-top: 2px; }
+
+    /* git commands one-pager */
+    .reveal .git-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6em; text-align: left; width: 108%; margin-left: -4%; }
+    .reveal .git-col h4 { font-size: 0.6em; margin-bottom: 0.4em; color: #555; }
+    .reveal .git-item { margin: 0 0 0.45em; line-height: 1.1; }
+    .reveal .git-item .fmt-chip { font-size: 0.5em; }
+    .reveal .git-item span { display: block; font-size: 0.42em; color: #777; margin: 0.25em 0 0 0.2em; }
+    .reveal .fmt-kind.group { background: #4e79a7; }
+    .reveal .git-strip { width: 100%; height: auto; display: block; margin: 4px 0; }
+    .reveal .git-strip rect.box { fill: #f4f4f4; stroke: #ccc; }
+    .reveal .git-strip rect.box.hot { fill: #e3eefc; stroke: #2b7de9; stroke-width: 2; }
+    .reveal .git-strip text.box { font: 14px -apple-system, "Segoe UI", sans-serif; text-anchor: middle; fill: #999; }
+    .reveal .git-strip text.box.hot { fill: #1d4f91; font-weight: 600; }
+    .reveal .git-strip .flow { fill: none; stroke: #2b7de9; stroke-width: 2.5; }
+    .reveal .git-strip .flow-label { font: italic 12px -apple-system, sans-serif; fill: #2b7de9; text-anchor: middle; }
+    .reveal .git-page .fmt-notes { margin: 4px 0 10px 1.2em; }
+    .reveal .fmt-raw.term { background: #1e1e1e; color: #d4d4d4; border-color: #1e1e1e; white-space: pre; word-break: normal; overflow-x: auto; max-height: 260px; }
+    .reveal .term .t-cmd { color: #fff; font-weight: bold; }
+    .reveal .term .t-add { color: #7ee787; }
+    .reveal .term .t-del { color: #ff7b72; }
+    .reveal .term .t-warn { color: #ffa657; }
+    .reveal .git-page .t-add { color: #1a7f37; }
+    .reveal .git-page .t-del { color: #cf222e; }
+    .reveal .git-page .term .t-add { color: #7ee787; }
+    .reveal .git-page .term .t-del { color: #ff7b72; }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- Title -->
+      <section>
+        <p class="part">GW PSC Workshop · October 6, 2026</p>
+        <h1>CS 101 for Political Scientists</h1>
+        <p>Alperen Keles</p>
+        <p><small><a href="https://alperenkeles.com/">alperenkeles.com</a> · alpkeles99@gmail.com</small></p>
+      </section>
+
+      <!-- Agenda -->
+      <section>
+        <h2>Today</h2>
+        <ol>
+          <li class="fragment">What happens when you render a <code>.qmd</code> / <code>.rmd</code> into a PDF?</li>
+          <li class="fragment">How do you coordinate edits and maintain long-term projects?</li>
+          <li class="fragment">Pitfalls and leverage points of using AI in research</li>
+        </ol>
+      </section>
+
+      <!-- Representation -->
+      <section>
+        <section>
+          <h2>Representation</h2>
+        </section>
+
+        <section>
+          <h2>Computer science is about representation and expressivity</h2>
+        </section>
+
+        <section>
+          <table class="repr">
+            <tr><th>Base</th><th>Representation</th></tr>
+            <tr class="fragment"><td>10 (decimal)</td><td><code>1776</code></td></tr>
+            <tr class="fragment"><td>2 (binary)</td><td><code>11011110000</code></td></tr>
+            <tr class="fragment"><td>8 (octal)</td><td><code>3360</code></td></tr>
+            <tr class="fragment"><td>16 (hexadecimal)</td><td><code>6F0</code></td></tr>
+          </table>
+        </section>
+
+        <section>
+          <h2>From numbers to letters: ASCII</h2>
+          <p>Agree on a table: every character gets a number.</p>
+          <table class="repr">
+            <tr><th>Character</th><th>Decimal</th><th>Hex</th><th>Binary</th></tr>
+            <tr class="fragment"><td><code>V</code></td><td>86</td><td>56</td><td><code>01010110</code></td></tr>
+            <tr class="fragment"><td><code>O</code></td><td>79</td><td>4F</td><td><code>01001111</code></td></tr>
+            <tr class="fragment"><td><code>T</code></td><td>84</td><td>54</td><td><code>01010100</code></td></tr>
+            <tr class="fragment"><td><code>E</code></td><td>69</td><td>45</td><td><code>01000101</code></td></tr>
+          </table>
+          <aside class="notes">Live demo: printf 'VOTE' | xxd</aside>
+        </section>
+
+        <section id="unicode-zoom-slide">
+          <canvas id="unicode-zoom" width="1800" height="900"></canvas>
+          <p id="unicode-zoom-caption" class="small"></p>
+          <div id="unicode-zoom-legend"></div>
+          <div class="fragment zoom-step"></div>
+          <div class="fragment zoom-step"></div>
+          <div class="fragment zoom-step"></div>
+          <div class="fragment zoom-step"></div>
+        </section>
+
+        <section>
+          <h2>Unicode &amp; UTF-8</h2>
+          <table class="repr">
+            <tr><th>Character</th><th>Code point</th><th>UTF-8 bytes</th></tr>
+            <tr class="fragment"><td><code>A</code></td><td>U+0041</td><td><code>41</code></td></tr>
+            <tr class="fragment"><td><code>ç</code></td><td>U+00E7</td><td><code>C3 A7</code></td></tr>
+            <tr class="fragment"><td><code>ş</code></td><td>U+015F</td><td><code>C5 9F</code></td></tr>
+            <tr class="fragment"><td><code>中</code></td><td>U+4E2D</td><td><code>E4 B8 AD</code></td></tr>
+            <tr class="fragment"><td>🗳️</td><td>U+1F5F3</td><td><code>F0 9F 97 B3</code></td></tr>
+          </table>
+          <p class="fragment small">150,000+ characters, 1–4 bytes each. Plain ASCII text is already valid UTF-8.</p>
+          <aside class="notes">Live demo: printf 'ş中🗳' | xxd</aside>
+        </section>
+
+        <section id="doc-structure">
+          <h2 class="compact">One document, many representations</h2>
+          <div class="doc-grid">
+            <div class="paper">
+              <div class="fragment boxed" data-label="title"><h3>Timing and Turnout in Off-Cycle Governor Elections</h3></div>
+              <div class="fragment boxed" data-label="author"><p class="byline">CS 101 for Political Scientists</p></div>
+              <div class="fragment boxed" data-label="section"><h4>1&nbsp;&nbsp;Introduction</h4></div>
+              <div class="fragment boxed" data-label="paragraph"><p>Five American states elect their governors in odd-numbered
+                years. We ask whether this <em>timing</em> changes <strong>who shows up</strong>.</p></div>
+              <div class="fragment boxed" data-label="citation"><p>Off-cycle elections lower turnout (Anzia 2011).</p></div>
+              <div class="fragment boxed" data-label="list"><ul>
+                <li><code>turnout.csv</code>: state-level governor elections</li>
+                <li><code>survey.dta</code>: a Stata survey</li>
+              </ul></div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-label">Markdown</div>
+              <pre><code class="language-markdown" data-trim data-line-numbers data-steps="2|3|6|8-10|12|14-15">
+---
+title: "Timing and Turnout in Off-Cycle Governor Elections"
+author: "CS 101 for Political Scientists"
+---
+
+# Introduction
+
+Five American states elect their governors in
+odd-numbered years. We ask whether this *timing*
+changes **who shows up**.
+
+Off-cycle elections lower turnout [@anzia2011election].
+
+- `turnout.csv`: state-level governor elections
+- `survey.dta`: a Stata survey
+              </code></pre>
+            </div>
+
+            <div class="panel">
+              <div class="panel-label">HTML</div>
+              <pre><code class="language-html" data-trim data-line-numbers data-steps="1|2|4|5-7|9-10|12-15"><script type="text/template">
+<h1>Timing and Turnout in Off-Cycle Governor Elections</h1>
+<p class="author">CS 101 for Political Scientists</p>
+
+<h2>Introduction</h2>
+<p>Five American states elect their governors in
+odd-numbered years. We ask whether this <em>timing</em>
+changes <strong>who shows up</strong>.</p>
+
+<p>Off-cycle elections lower turnout
+<a href="#anzia2011">(Anzia 2011)</a>.</p>
+
+<ul>
+  <li><code>turnout.csv</code>: state-level governor elections</li>
+  <li><code>survey.dta</code>: a Stata survey</li>
+</ul>
+              </script></code></pre>
+            </div>
+
+            <div class="panel">
+              <div class="panel-label">LaTeX</div>
+              <pre><code class="language-latex" data-trim data-line-numbers data-steps="1|2|6|7-9|11|13-16">
+\title{Timing and Turnout in Off-Cycle Governor Elections}
+\author{CS 101 for Political Scientists}
+\begin{document}
+\maketitle
+
+\section{Introduction}
+Five American states elect their governors in
+odd-numbered years. We ask whether this \emph{timing}
+changes \textbf{who shows up}.
+
+Off-cycle elections lower turnout \citep{anzia2011election}.
+
+\begin{itemize}
+  \item \texttt{turnout.csv}: state-level governor elections
+  \item \texttt{survey.dta}: a Stata survey
+\end{itemize}
+              </code></pre>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- Part 1 -->
+      <section>
+        <section>
+          <p class="part">Part 1</p>
+          <h2>From <code>.qmd</code> to PDF</h2>
+        </section>
+
+        <section id="wysiwyg-slide">
+          <h2 class="compact">Editing in a WYSIWYG editor</h2>
+          <div class="app word" id="word-app" title="Click to replay">
+            <div class="app-bar"><i></i><i></i><i></i><span>paper.docx</span></div>
+            <div class="ribbon">
+              <button data-btn="bold"><b>B</b></button><button data-btn="italic"><i>I</i></button><button><u>U</u></button>
+              <span class="sep"></span>
+              <div class="style-picker">
+                <button data-btn="style"><span class="style-name">Normal</span> ▾</button>
+                <div class="style-menu">
+                  <div data-style="Normal">Normal</div>
+                  <div data-style="Heading 1" class="w-h1">Heading 1</div>
+                  <div data-style="Heading 2" class="w-h2">Heading 2</div>
+                </div>
+              </div>
+              <span class="sep"></span>
+              <button>Times New Roman ▾</button><button>12 ▾</button>
+            </div>
+            <div class="canvas"><div class="page"></div></div>
+            <div class="mouse"></div>
+          </div>
+        </section>
+
+        <section id="latex-slide">
+          <h2 class="compact">Editing in LaTeX</h2>
+          <div class="app overleaf" id="tex-app" title="Click to replay">
+            <div class="app-bar"><i></i><i></i><i></i><span>paper.tex</span></div>
+            <div class="split">
+              <div class="editor"><pre class="source"></pre></div>
+              <div class="preview">
+                <div class="preview-bar"><button data-btn="recompile">⟳ Recompile</button></div>
+                <div class="canvas"><div class="page"></div></div>
+              </div>
+            </div>
+            <div class="mouse"></div>
+          </div>
+        </section>
+
+        <section id="formats-slide">
+          <h2>Textual vs. Binary Formats</h2>
+          <div class="columns">
+            <div>
+              <h4>Textual</h4>
+              <p class="fmt-chips"><button class="fmt-chip" data-fmt="csv">.csv</button> <button class="fmt-chip" data-fmt="tsv">.tsv</button> <button class="fmt-chip" data-fmt="txt">.txt</button> <button class="fmt-chip" data-fmt="rmd">.rmd</button> <button class="fmt-chip" data-fmt="qmd">.qmd</button> <button class="fmt-chip" data-fmt="tex">.tex</button> <button class="fmt-chip" data-fmt="bib">.bib</button> <button class="fmt-chip" data-fmt="R">.R</button> <button class="fmt-chip" data-fmt="do">.do</button> <button class="fmt-chip" data-fmt="html">.html</button></p>
+            </div>
+            <div>
+              <h4>Binary</h4>
+              <p class="fmt-chips"><button class="fmt-chip" data-fmt="dta">.dta</button> <button class="fmt-chip" data-fmt="pdf">.pdf</button> <button class="fmt-chip" data-fmt="docx">.docx</button> <button class="fmt-chip" data-fmt="xlsx">.xlsx</button> <button class="fmt-chip" data-fmt="pptx">.pptx</button></p>
+            </div>
+          </div>
+          <div class="fmt-modal" hidden>
+            <button class="fmt-close" aria-label="Close">×</button>
+
+          <div class="fmt-page" data-fmt="csv">
+            <header><span class="fmt-ext">.csv</span> <span class="fmt-name">Comma-separated values</span>
+              <span class="fmt-kind text">text</span></header>
+            <p class="fmt-path">turnout-paper/data/turnout.csv</p>
+            <div class="fmt-body"><pre class="fmt-raw"><span class="t-head">&quot;abbr&quot;,&quot;year&quot;,&quot;turnout_pct&quot;</span>
+&quot;VA&quot;<span class="t-key">,</span>2015<span class="t-key">,</span>30.6
+&quot;VA&quot;<span class="t-key">,</span>2019<span class="t-key">,</span>38.8
+&quot;VA&quot;<span class="t-key">,</span>2023<span class="t-key">,</span>33
+&quot;NJ&quot;<span class="t-key">,</span>2015<span class="t-key">,</span>42.5
+&quot;NJ&quot;<span class="t-key">,</span>2019<span class="t-key">,</span>24.8
+&quot;NJ&quot;<span class="t-key">,</span>2023<span class="t-key">,</span>28.9
+&quot;KY&quot;<span class="t-key">,</span>2015<span class="t-key">,</span>39.6
+&quot;KY&quot;<span class="t-key">,</span>2019<span class="t-key">,</span>44.8
+&quot;KY&quot;<span class="t-key">,</span>2023<span class="t-key">,</span>41.6</pre></div>
+            <ul class="fmt-notes"><li>The first line is the <b>header</b>: column names.</li><li>Every other line is one <b>row</b> (here: one election).</li><li><span class='t-key'>,</span> separates the columns. That's the whole format.</li></ul>
+          </div>
+          <div class="fmt-page" data-fmt="tsv">
+            <header><span class="fmt-ext">.tsv</span> <span class="fmt-name">Tab-separated values</span>
+              <span class="fmt-kind text">text</span></header>
+            <p class="fmt-path">turnout-paper/data/states.tsv</p>
+            <div class="fmt-body"><pre class="fmt-raw"><span class="t-head">state	abbr	region	gov_timing</span>
+Virginia<span class="t-tab">	</span>VA<span class="t-tab">	</span>South<span class="t-tab">	</span>off-cycle
+New Jersey<span class="t-tab">	</span>NJ<span class="t-tab">	</span>Northeast<span class="t-tab">	</span>off-cycle
+Kentucky<span class="t-tab">	</span>KY<span class="t-tab">	</span>South<span class="t-tab">	</span>off-cycle
+Louisiana<span class="t-tab">	</span>LA<span class="t-tab">	</span>South<span class="t-tab">	</span>off-cycle
+Mississippi<span class="t-tab">	</span>MS<span class="t-tab">	</span>South<span class="t-tab">	</span>off-cycle
+Ohio<span class="t-tab">	</span>OH<span class="t-tab">	</span>Midwest<span class="t-tab">	</span>on-cycle
+Pennsylvania<span class="t-tab">	</span>PA<span class="t-tab">	</span>Northeast<span class="t-tab">	</span>on-cycle
+Georgia<span class="t-tab">	</span>GA<span class="t-tab">	</span>South<span class="t-tab">	</span>on-cycle</pre></div>
+            <ul class="fmt-notes"><li>Same idea as CSV, but columns are separated by an invisible <b>tab</b> character (shown here as <span class='t-tab-demo'>⇥</span>).</li><li>Handy when values themselves contain commas.</li></ul>
+          </div>
+          <div class="fmt-page" data-fmt="txt">
+            <header><span class="fmt-ext">.txt</span> <span class="fmt-name">Plain text</span>
+              <span class="fmt-kind text">text</span></header>
+            <p class="fmt-path">turnout-paper/notes.txt</p>
+            <div class="fmt-body"><pre class="fmt-raw">TODO
+- ask advisor whether to add 2025 VA/NJ races
+- the turnout numbers in data/ are SIMULATED for teaching, swap in real data later
+- coauthor uses Stata -&gt; analysis/models.do mirrors analysis/clean.R</pre></div>
+            <ul class="fmt-notes"><li>No structure at all: just characters and line breaks.</li><li>Any program can read it, which is exactly why it lasts.</li></ul>
+          </div>
+          <div class="fmt-page" data-fmt="rmd">
+            <header><span class="fmt-ext">.rmd</span> <span class="fmt-name">R Markdown</span>
+              <span class="fmt-kind text">text</span></header>
+            <p class="fmt-path">turnout-paper/paper.rmd</p>
+            <div class="fmt-body"><pre class="fmt-raw"><span class="t-yaml">---</span>
+<span class="t-yaml">title:</span> &quot;Timing and Turnout in Off-Cycle Governor Elections&quot;
+<span class="t-yaml">author:</span> &quot;CS 101 for Political Scientists (demo paper)&quot;
+<span class="t-yaml">date:</span> &quot;October 6, 2026&quot;
+<span class="t-yaml">bibliography:</span> references.bib
+<span class="t-yaml">biblio-style:</span> plainnat
+<span class="t-yaml">header-includes:</span>
+  - \usepackage{booktabs}
+  - \usepackage{multicol}
+<span class="t-yaml">output:</span>
+<span class="t-yaml">  pdf_document:</span>
+<span class="t-yaml">    citation_package:</span> natbib
+<span class="t-yaml">---</span>
+
+<span class="t-chunk">```{r setup, include=FALSE}</span>
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, dpi = 200)
+source(&quot;analysis/clean.R&quot;)
+<span class="t-chunk">```</span>
+
+<span class="t-head"># Introduction</span>
+
+Five American states elect their governors in odd-numbered years, away from
+federal elections. We ask whether this *timing* changes **who shows up to vote**.
+
+Political scientists have long argued that off-cycle elections lower turnout and
+hand more influence to organized groups <span class="t-attr">[@anzia2011election; @anzia2014timing]</span>.
+When citizens are unhappy with their government they can exit or they can use
+their voice <span class="t-attr">[@hirschman1970exit]</span>, and voting is the most common form of voice.^[All
+data in this paper are simulated for teaching purposes.]</pre></div>
+            <ul class="fmt-notes"><li><span class='t-yaml'>YAML header</span> between <code>---</code> lines: title, author, output settings.</li><li><span class='t-chunk'>R chunks</span> in <code>```{r}</code> fences; knitr runs them.</li><li>Everything else is <span class='t-head'>Markdown</span>, with <span class='t-attr'>[@citations]</span>.</li></ul>
+          </div>
+          <div class="fmt-page" data-fmt="qmd">
+            <header><span class="fmt-ext">.qmd</span> <span class="fmt-name">Quarto Markdown</span>
+              <span class="fmt-kind text">text</span></header>
+            <p class="fmt-path">the same paper written for Quarto (illustrative)</p>
+            <div class="fmt-body"><pre class="fmt-raw"><span class="t-yaml">---</span>
+<span class="t-yaml">title:</span> &quot;Timing and Turnout in Off-Cycle Governor Elections&quot;
+<span class="t-yaml">format:</span> pdf
+<span class="t-yaml">bibliography:</span> references.bib
+<span class="t-yaml">---</span>
+
+<span class="t-chunk">```{r}</span>
+<span class="t-chunk">#| label: setup</span>
+<span class="t-chunk">#| include: false</span>
+source(&quot;analysis/clean.R&quot;)
+<span class="t-chunk">```</span>
+
+<span class="t-head"># Introduction</span>
+
+Five American states elect their governors in odd-numbered years, away from
+federal elections. We ask whether this *timing* changes **who shows up to vote**.</pre></div>
+            <ul class="fmt-notes"><li>Quarto is R Markdown's successor: same three parts (YAML, chunks, Markdown).</li><li>Chunk options move inside the chunk as <span class='t-chunk'>#|</span> comments.</li><li><code>format: pdf</code> instead of <code>output: pdf_document</code>.</li></ul>
+          </div>
+          <div class="fmt-page" data-fmt="tex">
+            <header><span class="fmt-ext">.tex</span> <span class="fmt-name">LaTeX</span>
+              <span class="fmt-kind text">text</span></header>
+            <p class="fmt-path">turnout-paper/build/2-paper.tex (generated by pandoc)</p>
+            <div class="fmt-body"><pre class="fmt-raw"><span class="t-dim">% Options for packages loaded elsewhere</span>
+<span class="t-key">\PassOptionsToPackage</span>{unicode}{hyperref}
+<span class="t-key">\PassOptionsToPackage</span>{hyphens}{url}
+<span class="t-dim">%</span>
+<span class="t-key">\documentclass</span>[
+]{article}
+…
+<span class="t-key">\begin</span>{document}
+<span class="t-key">\maketitle</span>
+
+<span class="t-key">\hypertarget</span>{introduction}{<span class="t-dim">%</span>
+<span class="t-key">\section</span>{Introduction}<span class="t-key">\label</span>{introduction}}
+
+Five American states elect their governors in odd-numbered years, away
+from federal elections. We ask whether this <span class="t-key">\emph</span>{timing} changes
+<span class="t-key">\textbf</span>{who shows up to vote}.
+
+Political scientists have long argued that off-cycle elections lower
+turnout and hand more influence to organized groups</pre></div>
+            <ul class="fmt-notes"><li><b>Preamble</b> (before <code>\begin{document}</code>): document class and packages.</li><li><b>Body</b>: text plus <span class='t-key'>\commands</span> like <code>\section{…}</code> and <code>\emph{…}</code>.</li><li><code>\begin{x} … \end{x}</code> environments nest, like boxes in boxes.</li></ul>
+          </div>
+          <div class="fmt-page" data-fmt="bib">
+            <header><span class="fmt-ext">.bib</span> <span class="fmt-name">BibTeX references</span>
+              <span class="fmt-kind text">text</span></header>
+            <p class="fmt-path">turnout-paper/references.bib</p>
+            <div class="fmt-body"><pre class="fmt-raw"><span class="t-key">@book{hirschman1970exit</span>,
+<span class="t-attr">  title</span>     = {Exit, Voice, and Loyalty: Responses to Decline in Firms,
+               Organizations, and States},
+<span class="t-attr">  author</span>    = {Hirschman, Albert O.},
+<span class="t-attr">  year</span>      = {1970},
+<span class="t-attr">  publisher</span> = {Harvard University Press},
+<span class="t-attr">  address</span>   = {Cambridge, MA}
+}
+
+<span class="t-key">@book{anzia2014timing</span>,
+<span class="t-attr">  title</span>     = {Timing and Turnout: How Off-Cycle Elections Favor Organized Groups},
+<span class="t-attr">  author</span>    = {Anzia, Sarah F.},
+<span class="t-attr">  year</span>      = {2014},
+<span class="t-attr">  publisher</span> = {University of Chicago Press},
+<span class="t-attr">  address</span>   = {Chicago}
+}</pre></div>
+            <ul class="fmt-notes"><li>One entry per source: <span class='t-key'>@type{key</span>, then <span class='t-attr'>field</span> = {value}.</li><li>You cite by key: <code>[@hirschman1970exit]</code> or <code>\citep{hirschman1970exit}</code>.</li><li>Zotero, Mendeley and Google Scholar all export it.</li></ul>
+          </div>
+          <div class="fmt-page" data-fmt="R">
+            <header><span class="fmt-ext">.R</span> <span class="fmt-name">R script</span>
+              <span class="fmt-kind text">text</span></header>
+            <p class="fmt-path">turnout-paper/analysis/clean.R</p>
+            <div class="fmt-body"><pre class="fmt-raw"><span class="t-dim"># Reads the three datasets and builds the objects paper.rmd uses.</span>
+<span class="t-dim"># Paths are relative to the project folder (where paper.rmd lives).</span>
+
+library(dplyr)
+
+states  <span class="t-key">&lt;-</span> read.delim(&quot;data/states.tsv&quot;)         <span class="t-dim"># tab separated</span>
+turnout <span class="t-key">&lt;-</span> read.csv(&quot;data/turnout.csv&quot;)          <span class="t-dim"># comma separated</span>
+survey  <span class="t-key">&lt;-</span> haven::read_dta(&quot;data/survey.dta&quot;)    <span class="t-dim"># Stata, binary</span>
+
+elections <span class="t-key">&lt;-</span> turnout <span class="t-key">|&gt;</span>
+  left_join(states, by = &quot;abbr&quot;) <span class="t-key">|&gt;</span>
+  mutate(off_cycle = gov_timing == &quot;off-cycle&quot;)
+
+by_timing <span class="t-key">&lt;-</span> elections <span class="t-key">|&gt;</span>
+  group_by(gov_timing) <span class="t-key">|&gt;</span>
+  summarise(states = n_distinct(abbr),</pre></div>
+            <ul class="fmt-notes"><li>A program: statements run top to bottom.</li><li><span class='t-key'>&lt;-</span> stores a result in a name; <span class='t-dim'># comments</span> are for humans.</li></ul>
+          </div>
+          <div class="fmt-page" data-fmt="do">
+            <header><span class="fmt-ext">.do</span> <span class="fmt-name">Stata do-file</span>
+              <span class="fmt-kind text">text</span></header>
+            <p class="fmt-path">turnout-paper/analysis/models.do</p>
+            <div class="fmt-body"><pre class="fmt-raw"><span class="t-dim">* The same comparison as analysis/clean.R, for a coauthor who uses Stata.</span>
+<span class="t-dim">* Run from the turnout-paper folder:  do analysis/models.do</span>
+
+<span class="t-key">import</span> delimited &quot;data/states.tsv&quot;, delimiter(tab) clear
+<span class="t-key">tempfile</span> states
+<span class="t-key">save</span> `states&#x27;
+
+<span class="t-key">import</span> delimited &quot;data/turnout.csv&quot;, clear
+<span class="t-key">merge</span> m:1 abbr using `states&#x27;, nogenerate
+
+<span class="t-key">generate</span> off_cycle = gov_timing == &quot;off-cycle&quot;
+<span class="t-key">encode</span> region, generate(region_code)
+<span class="t-key">tabstat</span> turnout_pct, by(gov_timing) statistics(mean sd n)
+<span class="t-key">regress</span> turnout_pct off_cycle i.region_code</pre></div>
+            <ul class="fmt-notes"><li>Also a program: one Stata <span class='t-key'>command</span> per line.</li><li>The same analysis as <code>clean.R</code>, so a Stata-using coauthor can run it.</li></ul>
+          </div>
+          <div class="fmt-page" data-fmt="html">
+            <header><span class="fmt-ext">.html</span> <span class="fmt-name">HTML web page</span>
+              <span class="fmt-kind text">text</span></header>
+            <p class="fmt-path">turnout-paper/build/paper.html (generated by pandoc)</p>
+            <div class="fmt-body"><pre class="fmt-raw"><span class="t-key">&lt;body</span><span class="t-key">&gt;</span>
+<span class="t-key">&lt;header</span> <span class="t-attr">id</span>=&quot;title-block-header&quot;<span class="t-key">&gt;</span>
+<span class="t-key">&lt;h1</span> <span class="t-attr">class</span>=&quot;title&quot;<span class="t-key">&gt;</span>Timing and Turnout in Off-Cycle Governor
+Elections<span class="t-key">&lt;/h1</span><span class="t-key">&gt;</span>
+<span class="t-key">&lt;p</span> <span class="t-attr">class</span>=&quot;author&quot;<span class="t-key">&gt;</span>CS 101 for Political Scientists (demo paper)<span class="t-key">&lt;/p</span><span class="t-key">&gt;</span>
+<span class="t-key">&lt;p</span> <span class="t-attr">class</span>=&quot;date&quot;<span class="t-key">&gt;</span>October 6, 2026<span class="t-key">&lt;/p</span><span class="t-key">&gt;</span>
+<span class="t-key">&lt;/header</span><span class="t-key">&gt;</span>
+<span class="t-key">&lt;h1</span> <span class="t-attr">id</span>=&quot;introduction&quot;<span class="t-key">&gt;</span>Introduction<span class="t-key">&lt;/h1</span><span class="t-key">&gt;</span>
+<span class="t-key">&lt;p</span><span class="t-key">&gt;</span>Five American states elect their governors in odd-numbered years,
+away from federal elections. We ask whether this <span class="t-key">&lt;em</span><span class="t-key">&gt;</span>timing<span class="t-key">&lt;/em</span><span class="t-key">&gt;</span> changes
+<span class="t-key">&lt;strong</span><span class="t-key">&gt;</span>who shows up to vote<span class="t-key">&lt;/strong</span><span class="t-key">&gt;</span>.<span class="t-key">&lt;/p</span><span class="t-key">&gt;</span>
+<span class="t-key">&lt;p</span><span class="t-key">&gt;</span>Political scientists have long argued that off-cycle elections lower
+turnout and hand more influence to organized groups <span class="t-key">&lt;span</span>
+<span class="t-attr">class</span>=&quot;citation&quot; <span class="t-attr">data-cites</span>=&quot;anzia2011election anzia2014timing&quot;<span class="t-key">&gt;</span>(Anzia
+2011, 2014)<span class="t-key">&lt;/span</span><span class="t-key">&gt;</span>. When citizens are unhappy with their government they
+can exit or they can use their voice <span class="t-key">&lt;span</span> <span class="t-attr">class</span>=&quot;citation&quot;</pre></div>
+            <ul class="fmt-notes"><li><span class='t-key'>&lt;tags&gt;</span> wrap content: <code>&lt;h1&gt;…&lt;/h1&gt;</code>, <code>&lt;p&gt;…&lt;/p&gt;</code>.</li><li>Same paper, same Markdown source as the PDF, different output.</li></ul>
+          </div>
+          <div class="fmt-page" data-fmt="dta">
+            <header><span class="fmt-ext">.dta</span> <span class="fmt-name">Stata dataset</span>
+              <span class="fmt-kind binary">binary</span></header>
+            <p class="fmt-path">turnout-paper/data/survey.dta</p>
+            <div class="fmt-body"><div class="fmt-cols hex-cols">
+              <div><div class="fmt-label">Opened in a text editor</div><pre class="fmt-raw garbled">&lt;stata_dta&gt;&lt;header&gt;&lt;release&gt;118&lt;/release&gt;&lt;byteorder&gt;LSF&lt;/byteorder&gt;&lt;K&gt;��&lt;/K&gt;&lt;N&gt;,�������&lt;/N&gt;&lt;label&gt;��&lt;/label&gt;&lt;timestamp&gt;�03 Oct 2026 15:39&lt;/timestamp&gt;&lt;/header&gt;&lt;map&gt;������������������������D�����������������������/���������������C�������f��������#�������#������R%������^%������&lt;/map&gt;&lt;variable_types&gt;����������&lt;/variable_types&gt;&lt;varnames&gt;resp_id��������������������������������������������������������������������������������������������������������������������������abbr���������������������������������</pre></div>
+              <div><div class="fmt-label">Inside (hex dump of the first bytes)</div><pre class="fmt-raw hex"><span class="t-dim">00000000:</span> 3c73 7461 7461 5f64 7461 3e3c 6865 6164  <span class="t-key">&lt;stata_dta&gt;&lt;head</span>
+<span class="t-dim">00000010:</span> 6572 3e3c 7265 6c65 6173 653e 3131 383c  <span class="t-key">er&gt;&lt;release&gt;118&lt;</span>
+<span class="t-dim">00000020:</span> 2f72 656c 6561 7365 3e3c 6279 7465 6f72  <span class="t-key">/release&gt;&lt;byteor</span>
+<span class="t-dim">00000030:</span> 6465 723e 4c53 463c 2f62 7974 656f 7264  <span class="t-key">der&gt;LSF&lt;/byteord</span>
+<span class="t-dim">00000040:</span> 6572 3e3c 4b3e 0500 3c2f 4b3e 3c4e 3e2c  <span class="t-key">er&gt;&lt;K&gt;..&lt;/K&gt;&lt;N&gt;,</span>
+<span class="t-dim">00000050:</span> 0100 0000 0000 003c 2f4e 3e3c 6c61 6265  <span class="t-key">.......&lt;/N&gt;&lt;labe</span>
+<span class="t-dim">00000060:</span> 6c3e 0000 3c2f 6c61 6265 6c3e 3c74 696d  <span class="t-key">l&gt;..&lt;/label&gt;&lt;tim</span>
+<span class="t-dim">00000070:</span> 6573 7461 6d70 3e11 3033 204f 6374 2032  <span class="t-key">estamp&gt;.03 Oct 2</span>
+<span class="t-dim">00000080:</span> 3032 3620 3135 3a33 393c 2f74 696d 6573  <span class="t-key">026 15:39&lt;/times</span>
+<span class="t-dim">00000090:</span> 7461 6d70 3e3c 2f68 6561 6465 723e 3c6d  <span class="t-key">tamp&gt;&lt;/header&gt;&lt;m</span></pre></div>
+            </div></div>
+            <ul class="fmt-notes"><li>Starts with readable tags: <code>&lt;stata_dta&gt;&lt;header&gt;&lt;release&gt;118</code>…</li><li>…then numbers stored as raw bytes, not digits, so a text editor shows garbage.</li><li>You need Stata, R's <code>haven</code> or Python's <code>pandas</code> to read it.</li></ul>
+          </div>
+          <div class="fmt-page" data-fmt="pdf">
+            <header><span class="fmt-ext">.pdf</span> <span class="fmt-name">Portable Document Format</span>
+              <span class="fmt-kind binary">binary</span></header>
+            <p class="fmt-path">turnout-paper/build/3-paper.pdf</p>
+            <div class="fmt-body"><div class="fmt-cols">
+              <div><div class="fmt-label">Opened in a text editor</div><pre class="fmt-raw garbled">%PDF-1.5
+%����
+13 0 obj
+&lt;&lt;
+/Length 1609      
+/Filter /FlateDecode
+&gt;&gt;
+stream
+xڥWKs�6���W�H�D���sK�j;��Þ��Ɂ�`�S�tIʮ�����ɔ̤�v&lt;c���b��.x��x������W�/�+���Iatvu��cXaLf�a����:�ί�n7���2��5-��E����ۏD�[����Wj��q��D��-����?��~����L�Ǭ��R
+V
+G�����Xw��X�Z�6V�#�jK&#x27;��6[*͜-�ěK������(�[ȏ�����v�X����.W�o�y��q �&#x27;n��7�����&quot;�[,�����Q��J��KY2e,]��j�n�X��$��$CriI�[dB3�-�/�`��0�1��G9?��%��
+�|���&#x27;�UV��J���8���&#x27;2��+�˴u���[�A���`�&#x27;%^7���!$�e���ò�&gt;}p3�[_�D� L.&#x27;!!L�q�IF��]��у�&amp;0�$O�5�&gt;��U?$WT��aA+��(���</pre></div>
+              <div><div class="fmt-label">Inside (beginning and end of the file)</div><pre class="fmt-raw">%PDF-1.5
+%ÐÔÅØ
+13 0 obj
+&lt;&lt;
+/Length 1609      
+/Filter /FlateDecode
+&gt;&gt;
+stream
+<span class="t-dim">[1,609 bytes of compressed page content]</span>
+<span class="t-dim">…</span>
+endstream
+endobj
+startxref
+278615
+%%EOF
+</pre></div>
+            </div></div>
+            <ul class="fmt-notes"><li>A list of numbered <b>objects</b>; page content is <b>compressed</b> (<code>/FlateDecode</code>).</li><li><code>startxref</code> points to an exact byte offset, so editing one character by hand breaks the file.</li><li>Made for <b>presentation</b>: it stores where each glyph goes, not what is a heading.</li></ul>
+          </div>
+          <div class="fmt-page" data-fmt="docx">
+            <header><span class="fmt-ext">.docx</span> <span class="fmt-name">Word document</span>
+              <span class="fmt-kind binary">binary</span></header>
+            <p class="fmt-path">turnout-paper/draft-from-advisor.docx</p>
+            <div class="fmt-body"><div class="fmt-cols">
+              <div><div class="fmt-label">Opened in a text editor</div><pre class="fmt-raw garbled">PK���������C]����o���%�������[Content_Types].xml�U�n�0����k�Nz��*$�.�6R��p�@��E����;@��*����$3��?f�l��e����5)�&amp;����6S�H���%�g��lup�&quot;j5!e�D��y���&quot;$ց�Jn��HG_p&#x27;�(��N&amp;w\Z�`0ƚ��gO�����yO�[Y������R&amp;�+��He�T�I��2� �&amp;�e/�����������Q⍒�*�h)&lt;�
+M||g}�w�~�DJ%$�nOh�&lt;W�2++M��&amp;t�J���t�� �vb*��O����Q�������N�i��}N/����k椰�����������I�b�PoR�YLF�xT��{&#x27;.��G��ݫ�����Z}�[�s��Y�C�cLz�;��1\�AW�B�a#��{�(���,�Ecq���Qw.x�ߛ��PK���������C]�w��������������_rels/.rels��MN�1�F��y���
+B�i7�Rw���X�g&amp;��Q�B�=�!���]t</pre></div>
+              <div><div class="fmt-label">Inside (it's a ZIP of XML files)</div><pre class="fmt-raw">   1829  <span class="t-key">[Content_Types].xml</span>
+    722  <span class="t-key">_rels/.rels</span>
+   2193  <span class="t-key">word/document.xml</span>
+   1203  <span class="t-key">word/_rels/document.xml.rels</span>
+    124  <span class="t-key">word/_rels/footnotes.xml.rels</span>
+   4119  <span class="t-key">word/numbering.xml</span>
+  20527  <span class="t-key">word/styles.xml</span>
+    843  <span class="t-key">word/footnotes.xml</span>
+    625  <span class="t-key">word/comments.xml</span>
+        … 7 more
+
+<span class="t-dim">── word/document.xml ──</span>
+  <span class="t-key">&lt;w:body</span><span class="t-key">&gt;</span>
+    <span class="t-key">&lt;w:bookmarkStart</span> <span class="t-attr">w:id</span>=&quot;20&quot; <span class="t-attr">w:name</span>=&quot;comments-on-your-draft&quot;<span class="t-key">/&gt;</span>
+    <span class="t-key">&lt;w:p</span><span class="t-key">&gt;</span>
+      <span class="t-key">&lt;w:pPr</span><span class="t-key">&gt;</span>
+        <span class="t-key">&lt;w:pStyle</span> <span class="t-attr">w:val</span>=&quot;Heading1&quot;<span class="t-key">/&gt;</span>
+      <span class="t-key">&lt;/w:pPr</span><span class="t-key">&gt;</span>
+      <span class="t-key">&lt;w:r</span><span class="t-key">&gt;</span>
+        <span class="t-key">&lt;w:t</span> <span class="t-attr">xml:space</span>=&quot;preserve&quot;<span class="t-key">&gt;</span>Comments on your draft<span class="t-key">&lt;/w:t</span><span class="t-key">&gt;</span>
+      <span class="t-key">&lt;/w:r</span><span class="t-key">&gt;</span>
+    <span class="t-key">&lt;/w:p</span><span class="t-key">&gt;</span>
+    <span class="t-key">&lt;w:p</span><span class="t-key">&gt;</span>
+      <span class="t-key">&lt;w:pPr</span><span class="t-key">&gt;</span>
+        <span class="t-key">&lt;w:pStyle</span> <span class="t-attr">w:val</span>=&quot;FirstParagraph&quot;<span class="t-key">/&gt;</span>
+  …</pre></div>
+            </div></div>
+            <ul class="fmt-notes"><li>Rename it to <code>.zip</code> and unzip it: it's a folder of XML files.</li><li>Text lives in <code>&lt;w:t&gt;</code>, styling in <code>&lt;w:pPr&gt;</code>/<code>&lt;w:rPr&gt;</code>, scattered across many tags.</li><li>Readable in principle, but not something you edit or diff by hand.</li></ul>
+          </div>
+          <div class="fmt-page" data-fmt="xlsx">
+            <header><span class="fmt-ext">.xlsx</span> <span class="fmt-name">Excel workbook</span>
+              <span class="fmt-kind binary">binary</span></header>
+            <p class="fmt-path">turnout-paper/data/codebook.xlsx</p>
+            <div class="fmt-body"><div class="fmt-cols">
+              <div><div class="fmt-label">Opened in a text editor</div><pre class="fmt-raw garbled">PK���������|C]�\��������������[Content_Types].xml���N�0��_��Z�N; ��t(t�����sI��K&gt;����I��*�0�����dW���v�Hڻ��E��:�[�������-�6��= �luT�!�p&#x27;%��-���]V:�-�|����F�Qn��F*���T���7�=vp4�=L����h����8�j�!�� e]�\��R\�&quot;&#x27;���:�*���J������S~��[d���#�쒓�o&gt;��ޏ���+[���
+[��6G����Ҁ�������[��_�$����E��?���w7�PK���������|C]�I��������������_rels/.rels����� ���W!�;��c��.�dW3��Y���%�:�^��x������U�ؙ=0DCN��(��S����\����M]]p�)&#x27;�h|d�⢀1%��&lt;�����yty3P�2�1h��F�+�=����M���B�o�u/���4�F��ݢK?N|%�,��$`����t#�����+�z�~�PK��</pre></div>
+              <div><div class="fmt-label">Inside (it's a ZIP of XML files)</div><pre class="fmt-raw">    540  <span class="t-key">[Content_Types].xml</span>
+    278  <span class="t-key">_rels/.rels</span>
+    268  <span class="t-key">xl/workbook.xml</span>
+    279  <span class="t-key">xl/_rels/workbook.xml.rels</span>
+   1742  <span class="t-key">xl/worksheets/sheet1.xml</span>
+
+<span class="t-dim">── xl/worksheets/sheet1.xml ──</span>
+  <span class="t-key">&lt;sheetData</span><span class="t-key">&gt;</span>
+    <span class="t-key">&lt;row</span> <span class="t-attr">r</span>=&quot;1&quot;<span class="t-key">&gt;</span>
+      <span class="t-key">&lt;c</span> <span class="t-attr">r</span>=&quot;A1&quot; <span class="t-attr">t</span>=&quot;inlineStr&quot;<span class="t-key">&gt;</span>
+        <span class="t-key">&lt;is</span><span class="t-key">&gt;</span>
+          <span class="t-key">&lt;t</span><span class="t-key">&gt;</span>file<span class="t-key">&lt;/t</span><span class="t-key">&gt;</span>
+        <span class="t-key">&lt;/is</span><span class="t-key">&gt;</span>
+      <span class="t-key">&lt;/c</span><span class="t-key">&gt;</span>
+      <span class="t-key">&lt;c</span> <span class="t-attr">r</span>=&quot;B1&quot; <span class="t-attr">t</span>=&quot;inlineStr&quot;<span class="t-key">&gt;</span>
+        <span class="t-key">&lt;is</span><span class="t-key">&gt;</span>
+          <span class="t-key">&lt;t</span><span class="t-key">&gt;</span>variable<span class="t-key">&lt;/t</span><span class="t-key">&gt;</span>
+        <span class="t-key">&lt;/is</span><span class="t-key">&gt;</span>
+      <span class="t-key">&lt;/c</span><span class="t-key">&gt;</span>
+      <span class="t-key">&lt;c</span> <span class="t-attr">r</span>=&quot;C1&quot; <span class="t-attr">t</span>=&quot;inlineStr&quot;<span class="t-key">&gt;</span>
+  …</pre></div>
+            </div></div>
+            <ul class="fmt-notes"><li>Also a ZIP of XML: one file per worksheet.</li><li>Each cell is a <code>&lt;c r="A1"&gt;</code> tag; formatting and formulas live alongside.</li><li>Export to <code>.csv</code> when you want the data itself.</li></ul>
+          </div>
+          <div class="fmt-page" data-fmt="pptx">
+            <header><span class="fmt-ext">.pptx</span> <span class="fmt-name">PowerPoint deck</span>
+              <span class="fmt-kind binary">binary</span></header>
+            <p class="fmt-path">turnout-paper/talk.pptx</p>
+            <div class="fmt-body"><div class="fmt-cols">
+              <div><div class="fmt-label">Opened in a text editor</div><pre class="fmt-raw garbled">PK���������C]2���������������ppt/slides/slide1.xml�T]��!��+�����M�fs���Ik���I�);��,�@]�}�vQ��Ĥ}���93����Ե��胲f������H[+���/�ww/����UA�@�&amp;Tbʚ�]�y���&quot;�[��|��[�i鷼��@�����9o�2l������FI|c�E�{��ZDj34ʅ��nAs�����_ZJ��Jי�[{�d��{�Vn�{�_zP5���������&lt;C\�6���!l�)�n��4�=覌�&gt;摧M�&quot;�~W^l���hټ���K�~Q8��;��դ�Z������J��ͭ���X&quot;�e�I�Bz�iv�ģ#����I�����I�ؽ��1��Ns�+*��*����ry ���LT���3����dd�����d����gk����ajXＱ���cN�}b��ŋx���Y��5��������k�0�WAU�]���-�5����ɣ������X��Q��W�ח#X|���o#���iuE�[K��</pre></div>
+              <div><div class="fmt-label">Inside (it's a ZIP of XML files)</div><pre class="fmt-raw">   1269  <span class="t-key">ppt/slides/slide1.xml</span>
+   1220  <span class="t-key">ppt/slides/slide2.xml</span>
+    293  <span class="t-key">ppt/slides/_rels/slide1.xml.rels</span>
+    293  <span class="t-key">ppt/slides/_rels/slide2.xml.rels</span>
+  12012  <span class="t-key">ppt/slideMasters/slideMaster1.xml</span>
+   1984  <span class="t-key">ppt/slideMasters/_rels/slideMaster1.xml.rels</span>
+   3465  <span class="t-key">[Content_Types].xml</span>
+    583  <span class="t-key">docProps/core.xml</span>
+    212  <span class="t-key">docProps/custom.xml</span>
+        … 31 more
+
+<span class="t-dim">── ppt/slides/slide1.xml ──</span>
+            <span class="t-key">&lt;a:pPr</span> <span class="t-attr">lvl</span>=&quot;0&quot; <span class="t-attr">indent</span>=&quot;0&quot; <span class="t-attr">marL</span>=&quot;0&quot;<span class="t-key">&gt;</span>
+              <span class="t-key">&lt;a:buNone</span><span class="t-key">/&gt;</span>
+            <span class="t-key">&lt;/a:pPr</span><span class="t-key">&gt;</span>
+            <span class="t-key">&lt;a:r</span><span class="t-key">&gt;</span>
+              <span class="t-key">&lt;a:rPr</span><span class="t-key">/&gt;</span>
+              <span class="t-key">&lt;a:t</span><span class="t-key">&gt;</span>Timing and Turnout<span class="t-key">&lt;/a:t</span><span class="t-key">&gt;</span>
+            <span class="t-key">&lt;/a:r</span><span class="t-key">&gt;</span>
+          <span class="t-key">&lt;/a:p</span><span class="t-key">&gt;</span>
+        <span class="t-key">&lt;/p:txBody</span><span class="t-key">&gt;</span>
+      <span class="t-key">&lt;/p:sp</span><span class="t-key">&gt;</span>
+      <span class="t-key">&lt;p:sp</span><span class="t-key">&gt;</span>
+        <span class="t-key">&lt;p:nvSpPr</span><span class="t-key">&gt;</span>
+          <span class="t-key">&lt;p:cNvPr</span> <span class="t-attr">id</span>=&quot;3&quot; <span class="t-attr">name</span>=&quot;Content Placeholder 2&quot;<span class="t-key">/&gt;</span>
+          <span class="t-key">&lt;p:cNvSpPr</span><span class="t-key">&gt;</span>
+            <span class="t-key">&lt;a:spLocks</span> <span class="t-attr">noGrp</span>=&quot;1&quot;<span class="t-key">/&gt;</span>
+          <span class="t-key">&lt;/p:cNvSpPr</span><span class="t-key">&gt;</span>
+  …</pre></div>
+            </div></div>
+            <ul class="fmt-notes"><li>A ZIP of XML: one file per slide, plus masters, themes and layouts.</li><li>The words on the slide are buried deep inside shape and text-box tags.</li></ul>
+          </div>
+          </div>
+        </section>
+
+        <section class="pipeline-slide">
+          <h2 class="compact">Markdown → LaTeX → PDF</h2>
+          <div class="pipeline three">
+            <div class="panel">
+              <div class="panel-label">paper.md</div>
+              <pre><code class="language-markdown" data-trim data-line-numbers data-steps="2|3|6|8-10|12|14-15">
+---
+title: &quot;Timing and Turnout in Off-Cycle Governor Elections&quot;
+author: &quot;CS 101 for Political Scientists&quot;
+---
+
+# Introduction
+
+Five American states elect their governors in
+odd-numbered years. We ask whether this *timing*
+changes **who shows up**.
+
+Off-cycle elections lower turnout [@anzia2011election].
+
+- `turnout.csv`: state-level governor elections
+- `survey.dta`: a Stata survey
+              </code></pre>
+            </div>
+            <div class="arrow"><span>pandoc</span>→</div>
+            <div class="panel">
+              <div class="panel-label">paper.tex <small>(preamble omitted)</small></div>
+              <pre><code class="language-latex" data-trim data-line-numbers data-steps="1-2|3|9-10|12-14|16-17,28|19-26">
+\title{Timing and Turnout in Off-Cycle
+Governor Elections}
+\author{CS 101 for Political Scientists}
+\date{}
+
+\begin{document}
+\maketitle
+
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+Five American states elect their governors
+in odd-numbered years. We ask whether this
+\emph{timing} changes \textbf{who shows up}.
+
+Off-cycle elections lower turnout
+\citep{anzia2011election}.
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{turnout.csv}: state-level governor
+  elections
+\item
+  \texttt{survey.dta}: a Stata survey
+\end{itemize}
+
+  \bibliography{references.bib}
+
+\end{document}
+              </code></pre>
+            </div>
+            <div class="arrow"><span>pdflatex<br>+ bibtex</span>→</div>
+            <div class="panel">
+              <div class="panel-label">paper.pdf</div>
+              <div class="pdf-page">
+                <img src="slide-assets/md-pipeline-pdf.png" alt="Rendered PDF page">
+                <div class="fragment boxed" data-fragment-index="0" data-label="title" style="left:7.9%;top:2.7%;width:84.5%;height:14.1%"></div>
+                <div class="fragment boxed" data-fragment-index="1" data-label="author" style="left:28.4%;top:24.1%;width:43.5%;height:5.3%"></div>
+                <div class="fragment boxed" data-fragment-index="2" data-label="section" style="left:1.7%;top:40.7%;width:26.0%;height:5.6%"></div>
+                <div class="fragment boxed" data-fragment-index="3" data-label="paragraph" style="left:1.7%;top:49.7%;width:96.7%;height:9.3%"></div>
+                <div class="fragment boxed" data-fragment-index="4" data-label="citation" style="left:1.9%;top:59.8%;width:57.7%;height:5.6%"></div>
+                <div class="fragment boxed" data-fragment-index="4" data-label="bibliography" style="left:1.9%;top:81.2%;width:97.1%;height:16.9%"></div>
+                <div class="fragment boxed" data-fragment-index="5" data-label="list" style="left:4.5%;top:66.6%;width:58.1%;height:9.3%"></div>
+              </div>
+            </div>
+          </div>
+          <aside class="notes">Real outputs: pandoc paper.md --standalone --natbib --bibliography=references.bib -o paper.tex; then pdflatex, bibtex, pdflatex, pdflatex.</aside>
+        </section>
+
+        <section class="pipeline-slide">
+          <h2 class="compact">R Markdown → Markdown → LaTeX → PDF</h2>
+          <div class="pipeline four">
+            <div class="panel">
+              <div class="panel-label">paper.rmd</div>
+              <pre><code class="language-markdown" data-trim data-line-numbers data-steps="2|6-8|10|12-13|15|17-18|20-23">
+---
+title: &quot;Timing and Turnout&quot;
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+source(&quot;analysis/clean.R&quot;)
+```
+
+# Data
+
+- `turnout.csv`: `r nrow(turnout)` elections
+- `survey.dta`: `r nrow(survey)` respondents
+
+# Results
+
+Off-cycle turnout is
+**`r sprintf(&quot;%.1f&quot;, turnout_gap)` points lower**.
+
+```{r turnout-table, echo=FALSE}
+knitr::kable(by_timing, digits = 1,
+             format = &quot;latex&quot;, booktabs = TRUE)
+```
+              </code></pre>
+            </div>
+            <div class="arrow"><span>knitr</span>→</div>
+            <div class="panel">
+              <div class="panel-label">paper.md</div>
+              <pre><code class="language-markdown" data-trim data-line-numbers data-steps="2||6|8-9|11|13-14|16-23">
+---
+title: &quot;Timing and Turnout&quot;
+output: pdf_document
+---
+
+# Data
+
+- `turnout.csv`: 39 elections
+- `survey.dta`: 300 respondents
+
+# Results
+
+Off-cycle turnout is
+**16.0 points lower**.
+
+\begin{tabular}{lrrrr}
+\toprule
+gov\_timing &amp; states &amp; elections &amp; mean\_turnout &amp; sd\_turnout\\
+\midrule
+off-cycle &amp; 5 &amp; 15 &amp; 36.3 &amp; 6.9\\
+on-cycle &amp; 8 &amp; 24 &amp; 52.3 &amp; 4.7\\
+\bottomrule
+\end{tabular}
+              </code></pre>
+            </div>
+            <div class="arrow"><span>pandoc</span>→</div>
+            <div class="panel">
+              <div class="panel-label">paper.tex</div>
+              <pre><code class="language-latex" data-trim data-line-numbers data-steps="1||8-9|11-17|19-20|22-23|25-32">
+\title{Timing and Turnout}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\hypertarget{data}{%
+\section{Data}\label{data}}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{turnout.csv}: 39 elections
+\item
+  \texttt{survey.dta}: 300 respondents
+\end{itemize}
+
+\hypertarget{results}{%
+\section{Results}\label{results}}
+
+Off-cycle turnout is \textbf{16.0 points
+lower}.
+
+\begin{tabular}{lrrrr}
+\toprule
+gov\_timing &amp; states &amp; elections &amp; mean\_turnout &amp; sd\_turnout\\
+\midrule
+off-cycle &amp; 5 &amp; 15 &amp; 36.3 &amp; 6.9\\
+on-cycle &amp; 8 &amp; 24 &amp; 52.3 &amp; 4.7\\
+\bottomrule
+\end{tabular}
+
+\end{document}
+              </code></pre>
+            </div>
+            <div class="arrow"><span>pdflatex</span>→</div>
+            <div class="panel">
+              <div class="panel-label">paper.pdf</div>
+              <div class="pdf-page">
+                <img src="slide-assets/rmd-pipeline-pdf.png" alt="Rendered PDF page">
+                <div class="fragment boxed" data-fragment-index="0" data-label="title" style="left:29.7%;top:3.0%;width:40.7%;height:8.1%"></div>
+                <div class="fragment boxed" data-fragment-index="2" data-label="section" style="left:1.9%;top:36.1%;width:10.8%;height:6.1%"></div>
+                <div class="fragment boxed" data-fragment-index="3" data-label="list" style="left:4.5%;top:45.7%;width:41.3%;height:10.4%"></div>
+                <div class="fragment boxed" data-fragment-index="4" data-label="section" style="left:1.9%;top:61.9%;width:15.5%;height:6.1%"></div>
+                <div class="fragment boxed" data-fragment-index="5" data-label="paragraph" style="left:1.9%;top:71.3%;width:49.9%;height:5.7%"></div>
+                <div class="fragment boxed" data-fragment-index="6" data-label="table" style="left:1.7%;top:77.6%;width:81.1%;height:20.4%"></div>
+                <div class="fragment step-only" data-fragment-index="1"></div>
+              </div>
+            </div>
+          </div>
+          <aside class="notes">Step 2: the setup chunk runs but leaves nothing behind. Steps 4, 6, 7: inline R and the kable chunk become plain numbers and a LaTeX table. These are real knitr/pandoc outputs (blank lines squeezed).</aside>
+        </section>
+      </section>
+
+      <!-- Part 2 -->
+      <section>
+        <section>
+          <p class="part">Part 2</p>
+          <h2>Collaboration &amp; Long-Term Projects</h2>
+          <p><code>PaperFinalFinalFinal3.docx</code></p>
+        </section>
+
+        <section id="git-commands-slide" class="has-pages">
+          <h2 class="compact">Git commands</h2>
+          <div class="git-cols"><div class="git-col"><h4>Start</h4><div class="git-item"><button class="fmt-chip" data-fmt="git-init">git init</button><span>start tracking a folder</span></div><div class="git-item"><button class="fmt-chip" data-fmt="git-clone">git clone</button><span>copy a project</span></div><div class="git-item"><button class="fmt-chip" data-fmt="git-config">git config</button><span>say who you are</span></div></div><div class="git-col"><h4>Record</h4><div class="git-item"><button class="fmt-chip" data-fmt="git-status">git status</button><span>what's going on?</span></div><div class="git-item"><button class="fmt-chip" data-fmt="git-diff">git diff</button><span>what exactly changed?</span></div><div class="git-item"><button class="fmt-chip" data-fmt="git-add">git add</button><span>pick what to save</span></div><div class="git-item"><button class="fmt-chip" data-fmt="git-commit">git commit</button><span>save a snapshot</span></div><div class="git-item"><button class="fmt-chip" data-fmt="git-log">git log</button><span>browse the history</span></div><div class="git-item"><button class="fmt-chip" data-fmt="git-restore">git restore</button><span>undo unsaved edits</span></div></div><div class="git-col"><h4>Share</h4><div class="git-item"><button class="fmt-chip" data-fmt="git-push">git push</button><span>upload your commits</span></div><div class="git-item"><button class="fmt-chip" data-fmt="git-pull">git pull</button><span>get others' commits</span></div></div><div class="git-col"><h4>Branch</h4><div class="git-item"><button class="fmt-chip" data-fmt="git-switch">git switch</button><span>move between versions</span></div><div class="git-item"><button class="fmt-chip" data-fmt="git-merge">git merge</button><span>combine branches</span></div></div></div>
+          <div class="fmt-modal" hidden>
+            <button class="fmt-close" aria-label="Close">×</button>
+            <div class="fmt-page git-page" data-fmt="git-init" hidden>
+              <header><span class="fmt-ext">git init</span> <span class="fmt-name">Start tracking a folder</span>
+                <span class="fmt-kind group">Start</span></header>
+              <svg class="git-strip" viewBox="0 0 830 128"><defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2b7de9"/></marker></defs><rect class="box" x="12" y="42" width="170" height="40" rx="7"/><text class="box" x="97.0" y="67.0">Your folder</text><rect class="box" x="217" y="42" width="170" height="40" rx="7"/><text class="box" x="302.0" y="67.0">Staging area</text><rect class="box hot" x="422" y="42" width="170" height="40" rx="7"/><text class="box hot" x="507.0" y="67.0">History (.git)</text><rect class="box" x="627" y="42" width="170" height="40" rx="7"/><text class="box" x="712.0" y="67.0">GitHub</text></svg>
+              <ul class="fmt-notes"><li>Turns the current folder into a Git repository by creating a hidden <code>.git/</code> folder; the history will live there.</li><li>Nothing is saved yet. Run it once per project.</li><li>Files matching <code>.gitignore</code> (here <code>build/</code>, PDFs, caches) are never tracked: they can be regenerated.</li></ul>
+              <div class="fmt-label">From the demo</div>
+              <pre class="fmt-raw term"><span class="t-cmd">$ git init -b main</span>
+Initialized empty Git repository in ~/cs101-demo/alice/turnout-paper/.git/</pre>
+            </div>
+            <div class="fmt-page git-page" data-fmt="git-clone" hidden>
+              <header><span class="fmt-ext">git clone</span> <span class="fmt-name">Copy a project, with its whole history</span>
+                <span class="fmt-kind group">Start</span></header>
+              <svg class="git-strip" viewBox="0 0 830 128"><defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2b7de9"/></marker></defs><rect class="box hot" x="12" y="42" width="170" height="40" rx="7"/><text class="box hot" x="97.0" y="67.0">Your folder</text><rect class="box" x="217" y="42" width="170" height="40" rx="7"/><text class="box" x="302.0" y="67.0">Staging area</text><rect class="box" x="422" y="42" width="170" height="40" rx="7"/><text class="box" x="507.0" y="67.0">History (.git)</text><rect class="box hot" x="627" y="42" width="170" height="40" rx="7"/><text class="box hot" x="712.0" y="67.0">GitHub</text><path class="flow" d="M712.0,82 C712.0,114 97.0,114 97.0,82" marker-end="url(#ah)"/><text class="flow-label" x="404.5" y="118.96000000000001">download everything</text></svg>
+              <ul class="fmt-notes"><li>Downloads every file <em>and every past version</em>, and remembers where it came from (<code>origin</code>).</li><li>This is how a coauthor joins: no emailing zip files.</li></ul>
+              <div class="fmt-label">From the demo</div>
+              <pre class="fmt-raw term"><span class="t-cmd">$ git clone https://github.com/alice/turnout-paper.git</span>
+Cloning into &#x27;turnout-paper&#x27;...
+done.</pre>
+            </div>
+            <div class="fmt-page git-page" data-fmt="git-config" hidden>
+              <header><span class="fmt-ext">git config</span> <span class="fmt-name">Say who you are</span>
+                <span class="fmt-kind group">Start</span></header>
+              <svg class="git-strip" viewBox="0 0 830 128"><defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2b7de9"/></marker></defs><rect class="box" x="12" y="42" width="170" height="40" rx="7"/><text class="box" x="97.0" y="67.0">Your folder</text><rect class="box" x="217" y="42" width="170" height="40" rx="7"/><text class="box" x="302.0" y="67.0">Staging area</text><rect class="box" x="422" y="42" width="170" height="40" rx="7"/><text class="box" x="507.0" y="67.0">History (.git)</text><rect class="box" x="627" y="42" width="170" height="40" rx="7"/><text class="box" x="712.0" y="67.0">GitHub</text></svg>
+              <ul class="fmt-notes"><li>Every commit is stamped with a name and email, so the history shows who changed what.</li><li><code>--global</code> sets it for all your projects; without it, just this one.</li></ul>
+              <div class="fmt-label">From the demo</div>
+              <pre class="fmt-raw term"><span class="t-cmd">$ git config user.name &quot;Bob&quot;</span>
+<span class="t-cmd">$ git config user.email &quot;bob@example.com&quot;</span></pre>
+            </div>
+            <div class="fmt-page git-page" data-fmt="git-status" hidden>
+              <header><span class="fmt-ext">git status</span> <span class="fmt-name">What's going on right now?</span>
+                <span class="fmt-kind group">Record</span></header>
+              <svg class="git-strip" viewBox="0 0 830 128"><defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2b7de9"/></marker></defs><rect class="box hot" x="12" y="42" width="170" height="40" rx="7"/><text class="box hot" x="97.0" y="67.0">Your folder</text><rect class="box hot" x="217" y="42" width="170" height="40" rx="7"/><text class="box hot" x="302.0" y="67.0">Staging area</text><rect class="box" x="422" y="42" width="170" height="40" rx="7"/><text class="box" x="507.0" y="67.0">History (.git)</text><rect class="box" x="627" y="42" width="170" height="40" rx="7"/><text class="box" x="712.0" y="67.0">GitHub</text></svg>
+              <ul class="fmt-notes"><li>Lists what changed since the last commit, and what is staged for the next one.</li><li>When in doubt, run <code>git status</code>: it usually tells you the next command too.</li></ul>
+              <div class="fmt-label">From the demo</div>
+              <pre class="fmt-raw term"><span class="t-cmd">$ git status</span>
+On branch main
+
+No commits yet
+
+Untracked files:
+  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)
+	.gitignore
+	analysis/
+	data/
+	draft-from-advisor.docx
+	notes.txt
+	paper.rmd
+	references.bib
+	render.sh
+	talk.pptx
+
+nothing added to commit but untracked files present (use &quot;git add&quot; to track)</pre>
+            </div>
+            <div class="fmt-page git-page" data-fmt="git-diff" hidden>
+              <header><span class="fmt-ext">git diff</span> <span class="fmt-name">What exactly changed?</span>
+                <span class="fmt-kind group">Record</span></header>
+              <svg class="git-strip" viewBox="0 0 830 128"><defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2b7de9"/></marker></defs><rect class="box hot" x="12" y="42" width="170" height="40" rx="7"/><text class="box hot" x="97.0" y="67.0">Your folder</text><rect class="box" x="217" y="42" width="170" height="40" rx="7"/><text class="box" x="302.0" y="67.0">Staging area</text><rect class="box hot" x="422" y="42" width="170" height="40" rx="7"/><text class="box hot" x="507.0" y="67.0">History (.git)</text><rect class="box" x="627" y="42" width="170" height="40" rx="7"/><text class="box" x="712.0" y="67.0">GitHub</text></svg>
+              <ul class="fmt-notes"><li>Shows changes line by line: <span class='t-del'>- removed</span>, <span class='t-add'>+ added</span>.</li><li>Works on any text file, including <code>.csv</code> data. For binary files it can only say <em>Binary files differ</em>.</li></ul>
+              <div class="fmt-label">From the demo</div>
+              <pre class="fmt-raw term"><span class="t-cmd">$ git diff</span>
+diff --git a/paper.rmd b/paper.rmd
+index 34bcb22..b74e67c 100644
+--- a/paper.rmd
++++ b/paper.rmd
+@@ -1,5 +1,5 @@
+ ---
+<span class="t-del">-title: &quot;Timing and Turnout in Off-Cycle Governor Elections&quot;</span>
+<span class="t-add">+title: &quot;Timing and Turnout: Evidence from Off-Cycle Governor Elections&quot;</span>
+ author: &quot;CS 101 for Political Scientists (demo paper)&quot;
+ date: &quot;October 6, 2026&quot;
+ bibliography: references.bib
+<span class="t-cmd">$ git diff</span>
+diff --git a/data/turnout.csv b/data/turnout.csv
+index 774a184..ed24559 100644
+--- a/data/turnout.csv
++++ b/data/turnout.csv
+@@ -38,3 +38,5 @@
+ &quot;NV&quot;,2014,52.8
+ &quot;NV&quot;,2018,52.6
+ &quot;NV&quot;,2022,56.5
+<span class="t-add">+&quot;VA&quot;,2025,41.2</span>
+<span class="t-add">+&quot;NJ&quot;,2025,39.0</span></pre>
+            </div>
+            <div class="fmt-page git-page" data-fmt="git-add" hidden>
+              <header><span class="fmt-ext">git add</span> <span class="fmt-name">Pick what goes into the next snapshot</span>
+                <span class="fmt-kind group">Record</span></header>
+              <svg class="git-strip" viewBox="0 0 830 128"><defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2b7de9"/></marker></defs><rect class="box hot" x="12" y="42" width="170" height="40" rx="7"/><text class="box hot" x="97.0" y="67.0">Your folder</text><rect class="box hot" x="217" y="42" width="170" height="40" rx="7"/><text class="box hot" x="302.0" y="67.0">Staging area</text><rect class="box" x="422" y="42" width="170" height="40" rx="7"/><text class="box" x="507.0" y="67.0">History (.git)</text><rect class="box" x="627" y="42" width="170" height="40" rx="7"/><text class="box" x="712.0" y="67.0">GitHub</text><path class="flow" d="M97.0,42 C97.0,10 302.0,10 302.0,42" marker-end="url(#ah)"/><text class="flow-label" x="199.5" y="13.04">stage</text></svg>
+              <ul class="fmt-notes"><li>Moves changes to the <b>staging area</b>: a draft of the next commit.</li><li><code>git add .</code> stages everything; <code>git add paper.rmd</code> just one file.</li></ul>
+              <div class="fmt-label">From the demo</div>
+              <pre class="fmt-raw term"><span class="t-cmd">$ git add .</span>
+<span class="t-cmd">$ git status</span>
+On branch main
+
+No commits yet
+
+Changes to be committed:
+  (use &quot;git rm --cached &lt;file&gt;...&quot; to unstage)
+	new file:   .gitignore
+	new file:   analysis/clean.R
+…</pre>
+            </div>
+            <div class="fmt-page git-page" data-fmt="git-commit" hidden>
+              <header><span class="fmt-ext">git commit</span> <span class="fmt-name">Save a snapshot</span>
+                <span class="fmt-kind group">Record</span></header>
+              <svg class="git-strip" viewBox="0 0 830 128"><defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2b7de9"/></marker></defs><rect class="box" x="12" y="42" width="170" height="40" rx="7"/><text class="box" x="97.0" y="67.0">Your folder</text><rect class="box hot" x="217" y="42" width="170" height="40" rx="7"/><text class="box hot" x="302.0" y="67.0">Staging area</text><rect class="box hot" x="422" y="42" width="170" height="40" rx="7"/><text class="box hot" x="507.0" y="67.0">History (.git)</text><rect class="box" x="627" y="42" width="170" height="40" rx="7"/><text class="box" x="712.0" y="67.0">GitHub</text><path class="flow" d="M302.0,42 C302.0,10 507.0,10 507.0,42" marker-end="url(#ah)"/><text class="flow-label" x="404.5" y="13.04">snapshot</text></svg>
+              <ul class="fmt-notes"><li>Records the staged changes as a new version, with a message saying <em>why</em>.</li><li>Each commit gets an ID like <code>7c6b9b2</code>; you can always go back to it.</li><li><code>git commit -am "…"</code> stages and commits changed files in one go.</li></ul>
+              <div class="fmt-label">From the demo</div>
+              <pre class="fmt-raw term"><span class="t-cmd">$ git commit -am &quot;Sharpen the title&quot;</span>
+[main 20367f1] Sharpen the title
+ 1 file changed, 1 insertion(+), 1 deletion(-)</pre>
+            </div>
+            <div class="fmt-page git-page" data-fmt="git-log" hidden>
+              <header><span class="fmt-ext">git log</span> <span class="fmt-name">Browse the history</span>
+                <span class="fmt-kind group">Record</span></header>
+              <svg class="git-strip" viewBox="0 0 830 128"><defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2b7de9"/></marker></defs><rect class="box" x="12" y="42" width="170" height="40" rx="7"/><text class="box" x="97.0" y="67.0">Your folder</text><rect class="box" x="217" y="42" width="170" height="40" rx="7"/><text class="box" x="302.0" y="67.0">Staging area</text><rect class="box hot" x="422" y="42" width="170" height="40" rx="7"/><text class="box hot" x="507.0" y="67.0">History (.git)</text><rect class="box" x="627" y="42" width="170" height="40" rx="7"/><text class="box" x="712.0" y="67.0">GitHub</text></svg>
+              <ul class="fmt-notes"><li>Lists commits, newest first. <code>--graph</code> draws where lines of work split and joined.</li></ul>
+              <div class="fmt-label">From the demo</div>
+              <pre class="fmt-raw term"><span class="t-cmd">$ git log --oneline --graph</span>
+* e3c2e8d Try numbered citations
+*   aee74f0 Merge branch &#x27;main&#x27; of https://github.com/alice/turnout-paper
+|\  
+| * cf06f89 Reword opening sentence
+* | 06e7ad8 Use &#x27;gubernatorial&#x27; in the opening
+|/  
+*   120826e Merge branch &#x27;main&#x27; of https://github.com/alice/turnout-paper
+|\  
+| * 20367f1 Sharpen the title
+* | cedb6fe Add 2025 races
+|/  
+* 7c6b9b2 First draft of the turnout paper</pre>
+            </div>
+            <div class="fmt-page git-page" data-fmt="git-restore" hidden>
+              <header><span class="fmt-ext">git restore</span> <span class="fmt-name">Throw away edits you haven't committed</span>
+                <span class="fmt-kind group">Record</span></header>
+              <svg class="git-strip" viewBox="0 0 830 128"><defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2b7de9"/></marker></defs><rect class="box hot" x="12" y="42" width="170" height="40" rx="7"/><text class="box hot" x="97.0" y="67.0">Your folder</text><rect class="box" x="217" y="42" width="170" height="40" rx="7"/><text class="box" x="302.0" y="67.0">Staging area</text><rect class="box hot" x="422" y="42" width="170" height="40" rx="7"/><text class="box hot" x="507.0" y="67.0">History (.git)</text><rect class="box" x="627" y="42" width="170" height="40" rx="7"/><text class="box" x="712.0" y="67.0">GitHub</text><path class="flow" d="M507.0,82 C507.0,114 97.0,114 97.0,82" marker-end="url(#ah)"/><text class="flow-label" x="302.0" y="118.96000000000001">put back</text></svg>
+              <ul class="fmt-notes"><li>Puts a file back the way it was in the last commit.</li><li>Careful: uncommitted changes are gone for good. Committed work is always safe.</li></ul>
+              <div class="fmt-label">From the demo</div>
+              <pre class="fmt-raw term"><span class="t-cmd">$ echo &quot;% scratch&quot; &gt;&gt; notes.txt</span>
+<span class="t-cmd">$ git restore notes.txt</span></pre>
+            </div>
+            <div class="fmt-page git-page" data-fmt="git-push" hidden>
+              <header><span class="fmt-ext">git push</span> <span class="fmt-name">Upload your commits</span>
+                <span class="fmt-kind group">Share</span></header>
+              <svg class="git-strip" viewBox="0 0 830 128"><defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2b7de9"/></marker></defs><rect class="box" x="12" y="42" width="170" height="40" rx="7"/><text class="box" x="97.0" y="67.0">Your folder</text><rect class="box" x="217" y="42" width="170" height="40" rx="7"/><text class="box" x="302.0" y="67.0">Staging area</text><rect class="box hot" x="422" y="42" width="170" height="40" rx="7"/><text class="box hot" x="507.0" y="67.0">History (.git)</text><rect class="box hot" x="627" y="42" width="170" height="40" rx="7"/><text class="box hot" x="712.0" y="67.0">GitHub</text><path class="flow" d="M507.0,42 C507.0,10 712.0,10 712.0,42" marker-end="url(#ah)"/><text class="flow-label" x="609.5" y="13.04">upload</text></svg>
+              <ul class="fmt-notes"><li>Sends your new commits to GitHub so coauthors can get them.</li><li>Rejected if someone pushed first: <code>git pull</code>, then push again.</li><li>The very first time: <code>git remote add origin &lt;url&gt;</code> (or <code>gh repo create</code>).</li></ul>
+              <div class="fmt-label">From the demo</div>
+              <pre class="fmt-raw term"><span class="t-cmd">$ git push -u origin main</span>
+To https://github.com/alice/turnout-paper.git
+ * [new branch]      main -&gt; main
+branch &#x27;main&#x27; set up to track &#x27;origin/main&#x27;.
+<span class="t-cmd">$ git push</span>
+To https://github.com/alice/turnout-paper.git
+<span class="t-warn"> ! [rejected]        main -&gt; main (fetch first)</span>
+…</pre>
+            </div>
+            <div class="fmt-page git-page" data-fmt="git-pull" hidden>
+              <header><span class="fmt-ext">git pull</span> <span class="fmt-name">Get your coauthors' commits</span>
+                <span class="fmt-kind group">Share</span></header>
+              <svg class="git-strip" viewBox="0 0 830 128"><defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2b7de9"/></marker></defs><rect class="box hot" x="12" y="42" width="170" height="40" rx="7"/><text class="box hot" x="97.0" y="67.0">Your folder</text><rect class="box" x="217" y="42" width="170" height="40" rx="7"/><text class="box" x="302.0" y="67.0">Staging area</text><rect class="box hot" x="422" y="42" width="170" height="40" rx="7"/><text class="box hot" x="507.0" y="67.0">History (.git)</text><rect class="box hot" x="627" y="42" width="170" height="40" rx="7"/><text class="box hot" x="712.0" y="67.0">GitHub</text><path class="flow" d="M712.0,82 C712.0,114 507.0,114 507.0,82" marker-end="url(#ah)"/><text class="flow-label" x="609.5" y="118.96000000000001">download</text><path class="flow" d="M507.0,82 C507.0,114 97.0,114 97.0,82" marker-end="url(#ah)"/><text class="flow-label" x="302.0" y="118.96000000000001">update files</text></svg>
+              <ul class="fmt-notes"><li>Downloads new commits and <b>merges</b> them into yours.</li><li>Different parts changed: merged automatically. Same lines changed: a <b>conflict</b> you resolve by hand, then <code>git add</code> + <code>git commit</code>.</li></ul>
+              <div class="fmt-label">From the demo</div>
+              <pre class="fmt-raw term"><span class="t-cmd">$ git pull --no-edit</span>
+From https://github.com/alice/turnout-paper
+   7c6b9b2..20367f1  main       -&gt; origin/main
+Merge made by the &#x27;ort&#x27; strategy.
+ paper.rmd | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+<span class="t-cmd">$ git pull --no-edit</span>
+From https://github.com/alice/turnout-paper
+   120826e..cf06f89  main       -&gt; origin/main
+Auto-merging paper.rmd
+<span class="t-warn">CONFLICT (content): Merge conflict in paper.rmd</span>
+Automatic merge failed; fix conflicts and then commit the result.
+<span class="t-warn">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span>
+Five U.S. states hold gubernatorial elections in odd-numbered years, away from federal election…
+<span class="t-warn">=======</span>
+Five American states elect their governors in odd years, when no federal races are on the ballo…
+<span class="t-warn">&gt;&gt;&gt;&gt;&gt;&gt;&gt; cf06f89d65a296548c70c1e5f0325ae413cd94f3</span></pre>
+            </div>
+            <div class="fmt-page git-page" data-fmt="git-switch" hidden>
+              <header><span class="fmt-ext">git switch</span> <span class="fmt-name">Work on a separate line of history</span>
+                <span class="fmt-kind group">Branch</span></header>
+              <svg class="git-strip" viewBox="0 0 830 128"><defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2b7de9"/></marker></defs><rect class="box hot" x="12" y="42" width="170" height="40" rx="7"/><text class="box hot" x="97.0" y="67.0">Your folder</text><rect class="box" x="217" y="42" width="170" height="40" rx="7"/><text class="box" x="302.0" y="67.0">Staging area</text><rect class="box hot" x="422" y="42" width="170" height="40" rx="7"/><text class="box hot" x="507.0" y="67.0">History (.git)</text><rect class="box" x="627" y="42" width="170" height="40" rx="7"/><text class="box" x="712.0" y="67.0">GitHub</text><path class="flow" d="M507.0,82 C507.0,114 97.0,114 97.0,82" marker-end="url(#ah)"/><text class="flow-label" x="302.0" y="118.96000000000001">check out</text></svg>
+              <ul class="fmt-notes"><li><code>git switch -c name</code> starts a <b>branch</b>: an experiment that doesn't touch <code>main</code>.</li><li><code>git switch main</code> goes back; your folder changes to match.</li><li>The Git answer to <code>PaperFinalCopy2.docx</code>.</li></ul>
+              <div class="fmt-label">From the demo</div>
+              <pre class="fmt-raw term"><span class="t-cmd">$ git switch -c numbered-citations</span>
+Switched to a new branch &#x27;numbered-citations&#x27;
+<span class="t-cmd">$ git switch main</span>
+Switched to branch &#x27;main&#x27;
+Your branch is up to date with &#x27;origin/main&#x27;.</pre>
+            </div>
+            <div class="fmt-page git-page" data-fmt="git-merge" hidden>
+              <header><span class="fmt-ext">git merge</span> <span class="fmt-name">Combine a branch into this one</span>
+                <span class="fmt-kind group">Branch</span></header>
+              <svg class="git-strip" viewBox="0 0 830 128"><defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2b7de9"/></marker></defs><rect class="box" x="12" y="42" width="170" height="40" rx="7"/><text class="box" x="97.0" y="67.0">Your folder</text><rect class="box" x="217" y="42" width="170" height="40" rx="7"/><text class="box" x="302.0" y="67.0">Staging area</text><rect class="box hot" x="422" y="42" width="170" height="40" rx="7"/><text class="box hot" x="507.0" y="67.0">History (.git)</text><rect class="box" x="627" y="42" width="170" height="40" rx="7"/><text class="box" x="712.0" y="67.0">GitHub</text><path class="flow" d="M477.0,42 C477.0,8 537.0,8 537.0,42" marker-end="url(#ah)"/><text class="flow-label" x="507.0" y="16">combine</text></svg>
+              <ul class="fmt-notes"><li>Brings another branch's commits into the current one.</li><li>If <code>main</code> hasn't moved, Git just moves it forward (<em>fast-forward</em>); otherwise it makes a merge commit.</li><li><code>git pull</code> is <code>git fetch</code> + <code>git merge</code>.</li></ul>
+              <div class="fmt-label">From the demo</div>
+              <pre class="fmt-raw term"><span class="t-cmd">$ git merge numbered-citations</span>
+Updating aee74f0..e3c2e8d
+Fast-forward
+ paper.rmd | 1 +
+ 1 file changed, 1 insertion(+)</pre>
+            </div>
+          </div>
+        </section>
+
+        <section id="git-flow-slide">
+          <h2 class="compact">One paper, two coauthors, one history</h2>
+          <svg class="git-graph" viewBox="0 0 900 215"></svg>
+          <div class="git-detail"></div>
+          <div class="fragment git-step"></div><div class="fragment git-step"></div><div class="fragment git-step"></div>
+          <div class="fragment git-step"></div><div class="fragment git-step"></div><div class="fragment git-step"></div>
+          <div class="fragment git-step"></div><div class="fragment git-step"></div><div class="fragment git-step"></div>
+          <div class="fragment git-step"></div>
+          <aside class="notes">Mirrors the live demo in RUNBOOK.md, Part 2: round 1 (different parts, auto-merge), round 2 (same sentence, conflict), then the numbered-citations branch.</aside>
+        </section>
+
+      </section>
+
+      <!-- Part 3 -->
+      <section>
+        <section>
+          <p class="part">Part 3</p>
+          <h2>AI in Your Research</h2>
+          <p>Pitfalls and leverage points</p>
+        </section>
+      </section>
+
+      <!-- Closing -->
+      <section>
+        <h2>Thank you</h2>
+        <p>Questions?</p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/notes/notes.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/highlight.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: 'c/t',
+      plugins: [RevealNotes, RevealHighlight],
+    });
+
+    // Highlight the matching source lines in every <code data-steps="..."> on the
+    // slide, and outline the ".boxed" elements of the current step.
+    function syncDocHighlights() {
+      const slide = Reveal.getCurrentSlide();
+      const boxes = [...slide.querySelectorAll('.fragment.boxed')];
+      const f = Reveal.getIndices().f;
+      const step = f === undefined ? -1 : f;
+      boxes.forEach(b => b.classList.toggle('active', Number(b.dataset.fragmentIndex) === step));
+      slide.querySelectorAll('code[data-steps]').forEach(code => {
+        const rows = code.querySelectorAll('tr');
+        rows.forEach(r => r.classList.remove('highlight-line'));
+        code.classList.toggle('has-highlights', step >= 0);
+        if (step < 0) return;
+        code.dataset.steps.split('|')[step].split(',').filter(Boolean).forEach(range => {
+          const [from, to = from] = range.split('-').map(Number);
+          for (let n = from; n <= to; n++) rows[n - 1]?.classList.add('highlight-line');
+        });
+      });
+    }
+    ['fragmentshown', 'fragmenthidden', 'slidechanged'].forEach(e => Reveal.on(e, syncDocHighlights));
+
+    // Literally zoom out from the ASCII table to Unicode. Code points are laid out in
+    // 16x8 tiles of 128 (so tile 0 *is* the ASCII table); each 65,536-code-point plane is a
+    // 256x256 block of 16x32 tiles, and the 17 planes sit in a 6x3 grid.
+    (function () {
+      const canvas = document.getElementById('unicode-zoom');
+      const caption = document.getElementById('unicode-zoom-caption');
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      const MAX_CP = 0x110000, PLANE = 256, GAP = 8, STRIDE = PLANE + GAP, PLANES_PER_ROW = 6;
+      const COLS = PLANES_PER_ROW * STRIDE - GAP, ROWS = 3 * STRIDE - GAP;
+
+      const planeOrigin = p => [(p % PLANES_PER_ROW) * STRIDE, Math.floor(p / PLANES_PER_ROW) * STRIDE];
+      const pos = cp => {
+        const [ox, oy] = planeOrigin(cp >> 16), tile = (cp & 0xFFFF) >> 7, i = cp & 127;
+        return [ox + (tile % 16) * 16 + (i & 15), oy + Math.floor(tile / 16) * 8 + (i >> 4)];
+      };
+      const cpAt = (x, y) => {                  // -1 in the gaps between planes
+        const rx = x % STRIDE, ry = y % STRIDE;
+        if (rx >= PLANE || ry >= PLANE) return -1;
+        const p = Math.floor(y / STRIDE) * PLANES_PER_ROW + Math.floor(x / STRIDE);
+        if (p > 16) return -1;
+        return (p << 16) + (Math.floor(ry / 8) * 16 + Math.floor(rx / 16)) * 128 + (ry % 8) * 16 + (rx % 16);
+      };
+
+      const SCRIPTS = [
+        ['Latin', /\p{Script=Latin}/u, '#4e79a7'],
+        ['Greek', /\p{Script=Greek}/u, '#f28e2b'],
+        ['Cyrillic', /\p{Script=Cyrillic}/u, '#e15759'],
+        ['Hebrew', /\p{Script=Hebrew}/u, '#76b7b2'],
+        ['Arabic', /\p{Script=Arabic}/u, '#59a14f'],
+        ['Han (Chinese)', /\p{Script=Han}/u, '#edc948'],
+        ['Hangul (Korean)', /\p{Script=Hangul}/u, '#b07aa1'],
+        ['Emoji', /\p{Extended_Pictographic}/u, '#ff9da7'],
+        ['Everything else', /[\s\S]/u, '#bab0ac'],
+      ];
+      const UNUSED = /[\p{Cn}\p{Cs}\p{Co}]/u;  // unassigned, surrogates, private use
+      const CONTROL = ['NUL','SOH','STX','ETX','EOT','ENQ','ACK','BEL','BS','TAB','LF','VT','FF','CR','SO','SI',
+                       'DLE','DC1','DC2','DC3','DC4','NAK','SYN','ETB','CAN','EM','SUB','ESC','FS','GS','RS','US'];
+
+      // One pixel per code point, colored by script; scaled up for the zoomed-out views.
+      const cat = new Uint8Array(MAX_CP);              // 0 = unused, else 1 + SCRIPTS index
+      const map = document.createElement('canvas');
+      map.width = COLS; map.height = ROWS;
+      const img = map.getContext('2d').createImageData(COLS, ROWS);   // gaps stay transparent
+      for (let cp = 0; cp < MAX_CP; cp++) {
+        const plane = cp >> 16;
+        // Planes 4-13 are entirely unassigned and 15-16 are private use: skip the slow tests.
+        const maybeUsed = plane < 4 || plane === 14;
+        const ch = String.fromCodePoint(cp);
+        let rgb = [244, 244, 244];
+        if (maybeUsed && !UNUSED.test(ch)) {
+          cat[cp] = 1 + SCRIPTS.findIndex(([, re]) => re.test(ch));
+          const hex = SCRIPTS[cat[cp] - 1][2];
+          rgb = [1, 3, 5].map(k => parseInt(hex.slice(k, k + 2), 16));
+        }
+        const [x, y] = pos(cp), o = (y * COLS + x) * 4;
+        img.data.set([...rgb, 255], o);
+      }
+      map.getContext('2d').putImageData(img, 0, 0);
+
+      const mark = (cp, short) => ({ cp, label: String.fromCodePoint(cp) + (short ? '' : '  U+' + cp.toString(16).toUpperCase().padStart(4, '0')) });
+      const fit = (x0, y0, x1, y1, pad = 1.1) => {
+        const w = Math.max(x1 - x0, (y1 - y0) * W / H) * pad;
+        const margin = pad > 1 ? 0.03 : 0;            // breathing room so edge markers aren't clipped
+        return { cx: x0 - margin * w + w / 2, cy: y0 - margin * w + (w * H / W) / 2, w };
+      };
+      const STAGES = [
+        { cam: fit(0, 0, 16, 8, 1), marks: [], text: 'ASCII: 128 characters (7 bits)' },
+        { cam: fit(0, 0, 48, 8, 1.04), marks: [mark(0xE7), mark(0x15F)], text: 'Latin-1 and Latin Extended' },
+        { cam: fit(0, 0, 208, 14), marks: [mark(0x3A9, true), mark(0x416, true), mark(0x5D0, true), mark(0x639, true)], text: 'Greek, Cyrillic, Hebrew, Arabic, …' },
+        { cam: fit(0, 0, PLANE, PLANE, 1.06), focus: 0, marks: [mark(0x4E2D)], text: 'Plane 0, the Basic Multilingual Plane: 65,536 code points' },
+        { cam: fit(0, 0, COLS, ROWS, 1.04), marks: [mark(0x1F5F3)], text: 'All of Unicode: 17 planes, 1,114,112 code points, 150,000+ assigned so far' },
+      ];
+
+      let cam = { ...STAGES[0].cam }, stage = 0, anim = null;
+
+      // Grid lines, glyphs and code labels for cells [x0,x1)×[y0,y1) at `scale` px per cell.
+      function drawCells(c, scale, toX, toY, x0, x1, y0, y1, skip = () => false) {
+        c.textAlign = 'center'; c.textBaseline = 'middle';
+        c.strokeStyle = '#ddd'; c.lineWidth = 1;
+        for (let y = y0; y < y1; y++) for (let x = x0; x < x1; x++) {
+          if (skip(x, y)) continue;
+          const cp = cpAt(x, y), px = toX(x), py = toY(y);
+          if (cp < 0) continue;
+          if (scale > 40) c.strokeRect(px, py, scale, scale);
+          if (!cat[cp]) continue;
+          const control = cp < 32 ? CONTROL[cp] : cp === 127 ? 'DEL' : cp === 32 ? 'SP' : null;
+          if (control || (cp >= 0x80 && cp < 0xA0)) {
+            if (scale < 40) continue;
+            c.fillStyle = '#999'; c.font = `${scale * 0.22}px sans-serif`;
+            c.fillText(control || '·', px + scale / 2, py + scale / 2);
+          } else {
+            c.fillStyle = '#222'; c.font = `${scale * 0.55}px sans-serif`;
+            c.fillText(String.fromCodePoint(cp), px + scale / 2, py + scale / 2);
+          }
+          if (scale > 80) {
+            c.fillStyle = '#aaa'; c.font = `${scale * 0.15}px monospace`;
+            c.fillText(cp.toString(16).toUpperCase().padStart(2, '0'), px + scale * 0.8, py + scale * 0.15);
+          }
+        }
+      }
+
+      // Pre-rendered glyph layers used while zooming: a sharp one for the ASCII table, and a
+      // coarser one for the area around it (glyphs are too small to read further out anyway).
+      let atlases = null;
+      const buildAtlases = () => {
+        atlases = [{ cols: 96, rows: 48, s: 32, skip: (x, y) => x < 16 && y < 8 },
+                   { cols: 16, rows: 8, s: 112 }].map(a => {
+          const canvas = document.createElement('canvas');
+          canvas.width = a.cols * a.s; canvas.height = a.rows * a.s;
+          drawCells(canvas.getContext('2d'), a.s, x => x * a.s, y => y * a.s, 0, a.cols, 0, a.rows, a.skip);
+          return { ...a, canvas };
+        });
+        // Draw each layer once now, so the browser's one-time cost of preparing a big image
+        // happens here rather than in the first frame of a zoom.
+        for (const a of atlases) ctx.drawImage(a.canvas, 0, 0, 2, 2);
+        draw();
+      };
+
+      function draw() {
+        const scale = W / cam.w;                     // canvas px per cell
+        const left = cam.cx - cam.w / 2, top = cam.cy - (H / scale) / 2;
+        const toX = x => (x - left) * scale, toY = y => (y - top) * scale;
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, W, H);
+
+        // Colored map, fading to a light tint once glyphs are big enough to read.
+        const glyphs = Math.min(1, Math.max(0, (scale - 20) / 12));
+        ctx.globalAlpha = 1 - 0.85 * glyphs;
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(map, toX(0), toY(0), COLS * scale, ROWS * scale);
+        ctx.globalAlpha = 1;
+
+        if (glyphs > 0) {
+          ctx.globalAlpha = glyphs;
+          if (anim && atlases) {
+            // Mid-zoom: scale the pre-rendered glyph layers instead of drawing thousands of glyphs.
+            ctx.imageSmoothingEnabled = true;
+            for (const a of atlases) ctx.drawImage(a.canvas, toX(0), toY(0), a.cols * scale, a.rows * scale);
+          } else {
+            const x0 = Math.max(0, Math.floor(left)), x1 = Math.min(COLS, Math.ceil(left + cam.w));
+            const y0 = Math.max(0, Math.floor(top)), y1 = Math.min(ROWS, Math.ceil(top + H / scale));
+            drawCells(ctx, scale, toX, toY, x0, x1, y0, y1);
+          }
+          ctx.globalAlpha = 1;
+        }
+
+        // Zoomed out far enough to see whole planes: outline and number them.
+        if (scale < 6) {
+          const focus = anim ? undefined : STAGES[stage].focus;
+          ctx.font = '22px sans-serif'; ctx.textAlign = 'right'; ctx.textBaseline = 'top';
+          for (let p = 0; p <= 16; p++) {
+            const [ox, oy] = planeOrigin(p), x = toX(ox), y = toY(oy), size = PLANE * scale;
+            if (focus !== undefined && p !== focus) {
+              ctx.fillStyle = 'rgba(255,255,255,0.75)'; ctx.fillRect(x, y, size, size);
+            }
+            ctx.strokeStyle = p === focus ? '#d33' : '#bbb'; ctx.lineWidth = p === focus ? 3 : 1.5;
+            ctx.strokeRect(x, y, size, size);
+            ctx.fillStyle = '#666';
+            if (size > 120) ctx.fillText(p === 0 ? 'Plane 0 (BMP)' : `Plane ${p}`, x + size - 6, y + 6);
+          }
+        }
+
+        // Keep the ASCII table outlined so you can see where we started.
+        if (scale < 100) {
+          ctx.strokeStyle = '#d33'; ctx.lineWidth = 3;
+          ctx.strokeRect(toX(0), toY(0), Math.max(16 * scale, 6), Math.max(8 * scale, 3));
+          ctx.fillStyle = '#d33'; ctx.font = 'bold 26px sans-serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+          ctx.fillText('ASCII', Math.max(toX(0), 4), Math.max(toY(0) - 4, 28));
+        }
+
+        // Markers for the characters this stage is about.
+        if (!anim) for (const m of STAGES[stage].marks) {
+          const [x, y] = pos(m.cp), px = toX(x + 0.5), py = toY(y + 0.5);
+          const r = Math.max(scale * 0.7, 16);
+          ctx.strokeStyle = '#d33'; ctx.lineWidth = 4;
+          ctx.beginPath(); ctx.arc(px, py, r, 0, 2 * Math.PI); ctx.stroke();
+          ctx.font = '34px sans-serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+          const tw = ctx.measureText(m.label).width;
+          const lx = px + r + 8 + tw > W ? px - r - 12 - tw : px + r + 8;
+          ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.fillRect(lx - 6, py - 24, tw + 12, 48);
+          ctx.fillStyle = '#d33'; ctx.fillText(m.label, lx, py);
+        }
+
+      }
+
+      function goTo(next) {
+        next = Math.max(0, Math.min(STAGES.length - 1, next));
+        if (next === stage && !anim) return;
+        const from = { ...cam }, to = STAGES[next].cam, start = performance.now(), dur = 1600;
+        stage = next;
+        caption.textContent = STAGES[stage].text;
+        legend.classList.toggle('shown', stage >= 2);
+        cancelAnimationFrame(anim);
+        const step = now => {
+          const t = Math.min(1, (now - start) / dur), e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+          // Interpolate zoom logarithmically so it feels like a constant-speed zoom.
+          cam.w = Math.exp(Math.log(from.w) + (Math.log(to.w) - Math.log(from.w)) * e);
+          cam.cx = from.cx + (to.cx - from.cx) * e;
+          cam.cy = from.cy + (to.cy - from.cy) * e;
+          anim = t < 1 ? requestAnimationFrame(step) : null;
+          draw();   // the final frame (anim === null) is drawn at full quality
+        };
+        anim = requestAnimationFrame(step);
+      }
+
+      function sync() {
+        if (Reveal.getCurrentSlide().id !== 'unicode-zoom-slide') return;
+        const f = Reveal.getIndices().f;
+        goTo(f === undefined ? 0 : f + 1);
+      }
+      const legend = document.getElementById('unicode-zoom-legend');
+      legend.innerHTML = SCRIPTS.map(([name, , color]) => `<span><i style="background:${color}"></i>${name}</span>`).join('');
+      caption.textContent = STAGES[0].text;
+      draw();
+      ['fragmentshown', 'fragmenthidden', 'slidechanged'].forEach(e => Reveal.on(e, sync));
+      setTimeout(buildAtlases, 500);   // off the critical path of page load
+    })();
+
+    // Pop-up pages (file formats, git commands): click a chip to open its page.
+    document.querySelectorAll('.reveal section').forEach(slide => {
+      const modal = slide.querySelector(':scope > .fmt-modal');
+      if (!modal) return;
+      const open = key => {
+        modal.querySelectorAll('.fmt-page').forEach(p => { p.hidden = p.dataset.fmt !== key; });
+        modal.hidden = false;
+      };
+      const close = () => { modal.hidden = true; };
+      slide.querySelectorAll('.fmt-chip').forEach(c => c.addEventListener('click', () => open(c.dataset.fmt)));
+      modal.querySelector('.fmt-close').addEventListener('click', close);
+      modal.addEventListener('click', e => { if (e.target === modal) close(); });
+      // While a page is open, Esc closes it and keys don't reach reveal (no slide changes).
+      window.addEventListener('keydown', e => {
+        if (modal.hidden || e.metaKey || e.ctrlKey) return;
+        if (e.key === 'Escape') close();
+        e.stopImmediatePropagation();
+        e.preventDefault();
+      }, true);
+      Reveal.on('slidechanged', close);
+    });
+
+    // "Video" demos of the two editing styles. Each plays when its slide opens; click it to replay.
+    function makePlayer(app, script) {
+      let run = 0;
+      const mouse = app.querySelector('.mouse');
+      const ctx = {
+        app,
+        sleep(ms) {
+          const id = run;
+          return new Promise((resolve, reject) => setTimeout(() => (id === run ? resolve() : reject('stopped')), ms));
+        },
+        async moveTo(el, fx = 0.5, fy = 0.5) {
+          const a = app.getBoundingClientRect(), r = el.getBoundingClientRect();
+          const scale = a.width / app.offsetWidth;   // reveal scales the whole slide
+          const x = (r.left - a.left + r.width * fx) / scale, y = (r.top - a.top + r.height * fy) / scale;
+          mouse.style.transform = `translate(${x}px, ${y}px)`;
+          await ctx.sleep(650);
+        },
+        async click(el) {
+          el.classList.add('pressed'); mouse.classList.add('clicking');
+          await ctx.sleep(180);
+          el.classList.remove('pressed'); mouse.classList.remove('clicking');
+          await ctx.sleep(200);
+        },
+      };
+      const play = () => {
+        run++;
+        mouse.style.transition = 'none';
+        mouse.style.transform = `translate(${app.offsetWidth * 0.6}px, ${app.offsetHeight * 0.75}px)`;
+        mouse.offsetWidth;  // apply the jump before re-enabling the glide
+        mouse.style.transition = '';
+        script(ctx).catch(e => { if (e !== 'stopped') throw e; });
+      };
+      app.addEventListener('click', play);
+      const onSlide = e => (e.currentSlide.contains(app) ? play() : run++);
+      Reveal.on('ready', onSlide);
+      Reveal.on('slidechanged', onSlide);
+    }
+
+    makePlayer(document.getElementById('word-app'), async ({ app, sleep, moveTo, click }) => {
+      const page = app.querySelector('.page');
+      const styleBtn = app.querySelector('[data-btn="style"]'), styleName = app.querySelector('.style-name');
+      const menu = app.querySelector('.style-menu'), h1Item = app.querySelector('[data-style="Heading 1"]');
+      const italicBtn = app.querySelector('[data-btn="italic"]'), boldBtn = app.querySelector('[data-btn="bold"]');
+      const caret = document.createElement('span');
+      caret.className = 'caret';
+      page.innerHTML = ''; styleName.textContent = 'Normal'; menu.classList.remove('open');
+
+      const para = () => { const p = document.createElement('p'); page.append(p); p.append(caret); return p; };
+      const type = async (text, ms = 45) => { for (const ch of text) { caret.before(ch); await sleep(ms); } };
+      const find = (p, str) => {           // wrap the first occurrence of str in a span
+        p.normalize();
+        for (const n of p.childNodes) {
+          const i = n.nodeType === 3 ? n.data.indexOf(str) : -1;
+          if (i < 0) continue;
+          const r = document.createRange(), span = document.createElement('span');
+          r.setStart(n, i); r.setEnd(n, i + str.length); r.surroundContents(span);
+          return span;
+        }
+      };
+      const select = async span => {        // drag across the text
+        caret.hidden = true;
+        await moveTo(span, 0, 0.6);
+        span.classList.add('sel');
+        await moveTo(span, 1, 0.6);
+      };
+
+      await sleep(700);
+      const h = para();
+      await type('Introduction');
+      const hs = find(h, 'Introduction');
+      await select(hs);
+      await moveTo(styleBtn); await click(styleBtn);
+      menu.classList.add('open'); await sleep(300);
+      await moveTo(h1Item); await click(h1Item);
+      menu.classList.remove('open');
+      h.className = 'w-h1'; styleName.textContent = 'Heading 1'; hs.classList.remove('sel');
+      await sleep(500);
+
+      const p = para(); caret.hidden = false; styleName.textContent = 'Normal';
+      await type('Five American states elect their governors in odd-numbered years. We ask whether this timing changes who shows up.', 28);
+      for (const [word, btn, cls] of [['timing', italicBtn, 'w-em'], ['who shows up', boldBtn, 'w-strong']]) {
+        const s = find(p, word);
+        await select(s);
+        await moveTo(btn); await click(btn);
+        s.className = cls;
+        await sleep(400);
+      }
+
+      para(); caret.hidden = false;
+      await type('Off-cycle elections lower turnout (Anzia 2011).', 40);
+    });
+
+    makePlayer(document.getElementById('tex-app'), async ({ app, sleep, moveTo, click }) => {
+      const src = app.querySelector('.source'), page = app.querySelector('.page');
+      const preview = app.querySelector('.preview'), recompile = app.querySelector('[data-btn="recompile"]');
+      const lines = [
+        '\\documentclass{article}',
+        '\\usepackage{natbib}',
+        '\\title{Timing and Turnout}',
+        '\\author{CS 101 for Political Scientists}',
+        '\\begin{document}',
+        '\\maketitle',
+        '',
+        '\\end{document}',
+      ];
+      let cur = -1, col = 0;
+      const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+      const hlTex = t => esc(t).replace(/\\[a-zA-Z]+/g, m => `<span class="cmd">${m}</span>`)
+                              .replace(/[{}[\]]/g, m => `<span class="brace">${m}</span>`);
+      const render = () => {
+        src.innerHTML = lines.map((l, i) => {
+          const text = i === cur ? hlTex(l.slice(0, col)) + '<span class="caret"></span>' + hlTex(l.slice(col)) : hlTex(l);
+          return `<div class="ln"><span class="no">${i + 1}</span><span class="tx">${text}</span></div>`;
+        }).join('');
+      };
+      const typeAt = async (line, pos, text, ms = 32) => {
+        cur = line; col = pos;
+        for (const ch of text) {
+          lines[line] = lines[line].slice(0, col) + ch + lines[line].slice(col);
+          col++; render(); await sleep(ms);
+        }
+      };
+      const newLine = async (at, text, ms) => { lines.splice(at, 0, ''); await typeAt(at, 0, text, ms); };
+
+      // The "PDF": what the compiled document looks like at each stage.
+      const body = { section: false, para: false, cite: false, twocol: false };
+      const show = () => {
+        page.innerHTML = `
+          <div class="t-title">Timing and Turnout</div>
+          <div class="t-author">CS 101 for Political Scientists</div>
+          <div class="t-date">October 6, 2026</div>
+          <div class="t-body${body.twocol ? ' twocol' : ''}">
+            ${body.section ? '<div class="t-section">1&nbsp;&nbsp;&nbsp;Introduction</div>' : ''}
+            ${body.para ? '<p>Five American states elect their governors in odd-numbered years. We ask whether this <em>timing</em> changes <strong>who shows up</strong>.</p>' : ''}
+            ${body.cite ? '<p>Off-cycle elections lower turnout (Anzia, 2011).</p>' +
+              '<div class="t-section">References</div><p class="t-ref">Sarah F. Anzia. Election timing and the electoral influence of interest groups. <em>The Journal of Politics</em>, 73(2):412–427, 2011.</p>' : ''}
+          </div>`;
+      };
+      const compile = async change => {
+        cur = -1; render();
+        await moveTo(recompile); await click(recompile);
+        preview.classList.add('compiling'); await sleep(800);
+        Object.assign(body, change); show();
+        preview.classList.remove('compiling'); await sleep(900);
+      };
+
+      Object.keys(body).forEach(k => { body[k] = false; });
+      render(); show();
+      await sleep(800);
+      await typeAt(6, 0, '\\section{Introduction}');
+      await compile({ section: true });
+      await newLine(7, '');
+      await newLine(8, 'Five American states elect their governors in odd-numbered years. We ask whether this \\emph{timing} changes \\textbf{who shows up}.', 22);
+      await compile({ para: true });
+      await newLine(9, '');
+      await newLine(10, 'Off-cycle elections lower turnout \\citep{anzia2011election}.', 28);
+      await newLine(11, '');
+      await newLine(12, '\\bibliographystyle{plainnat}');
+      await newLine(13, '\\bibliography{references}');
+      await compile({ cite: true });
+      // One edit to the description restyles the whole presentation.
+      await typeAt(0, '\\documentclass'.length, '[twocolumn]', 60);
+      await compile({ twocol: true });
+    });
+
+    // Git flow: the commit graph grows one step per fragment; the panel shows that step's diff.
+    (function () {
+      const slide = document.getElementById('git-flow-slide');
+      const svg = slide.querySelector('.git-graph'), detail = slide.querySelector('.git-detail');
+      const COLORS = { alice: '#4e79a7', bob: '#f28e2b', branch: '#59a14f' };
+      const LANES = { branch: 38, alice: 100, bob: 170 };
+      const LABELS = { alice: 'Alice', bob: 'Bob', branch: 'branch' };
+
+      const TITLE_OLD = 'title: "Timing and Turnout in Off-Cycle Governor Elections"';
+      const TITLE_NEW = 'title: "Timing and Turnout: Evidence from Off-Cycle Governor Elections"';
+      const S_OLD = 'Five American states elect their governors in odd-numbered years, away from federal elections.';
+      const S_BOB = 'Five American states elect their governors in odd years, when no federal races are on the ballot.';
+      const S_ALICE = 'Five U.S. states hold gubernatorial elections in odd-numbered years, away from federal elections.';
+      const S_FINAL = 'Five U.S. states elect their governors in odd years, when no federal races are on the ballot.';
+
+      // [commit id, lane, x, short message, parents, edge labels]
+      const COMMITS = {
+        c1: { lane: 'alice', x: 120, msg: 'First draft', parents: [] },
+        c2: { lane: 'bob', x: 250, msg: 'Sharpen the title', parents: ['c1'], via: 'clone' },
+        c3: { lane: 'alice', x: 310, msg: 'Add 2025 races', parents: ['c1'] },
+        m1: { lane: 'alice', x: 420, msg: 'Merge', parents: ['c3', 'c2'], merge: true },
+        c4: { lane: 'bob', x: 530, msg: 'Reword opening', parents: ['m1'], via: 'pull' },
+        c5: { lane: 'alice', x: 590, msg: "Use 'gubernatorial'", parents: ['m1'] },
+        m2: { lane: 'alice', x: 710, msg: 'Merge', parents: ['c5', 'c4'], merge: true },
+        c6: { lane: 'branch', x: 775, msg: 'Try numbered citations', parents: ['m2'] },
+        m3: { lane: 'alice', x: 845, msg: 'main', parents: ['c6'], ff: true },
+      };
+
+      const f = (name, lines) => ({ name, lines });
+      const STEPS = [
+        { id: 'c1', who: 'alice', cmd: 'git commit -m "First draft of the turnout paper"; git push',
+          files: [f('paper.rmd', [['ctx', TITLE_OLD], ['ctx', '…'], ['ctx', S_OLD]])] },
+        { id: 'c2', who: 'bob', cmd: 'git clone …; git commit -am "Sharpen the title"; git push',
+          files: [f('paper.rmd', [['del', TITLE_OLD], ['add', TITLE_NEW]])] },
+        { id: 'c3', who: 'alice', cmd: 'git commit -am "Add 2025 races and clarify results"',
+          note: 'Meanwhile, Alice edits a different file. Neither has seen the other\'s change yet.',
+          files: [f('data/turnout.csv', [['ctx', '"NV",2022,56.5'], ['add', '"VA",2025,41.2'], ['add', '"NJ",2025,39.0']])] },
+        { id: 'm1', who: 'alice', cmd: 'git push   # rejected: Bob pushed first\ngit pull   # Merge made by the \'ort\' strategy.',
+          note: 'Different parts of the project, so Git combines both versions automatically.',
+          files: [f('paper.rmd', [['theirs', TITLE_NEW, 'bob']]), f('data/turnout.csv', [['ours', '"VA",2025,41.2', 'alice'], ['ours', '"NJ",2025,39.0', 'alice']])] },
+        { id: 'c4', who: 'bob', cmd: 'git pull; git commit -am "Reword opening sentence"; git push',
+          files: [f('paper.rmd', [['del', S_OLD], ['add', S_BOB]])] },
+        { id: 'c5', who: 'alice', cmd: 'git commit -am "Use \'gubernatorial\' in the opening"',
+          note: 'Alice rewrites the same sentence.',
+          files: [f('paper.rmd', [['del', S_OLD], ['add', S_ALICE]])] },
+        { id: 'm2', conflict: true, who: 'alice', cmd: 'git pull   # CONFLICT (content): Merge conflict in paper.rmd',
+          note: 'Same sentence, two versions: Git refuses to guess and asks Alice to decide.',
+          files: [f('paper.rmd', [['mark', '<<<<<<< HEAD'], ['ours', S_ALICE, 'alice'], ['mark', '======='],
+                                  ['theirs', S_BOB, 'bob'], ['mark', '>>>>>>> cf06f89d65a296548c70c1e5f0325ae413cd94f3']])] },
+        { id: 'm2', who: 'alice', cmd: 'git add paper.rmd; git commit; git push',
+          note: 'Alice writes the final sentence herself (for example):',
+          files: [f('paper.rmd', [['add', S_FINAL]])] },
+        { id: 'c6', who: 'alice', cmd: 'git switch -c numbered-citations; git commit -am "Try numbered citations"',
+          note: 'An experiment on a branch instead of PaperFinalCopy.docx: main is untouched.',
+          files: [f('paper.rmd', [['ctx', 'biblio-style: plainnat'], ['add', 'natbiboptions: numbers']])] },
+        { id: 'm3', who: 'alice', cmd: 'git switch main; git merge numbered-citations   # Fast-forward',
+          note: 'main has no new commits of its own, so Git just moves <b>main</b> up to the experiment: no merge commit needed.',
+          files: [f('paper.rmd', [['ctx', 'biblio-style: plainnat'], ['add', 'natbiboptions: numbers']])] },
+      ];
+
+      const NS = 'http://www.w3.org/2000/svg';
+      const el = (tag, attrs, parent, text) => {
+        const e = document.createElementNS(NS, tag);
+        for (const k in attrs) e.setAttribute(k, attrs[k]);
+        if (text !== undefined) e.textContent = text;
+        parent.append(e);
+        return e;
+      };
+      const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+      const pos = id => [COMMITS[id].x, LANES[COMMITS[id].lane]];
+
+      function draw(step, animate) {
+        svg.innerHTML = '';
+        const shown = new Set(STEPS.slice(0, step + 1).map(s => s.id));
+        for (const lane of ['branch', 'alice', 'bob']) {
+          if (lane === 'branch' && !shown.has('c6')) continue;
+          const y = LANES[lane];
+          el('line', { x1: 70, x2: 895, y1: y, y2: y, stroke: COLORS[lane], class: 'lane-line' }, svg);
+          el('text', { x: 8, y: y + 5, fill: COLORS[lane], class: 'lane-label' }, svg, LABELS[lane]);
+        }
+        const newest = step >= 0 ? STEPS[step].id : null;
+        for (const id of shown) {
+          const c = COMMITS[id], [x, y] = pos(id);
+          for (const p of c.parents) {
+            const [px, py] = pos(p), mx = (px + x) / 2;
+            const g = el('g', { class: animate && id === newest ? 'appear' : '' }, svg);
+            el('path', { d: `M${px},${py} C${mx},${py} ${mx},${y} ${x},${y}`, stroke: COLORS[c.lane === 'alice' && py !== y ? COMMITS[p].lane : c.lane], class: 'edge', 'stroke-dasharray': c.ff ? '6 5' : 'none' }, g);
+            if (c.via && p === c.parents[0]) el('text', { x: mx + 12, y: (py + y) / 2 + 4, class: 'edge-label' }, g, c.via);
+          }
+        }
+        for (const id of shown) {
+          const c = COMMITS[id], [x, y] = pos(id), s = STEPS[step];
+          const cls = ['node', id === newest ? 'current' : '', id === newest && s.conflict ? 'conflict' : '', animate && id === newest ? 'appear' : ''];
+          const g = el('g', { class: cls.join(' ') }, svg);
+          if (c.ff) {   // fast-forward: just the branch label moving, not a commit
+            el('rect', { x: x - 24, y: y - 11, width: 48, height: 22, rx: 11, fill: COLORS.alice }, g);
+            el('text', { x, y, class: 'initial' }, g, 'main');
+            continue;
+          }
+          el('circle', { cx: x, cy: y, r: c.merge ? 13 : 11, fill: COLORS[c.lane === 'branch' ? 'branch' : c.lane] }, g);
+          if (c.merge) el('circle', { cx: x, cy: y, r: 8, fill: 'none', stroke: '#fff', 'stroke-width': 1.5 }, g);  // merge: ringed node
+          el('text', { x, y, class: 'initial' }, g, c.lane === 'bob' ? 'B' : 'A');
+          el('text', { x, y: c.lane === 'branch' ? y - 20 : y + 27, class: 'msg' }, g, id === 'm2' && s.conflict && id === newest ? 'CONFLICT' : c.msg);
+        }
+        detail.innerHTML = step < 0 ? '' : render(STEPS[step]);
+      }
+
+      function render(s) {
+        const who = `<span class="who" style="background:${COLORS[s.who]}">${LABELS[s.who]}</span>`;
+        const files = s.files.map(file => `<div class="file"><div class="file-name">${file.name}</div>` +
+          file.lines.map(([kind, text, tag]) => {
+            const sign = { add: '+ ', del: '- ', ctx: '  ', mark: '', ours: '  ', theirs: '  ' }[kind];
+            const t = tag ? `<span class="tag" style="background:${COLORS[tag]}">from ${LABELS[tag]}</span>` : '';
+            return `<div class="ln ${kind}">${t}${esc(sign + text)}</div>`;
+          }).join('') + '</div>').join('');
+        return `<div class="cmd">${who}${esc(s.cmd).replace(/\n/g, '<br>')}</div>` +
+               (s.note ? `<div class="note">${s.note}</div>` : '') + files;
+      }
+
+      let last = -2;
+      const sync = () => {
+        if (Reveal.getCurrentSlide() !== slide) return;
+        const fi = Reveal.getIndices().f, step = fi === undefined ? -1 : fi;
+        draw(step, step > last);
+        last = step;
+      };
+      ['ready', 'fragmentshown', 'fragmenthidden', 'slidechanged'].forEach(e => Reveal.on(e, sync));
+    })();
+  </script>
+</body>
+</html>
