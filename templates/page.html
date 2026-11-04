@@ -5,13 +5,11 @@
     {{ post_macros::content(page=page)}}
     {% if page.relative_path is starting_with("posts/") %}
     <footer class="post-end">
-        <div class="post-end-mark" aria-hidden="true">∎</div>
+        <hr>
         <p>
             <a href="{{ get_url(path='@/posts/_index.md') }}">← All posts</a>
             · <a href="{{ get_url(path='atom.xml', trailing_slash=false) }}">RSS</a>
-            {% for social in config.extra.socials %}{% if social.name == "mail" %}
-            · Thoughts? <a href="{{ social.url }}">Email me</a>
-            {% endif %}{% endfor %}
+            · Thoughts? <a href="mailto:alpkeles99@gmail.com">Email me</a>
         </p>
     </footer>
     {% endif %}

@@ -95,14 +95,13 @@ html.dark .award-badge {
 /* End-of-post marker and links, see templates/page.html. */
 .post-end {
   margin-top: 3rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border-color);
   text-align: center;
   color: var(--text-1);
   font-size: 0.9em;
 }
 
-.post-end-mark {
-  font-size: 1.2em;
-  margin-bottom: 0.5rem;
+.post-end hr {
+  border: none;
+  border-top: 1px solid var(--text-1);
+  margin: 0 0 1.5rem;
 }
