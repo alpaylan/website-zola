@@ -86,3 +86,23 @@ html.dark .award-badge {
 .mirror-notice a {
   margin-left: 0.45rem;
 }
+
+/* Breathing room below the last line of every page. */
+.content {
+  padding-bottom: 6rem;
+}
+
+/* End-of-post marker and links, see templates/page.html. */
+.post-end {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+  color: var(--text-1);
+  font-size: 0.9em;
+}
+
+.post-end-mark {
+  font-size: 1.2em;
+  margin-bottom: 0.5rem;
+}
