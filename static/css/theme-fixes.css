@@ -103,5 +103,6 @@ html.dark .award-badge {
 .post-end hr {
   border: none;
   border-top: 1px solid var(--text-1);
-  margin: 0 0 1.5rem;
+  width: 40%;
+  margin: 0 auto 1.5rem;
 }
