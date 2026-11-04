@@ -1,7 +1,6 @@
 +++
 title = "Bug Finding Considered Harmful?"
 date = "2026-11-04"
-draft = true
 [taxonomies]
 tags = ['testing']
 language = ["en"]
