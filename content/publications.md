@@ -5,6 +5,7 @@ template = "publications.html"
 
 [extra]
 publications = [
+    { title = "Abstractification", authors = "Alperen Keles", venue = "NeurIPS 2026 Workshop: Who Verifies the Agents?", pdf = "/documents/abstractification.pdf" },
     { title = "Evaluating Shrinking (Experience Report)", authors = "Alperen Keles, George Miao, Leonidas Lampropoulos", venue = "Haskell 2026", pdf = "/documents/evaluating-shrinking.pdf" },
     { title = "Programmable Property-Based Testing", authors = "Alperen Keles, Justine Frank, Ceren Mert, Harrison Goldstein, Leonidas Lampropoulos", venue = "ICFP 2026", award = "Distinguished Paper", pdf = "/documents/programmable-pbt.pdf", doi = "https://doi.org/10.1145/3828685", writeup = "/research/programmable-pbt" },
     { title = "QuickerChick", authors = "Ivan Mladenov, Alperen Keles, Leonidas Lampropoulos", venue = "ICFP 2026 SRC" },
