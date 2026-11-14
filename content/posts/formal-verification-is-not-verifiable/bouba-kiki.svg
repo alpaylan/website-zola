@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 410" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif" role="img" aria-labelledby="t d">
+  <title id="t">Kiki vs. bouba software</title>
+  <desc id="d">A spiky "kiki" shape stands for the engine or database: crisp interfaces that are easy to specify. A rounded "bouba" shape stands for the car seat or user interface: fuzzy, taste-driven, and hard to specify. An arrow underneath runs from closer to the machine toward closer to the user.</desc>
+  <rect x="0" y="0" width="720" height="410" rx="14" fill="#fbf8f1"/>
+  <polygon points="190.0,62.0 201.6,118.1 246.6,82.6 219.4,133.0 276.7,134.7 223.5,155.9 266.2,194.0 211.9,176.0 220.1,232.7 190.0,184.0 159.9,232.7 168.1,176.0 113.8,194.0 156.5,155.9 103.3,134.7 160.6,133.0 133.4,82.6 178.4,118.1" fill="#d9e4f2" stroke="#2f4b73" stroke-width="3" stroke-linejoin="miter"/>
+  <path d="M554.8,76.2 C580.5,83.2 590.8,98.2 602.6,123.8 C614.4,149.5 621.7,171.1 607.9,191.5 C594.1,211.8 571.0,211.8 540.7,215.5 C510.4,219.2 491.6,223.7 471.5,208.0 C451.4,192.2 446.7,170.2 450.2,144.4 C453.7,118.7 464.0,107.4 487.2,92.2 C510.5,77.0 529.2,69.1 554.8,76.2 Z" fill="#f6dcc8" stroke="#8a4b25" stroke-width="3"/>
+  <text x="190" y="158" text-anchor="middle" font-size="26" font-weight="700" fill="#2f4b73">kiki</text>
+  <text x="530" y="158" text-anchor="middle" font-size="26" font-weight="700" fill="#8a4b25">bouba</text>
+  <text x="190" y="272" text-anchor="middle" font-size="17" font-weight="600" fill="#222">the engine · the database</text>
+  <text x="190" y="296" text-anchor="middle" font-size="14" fill="#555">simple interface, crisp spec</text>
+  <text x="530" y="272" text-anchor="middle" font-size="17" font-weight="600" fill="#222">the seat · the user interface</text>
+  <text x="530" y="296" text-anchor="middle" font-size="14" fill="#555">guidelines, demands, taste</text>
+  <defs>
+    <linearGradient id="g" gradientUnits="userSpaceOnUse" x1="90" y1="0" x2="630" y2="0">
+      <stop offset="0" stop-color="#2f4b73"/><stop offset="1" stop-color="#8a4b25"/>
+    </linearGradient>
+    <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8a4b25"/>
+    </marker>
+  </defs>
+  <line x1="90" y1="340" x2="630" y2="340" stroke="url(#g)" stroke-width="3" marker-end="url(#ah)"/>
+  <text x="90" y="370" font-size="14" fill="#2f4b73">closer to the machine</text>
+  <text x="90" y="389" font-size="13" fill="#555">easier to say what "correct" means</text>
+  <text x="630" y="370" text-anchor="end" font-size="14" fill="#8a4b25">closer to the user</text>
+  <text x="630" y="389" text-anchor="end" font-size="13" fill="#555">harder to say what "correct" means</text>
+</svg>
